@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ p.titulo }} · MentesIA{% endblock %}
+{% block description %}{{ p.resumo }}{% endblock %}
+{% block content %}
+<article class="article">
+  <div class="wrap">
+    <a class="back" href="{{ url_for('home') }}#novidades">← Voltar para as novidades</a>
+    {% if not p.ativo %}<p class="draft-note">Rascunho: só você (logado no painel) vê esta página.</p>{% endif %}
+    <div class="meta"><span class="cat">{{ p.categoria }}</span><span>· {{ p.tempo }} min de leitura</span></div>
+    <h1>{{ p.titulo }}</h1>
+    {% if p.resumo %}<p class="lede">{{ p.resumo }}</p>{% endif %}
+    {% if p.capa %}<img class="article-cover" src="{{ media_url(p.capa) }}" alt="">{% endif %}
+    <div class="prose">{{ p.conteudo|markdown }}</div>
+  </div>
+</article>
+
+{% if outros %}
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Continue lendo</span><h2>Mais novidades</h2></div></div>
+    <div class="posts posts-3">
+      {% for o in outros %}
+      <a class="post" href="{{ url_for('post', slug=o.slug) }}">
+        <div class="meta"><span class="cat">{{ o.categoria }}</span><span>· {{ o.tempo }} min de leitura</span></div>
+        <h3>{{ o.titulo }}</h3>
+        <p>{{ o.resumo }}</p>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

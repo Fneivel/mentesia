@@ -1,0 +1,38 @@
+{% extends "admin/base.html" %}
+{% block title %}Textos do site{% endblock %}
+{% block content %}
+<form method="post">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <div class="topbar">
+    <div>
+      <h1>Textos do site</h1>
+      <p class="sub">Títulos, chamadas e perguntas frequentes da página inicial.</p>
+    </div>
+    <button class="btn btn-primary" type="submit">Salvar textos</button>
+  </div>
+
+  {% for grupo, fields in groups %}
+  <section class="panel settings-group">
+    <h2>{{ grupo }}</h2>
+    <div class="fields">
+      {% for key, label, ftype, default in fields %}
+      <div class="field">
+        <label for="s_{{ key }}">{{ label }}</label>
+        {% if ftype in ('textarea', 'lines') %}
+          <textarea id="s_{{ key }}" name="{{ key }}" rows="{{ 4 if ftype == 'lines' else 3 }}">{{ valores[key] }}</textarea>
+          {% if ftype == 'lines' %}<span class="help">Um item por linha.</span>{% endif %}
+        {% elif ftype == 'faq' %}
+          <textarea id="s_{{ key }}" name="{{ key }}" rows="14">{{ valores[key] }}</textarea>
+          <span class="help">Primeira linha = pergunta, linhas seguintes = resposta. Deixe uma linha em branco entre uma pergunta e outra.</span>
+        {% else %}
+          <input type="{{ 'url' if ftype == 'url' else 'text' }}" id="s_{{ key }}" name="{{ key }}" value="{{ valores[key] }}" {% if ftype == 'url' %}placeholder="https://"{% endif %}>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endfor %}
+
+  <button class="btn btn-primary" type="submit">Salvar textos</button>
+</form>
+{% endblock %}

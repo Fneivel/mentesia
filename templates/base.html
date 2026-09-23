@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07090D">
+<meta name="color-scheme" content="dark">
+<title>{% block title %}MentesIA — Inteligência artificial sem mistério{% endblock %}</title>
+<meta name="description" content="{% block description %}{{ S.seo_descricao }}{% endblock %}">
+<meta property="og:site_name" content="MentesIA">
+<meta property="og:title" content="{{ self.title() }}">
+<meta property="og:description" content="{{ self.description() }}">
+<meta property="og:image" content="{{ url_for('static', filename='img/mentesia-icone.png', _external=True) }}">
+<link rel="icon" href="{{ url_for('static', filename='img/mentesia-icone.svg') }}" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="{{ url_for('home') }}" aria-label="MentesIA, início">
+      <img src="{{ url_for('static', filename='img/mentesia-icone.svg') }}" width="34" height="34" alt="">
+      <span>Mentes<b>IA</b></span>
+    </a>
+    <nav class="nav" id="mainNav" aria-label="Principal">
+      <a href="{{ url_for('home') }}#novidades">Novidades</a>
+      <a href="{{ url_for('home') }}#gratis">Materiais grátis</a>
+      <a href="{{ url_for('home') }}#loja">Loja</a>
+      <a href="{{ url_for('home') }}#newsletter">Newsletter</a>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="{{ url_for('home') }}#loja">Ver produtos</a>
+    <button class="menu-btn" type="button" id="menuBtn" aria-controls="mainNav" aria-expanded="false" aria-label="Abrir menu">
+      <svg class="bars" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="x" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="inicio">
+{% block content %}{% endblock %}
+</main>
+
+<footer>
+  <div class="wrap">
+    <div style="display:grid; gap:10px; max-width:360px">
+      <a class="logo" href="{{ url_for('home') }}">
+        <img src="{{ url_for('static', filename='img/mentesia-icone.svg') }}" width="34" height="34" alt="">
+        <span>Mentes<b>IA</b></span>
+      </a>
+      <p style="font-size:14px; color:var(--ink-2)">{{ S.rodape_texto }}</p>
+    </div>
+    <div class="cols">
+      <div><strong>Conteúdo</strong><a href="{{ url_for('home') }}#novidades">Novidades</a><a href="{{ url_for('home') }}#gratis">Materiais grátis</a><a href="{{ url_for('home') }}#newsletter">Newsletter</a></div>
+      <div><strong>Loja</strong><a href="{{ url_for('home') }}#loja">Cursos e produtos</a><a href="{{ url_for('home') }}#como-comprar">Como comprar</a><a href="{{ url_for('home') }}#faq">Dúvidas</a></div>
+      {% if S.instagram or S.youtube or S.email_contato %}
+      <div><strong>Contato</strong>
+        {% if S.instagram %}<a href="{{ S.instagram }}" target="_blank" rel="noopener">Instagram</a>{% endif %}
+        {% if S.youtube %}<a href="{{ S.youtube }}" target="_blank" rel="noopener">YouTube</a>{% endif %}
+        {% if S.email_contato %}<a href="mailto:{{ S.email_contato }}">{{ S.email_contato }}</a>{% endif %}
+      </div>
+      {% endif %}
+    </div>
+    <p class="legal">© {{ ano }} MentesIA · www.mentesia.com.br · Pagamentos processados pela Hotmart.</p>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status"></div>
+{% block scripts %}{% endblock %}
+<script src="{{ url_for('static', filename='js/site.js') }}"></script>
+</body>
+</html>

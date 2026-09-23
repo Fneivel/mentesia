@@ -1,0 +1,92 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ ent.label }}{% endblock %}
+{% block content %}
+<div class="topbar">
+  <div>
+    <h1>{{ ent.label }}</h1>
+    <p class="sub">{{ rows|length }} cadastrado(s). Arraste pela alça ⋮⋮ para mudar a ordem no site (no celular, use o campo “Posição na lista” de cada item).</p>
+  </div>
+  <a class="btn btn-primary" href="{{ url_for('admin_edit', kind=kind) }}">+ Novo {{ ent.singular }}</a>
+</div>
+
+<div class="toolbar">
+  <form class="search" method="get">
+    <input type="search" name="q" value="{{ q }}" placeholder="Buscar {{ ent.label|lower }}…" aria-label="Buscar">
+    <button class="btn" type="submit">Buscar</button>
+    {% if q %}<a class="btn btn-link" href="{{ url_for('admin_list', kind=kind) }}">Limpar</a>{% endif %}
+  </form>
+</div>
+
+<section class="panel">
+  {% if rows %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="handle" aria-label="Ordem"></th>
+          <th>{{ 'Prompt' if kind == 'prompts' else 'Título' }}</th>
+          {% for c, label in ent.cols %}<th>{{ label }}</th>{% endfor %}
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="sortable" data-url="{{ url_for('admin_reorder', kind=kind) }}">
+        {% for r in rows %}
+        <tr draggable="{{ 'false' if q else 'true' }}" data-id="{{ r.id }}">
+          <td class="handle" title="Arraste para reordenar">⋮⋮</td>
+          <td class="title">
+            <a href="{{ url_for('admin_edit', kind=kind, item_id=r.id) }}">{{ r[ent.title_field]|truncate(90) }}</a>
+            {% if kind == 'artigos' %}<div class="sub">/blog/{{ r.slug }}</div>
+            {% elif kind == 'produtos' %}<div class="sub">{{ r.link or 'Sem link da Hotmart' }}</div>
+            {% elif kind == 'materiais' %}<div class="sub">{{ r.arquivo or r.link or 'Sem link ou arquivo' }}</div>{% endif %}
+          </td>
+          {% for c, label in ent.cols %}
+            <td class="num">{% if c == 'preco' %}{{ r[c]|brl }}{% else %}{{ r[c] if r[c] is not none }}{% endif %}</td>
+          {% endfor %}
+          <td>
+            <form method="post" action="{{ url_for('admin_toggle', kind=kind, item_id=r.id) }}">
+              <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+              <button class="pill {{ 'on' if r.ativo else 'off' }}" type="submit" title="Clique para {{ 'tirar do ar' if r.ativo else 'publicar' }}">{{ 'No ar' if r.ativo else ('Rascunho' if kind == 'artigos' else 'Oculto') }}</button>
+            </form>
+            {% if kind == 'artigos' and r.destaque %}<span class="pill star">Destaque</span>{% endif %}
+          </td>
+          <td class="actions">
+            {% if kind == 'artigos' %}<a class="btn btn-sm btn-link" href="{{ url_for('post', slug=r.slug) }}" target="_blank" rel="noopener">Ver</a>{% endif %}
+            <a class="btn btn-sm" href="{{ url_for('admin_edit', kind=kind, item_id=r.id) }}">Editar</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty">
+    <p>{{ 'Nada encontrado para “' ~ q ~ '”.' if q else 'Nenhum ' ~ ent.singular ~ ' cadastrado ainda.' }}</p>
+    <a class="btn btn-primary" href="{{ url_for('admin_edit', kind=kind) }}">+ Criar o primeiro</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* Arrastar e soltar para reordenar */
+(function () {
+  const body = document.getElementById("sortable"); if (!body) return;
+  let dragged = null;
+  body.addEventListener("dragstart", e => { dragged = e.target.closest("tr"); dragged.classList.add("dragging"); e.dataTransfer.effectAllowed = "move"; });
+  body.addEventListener("dragend", () => { dragged?.classList.remove("dragging"); save(); dragged = null; });
+  body.addEventListener("dragover", e => {
+    e.preventDefault();
+    const over = e.target.closest("tr"); if (!over || over === dragged) return;
+    const r = over.getBoundingClientRect();
+    body.insertBefore(dragged, (e.clientY - r.top) > r.height / 2 ? over.nextSibling : over);
+  });
+  function save() {
+    const ids = [...body.querySelectorAll("tr")].map(tr => tr.dataset.id).join(",");
+    const fd = new FormData(); fd.append("ids", ids);
+    fetch(body.dataset.url, { method: "POST", body: fd, headers: { "X-CSRF-Token": document.querySelector('meta[name=csrf-token]').content } });
+  }
+})();
+</script>
+{% endblock %}

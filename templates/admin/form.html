@@ -1,0 +1,126 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Editar' if item_id else 'Novo' }} {{ ent.singular }}{% endblock %}
+
+{% macro render_field(name, label, ftype, opts) %}
+  {% set val = v.get(name) %}
+  <div class="field">
+    {% if ftype == 'bool' %}
+      <label class="check"><input type="checkbox" name="{{ name }}" id="f_{{ name }}" value="1" {% if val %}checked{% endif %}> {{ label }}</label>
+    {% else %}
+      <label for="f_{{ name }}">{{ label }}{% if opts.required %} <span class="req">*</span>{% endif %}</label>
+    {% endif %}
+
+    {% if ftype == 'textarea' or ftype == 'lines' %}
+      <textarea id="f_{{ name }}" name="{{ name }}" rows="{{ 7 if ftype == 'lines' else 4 }}" {% if opts.required %}required{% endif %}>{{ val or '' }}</textarea>
+    {% elif ftype == 'markdown' %}
+      <div class="md-head">
+        <div class="tabs" role="tablist">
+          <button type="button" role="tab" aria-selected="true" data-tab="write">Escrever</button>
+          <button type="button" role="tab" aria-selected="false" data-tab="preview">Pré-visualizar</button>
+        </div>
+      </div>
+      <textarea class="md" id="f_{{ name }}" name="{{ name }}">{{ val or '' }}</textarea>
+      <div class="preview" id="preview_{{ name }}" hidden></div>
+    {% elif ftype in ('int', 'money') %}
+      <input type="text" inputmode="decimal" id="f_{{ name }}" name="{{ name }}"
+             value="{{ ('%.2f'|format(val)).replace('.', ',') if ftype == 'money' and val is not none else (val if val is not none else '') }}">
+    {% elif ftype in ('image', 'file') %}
+      <div class="filebox">
+        {% if val %}
+          {% if ftype == 'image' %}<img class="thumb" src="{{ media_url(val) }}" alt="Imagem atual">{% endif %}
+          <div class="current">Atual: {{ val }}</div>
+          <label class="check" style="font-size:13px"><input type="checkbox" name="{{ name }}_remover" value="1"> Remover</label>
+        {% endif %}
+        <input type="file" id="f_{{ name }}" name="{{ name }}_upload" {% if ftype == 'image' %}accept="image/*"{% endif %}>
+        <input type="hidden" name="{{ name }}" value="{{ val or '' }}">
+      </div>
+    {% elif ftype == 'bool' %}
+    {% else %}
+      <input type="{{ 'url' if ftype == 'url' else 'text' }}" id="f_{{ name }}" name="{{ name }}" value="{{ val or '' }}"
+             {% if opts.required %}required{% endif %} {% if opts.datalist %}list="dl_{{ name }}"{% endif %}
+             {% if ftype == 'url' %}placeholder="https://"{% endif %}>
+      {% if opts.datalist %}<datalist id="dl_{{ name }}">{% for c in categorias %}<option value="{{ c }}">{% endfor %}</datalist>{% endif %}
+    {% endif %}
+    {% if opts.help %}<span class="help">{{ opts.help }}</span>{% endif %}
+  </div>
+{% endmacro %}
+
+{% block content %}
+<div class="topbar">
+  <div>
+    <div class="crumb"><a href="{{ url_for('admin_list', kind=kind) }}">{{ ent.label }}</a> / {{ 'Editar' if item_id else 'Novo' }}</div>
+    <h1>{{ (v.get(ent.title_field) or ('Novo ' ~ ent.singular))|truncate(70) }}</h1>
+  </div>
+  {% if kind == 'artigos' and item_id %}
+    <a class="btn" href="{{ url_for('post', slug=v.slug) }}" target="_blank" rel="noopener">Ver no site ↗</a>
+  {% endif %}
+</div>
+
+{% if erros %}
+<div class="flash erro" role="alert"><div><strong>Não foi possível salvar:</strong><ul>{% for e in erros %}<li>{{ e }}</li>{% endfor %}</ul></div></div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data" class="form-grid" id="editForm">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <section class="panel">
+    <div class="fields">
+      {% for name, label, ftype, opts in ent.fields if not opts.side %}{{ render_field(name, label, ftype, opts) }}{% endfor %}
+    </div>
+  </section>
+
+  <aside class="panel side-card sticky">
+    <div class="fields">
+      <div class="field">
+        <span class="label">Publicação</span>
+        <label class="check"><input type="checkbox" name="ativo" value="1" {% if v.get('ativo') %}checked{% endif %}> Mostrar no site</label>
+        <span class="help">Desmarque para salvar como {{ 'rascunho' if kind == 'artigos' else 'oculto' }}.</span>
+      </div>
+      {% for name, label, ftype, opts in ent.fields if opts.side %}{{ render_field(name, label, ftype, opts) }}{% endfor %}
+      <div class="field">
+        <label for="f_ordem">Posição na lista</label>
+        <input type="number" id="f_ordem" name="ordem" value="{{ v.get('ordem') or 0 }}">
+        <span class="help">Menor aparece primeiro. Também dá para arrastar na lista.</span>
+      </div>
+    </div>
+    <div class="savebar">
+      <button class="btn btn-primary" type="submit" name="acao" value="salvar">Salvar</button>
+      <button class="btn" type="submit" name="acao" value="salvar_novo">Salvar e criar outro</button>
+    </div>
+  </aside>
+</form>
+
+{% if item_id %}
+<form method="post" action="{{ url_for('admin_delete', kind=kind, item_id=item_id) }}" data-confirm="Excluir este {{ ent.singular }}? Isso não pode ser desfeito." style="margin-top:18px">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <button class="btn btn-danger" type="submit">Excluir {{ ent.singular }}</button>
+</form>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* Pré-visualização do texto do artigo */
+document.querySelectorAll(".md-head .tabs").forEach(tabs => {
+  const field = tabs.closest(".field"), ta = field.querySelector("textarea.md"), pv = field.querySelector(".preview");
+  tabs.addEventListener("click", async e => {
+    const b = e.target.closest("button"); if (!b) return;
+    tabs.querySelectorAll("button").forEach(x => x.setAttribute("aria-selected", x === b));
+    const preview = b.dataset.tab === "preview";
+    ta.hidden = preview; pv.hidden = !preview;
+    if (preview) {
+      pv.textContent = "Carregando…";
+      const fd = new FormData(); fd.append("texto", ta.value);
+      const r = await fetch("{{ url_for('admin_preview') }}", { method: "POST", body: fd, headers: { "X-CSRF-Token": document.querySelector('meta[name=csrf-token]').content } });
+      pv.innerHTML = (await r.json()).html || "<p class='muted'>Nada para mostrar.</p>";
+    }
+  });
+});
+/* Aviso ao sair com alterações não salvas */
+(function () {
+  const f = document.getElementById("editForm"); let dirty = false;
+  f.addEventListener("input", () => dirty = true);
+  f.addEventListener("submit", () => dirty = false);
+  addEventListener("beforeunload", e => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+})();
+</script>
+{% endblock %}

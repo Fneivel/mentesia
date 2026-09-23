@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: mentesia
+    runtime: python
+    plan: starter            # o disco persistente exige plano pago
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --workers 1 --threads 4 --bind 0.0.0.0:$PORT
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ADMIN_USER
+        value: fabiano
+      - key: ADMIN_PASSWORD
+        sync: false          # defina no painel do Render
+      - key: DATA_DIR
+        value: /var/data
+      - key: PRODUCTION
+        value: "1"
+    disk:
+      name: mentesia-data
+      mountPath: /var/data
+      sizeGB: 1

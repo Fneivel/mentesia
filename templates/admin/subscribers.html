@@ -1,0 +1,38 @@
+{% extends "admin/base.html" %}
+{% block title %}Inscritos{% endblock %}
+{% block content %}
+<div class="topbar">
+  <div>
+    <h1>Inscritos na newsletter</h1>
+    <p class="sub">{{ rows|length }} e-mail(s) cadastrados pelo formulário do site.</p>
+  </div>
+  <a class="btn btn-primary" href="{{ url_for('admin_subscribers_csv') }}">Baixar CSV</a>
+</div>
+<p class="muted" style="margin-bottom:14px; max-width:70ch">O CSV abre no Excel e pode ser importado no seu serviço de e-mail (Brevo, Mailchimp, RD Station) para enviar as newsletters.</p>
+<section class="panel">
+  {% if rows %}
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>E-mail</th><th>Origem</th><th>Data</th><th></th></tr></thead>
+      <tbody>
+        {% for r in rows %}
+        <tr>
+          <td>{{ r.email }}</td>
+          <td class="muted">{{ r.origem }}</td>
+          <td class="num muted">{{ r.criado_em[8:10] }}/{{ r.criado_em[5:7] }}/{{ r.criado_em[:4] }} {{ r.criado_em[11:16] }}</td>
+          <td class="actions">
+            <form method="post" action="{{ url_for('admin_subscriber_delete', sid=r.id) }}" data-confirm="Remover {{ r.email }} da lista?">
+              <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+              <button class="btn btn-sm btn-danger" type="submit">Remover</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty"><p>Ninguém se inscreveu ainda. Os e-mails aparecem aqui assim que alguém usar o formulário do site.</p></div>
+  {% endif %}
+</section>
+{% endblock %}

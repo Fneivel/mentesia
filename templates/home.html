@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% block content %}
+  <!-- TOPO -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">{{ S.hero_eyebrow }}</span>
+        <h1>{{ S.hero_titulo }} <mark>{{ S.hero_destaque }}</mark></h1>
+        <p class="lede">{{ S.hero_subtitulo }}</p>
+        <div class="ctas">
+          <a class="btn btn-primary" href="#gratis">{{ S.hero_botao1 }}</a>
+          <a class="btn btn-ghost" href="#novidades">{{ S.hero_botao2 }}</a>
+        </div>
+        <div class="facts">
+          {% for selo in S.hero_selos|lines %}<span>{{ selo }}</span>{% endfor %}
+        </div>
+      </div>
+
+      {% if prompts_json != '[]' %}
+      <div class="term" aria-label="Prompt do dia">
+        <div class="term-bar"><i></i><i></i><i></i><span class="label">prompt-do-dia.txt</span></div>
+        <div class="term-body" aria-live="polite">
+          <span class="who">você &gt;</span> <span class="txt" id="promptText"></span><span class="caret" aria-hidden="true"></span>
+        </div>
+        <div class="term-foot">
+          <span class="tag" id="promptTag"></span>
+          <div class="row">
+            <button class="term-btn" id="nextPrompt" type="button">Outro prompt</button>
+            <button class="term-btn" id="copyPrompt" type="button">Copiar</button>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- NOVIDADES -->
+  {% if posts %}
+  <section class="block" id="novidades">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow">Blog</span>
+          <h2>{{ S.blog_titulo }}</h2>
+          <p>{{ S.blog_texto }}</p>
+        </div>
+        {% if categorias|length > 1 %}
+        <div class="chips" role="group" aria-label="Filtrar por categoria" id="chips">
+          <button class="chip" type="button" aria-pressed="true" data-cat="">Todos</button>
+          {% for c in categorias %}<button class="chip" type="button" aria-pressed="false" data-cat="{{ c }}">{{ c }}</button>{% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      <div class="posts" id="posts">
+        {% for p in posts %}
+        <a class="post{% if loop.first %} feature{% endif %}" href="{{ url_for('post', slug=p.slug) }}" data-cat="{{ p.categoria }}">
+          {% if loop.first %}
+            {% if p.capa %}<img class="feature-img" src="{{ media_url(p.capa) }}" alt="">{% else %}<canvas data-seed="1"></canvas>{% endif %}
+          {% endif %}
+          <div class="meta"><span class="cat">{{ p.categoria }}</span><span>· {{ p.tempo }} min de leitura</span></div>
+          <h3>{{ p.titulo }}</h3>
+          <p>{{ p.resumo }}</p>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- MATERIAIS GRATUITOS -->
+  {% if materiais %}
+  <section class="block" id="gratis">
+    <div class="wrap">
+      <div class="sec-head"><div>
+        <span class="eyebrow">Materiais gratuitos</span>
+        <h2>{{ S.gratis_titulo }}</h2>
+        <p>{{ S.gratis_texto }}</p>
+      </div></div>
+      <div class="free">
+        {% for m in materiais %}
+        <article class="freebie">
+          {% if m.formato %}<span class="fmt">{{ m.formato }}</span>{% endif %}
+          <h3>{{ m.titulo }}</h3>
+          <p>{{ m.descricao }}</p>
+          <ul>{% for t in m.itens|lines %}<li>{{ t }}</li>{% endfor %}</ul>
+          {% if m.arquivo or m.link %}
+          <a class="btn btn-ghost" href="{{ url_for('material', mid=m.id) }}" {% if not m.arquivo %}target="_blank" rel="noopener"{% endif %}>{{ m.botao or 'Quero o material grátis' }}</a>
+          {% else %}
+          <span class="btn btn-ghost is-disabled" aria-disabled="true">Em breve</span>
+          {% endif %}
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- LOJA -->
+  {% if produtos %}
+  <section class="block" id="loja">
+    <div class="wrap">
+      <div class="sec-head"><div>
+        <span class="eyebrow">Loja</span>
+        <h2>{{ S.loja_titulo }}</h2>
+        <p>{{ S.loja_texto }}</p>
+      </div></div>
+      <div class="shop">
+        {% for p in produtos %}
+        <article class="product{% if p.selo %} best{% endif %}">
+          <div class="cover">
+            {% if p.imagem %}<img class="cover-img" src="{{ media_url(p.imagem) }}" alt="">{% else %}<canvas data-seed="{{ loop.index + 2 }}"></canvas>{% endif %}
+            {% if p.selo %}<span class="badge">{{ p.selo }}</span>{% endif %}
+            {% if not p.imagem %}<span class="ctitle">{{ p.capa_texto|default(p.titulo, true)|replace('\n', '<br>'|safe) }}</span>{% endif %}
+          </div>
+          <div class="pbody">
+            <span class="ptype">{{ p.tipo }}</span>
+            <h3>{{ p.titulo }}</h3>
+            <p>{{ p.descricao }}</p>
+            <ul>{% for t in p.itens|lines %}<li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>{{ t }}</span></li>{% endfor %}</ul>
+            <div class="price">
+              <span class="now">{{ p.preco|brl }}</span>
+              {% if p.preco_antigo %}<span class="old">{{ p.preco_antigo|brl }}</span>{% endif %}
+              {% if p.parcelas and p.parcelas > 1 %}<span class="inst">ou até {{ p.parcelas }}x no cartão</span>{% endif %}
+            </div>
+            {% if p.link %}
+            <a class="btn btn-primary" href="{{ p.link }}" target="_blank" rel="noopener">{{ p.botao or 'Comprar na Hotmart' }}</a>
+            {% else %}
+            <span class="btn btn-ghost is-disabled" aria-disabled="true">Em breve</span>
+            {% endif %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      <p class="secure">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        {{ S.loja_seguranca }}
+      </p>
+    </div>
+  </section>
+
+  <!-- COMO COMPRAR -->
+  <section class="block" id="como-comprar">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Como comprar</span><h2>Do clique ao acesso em minutos</h2></div></div>
+      <div class="steps">
+        <div class="step"><span class="n">1</span><h3>Escolha o produto</h3><p>Clique no botão de compra do produto que você quer.</p></div>
+        <div class="step"><span class="n">2</span><h3>Pague com segurança</h3><p>Você finaliza a compra no checkout da Hotmart, com Pix, boleto ou cartão.</p></div>
+        <div class="step"><span class="n">3</span><h3>Receba o acesso</h3><p>O link de acesso chega no seu e-mail e fica disponível na sua conta Hotmart.</p></div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- NEWSLETTER -->
+  <section class="block" id="newsletter" style="border-top:0; padding-top:0">
+    <div class="wrap">
+      <div class="news">
+        <div>
+          <span class="eyebrow" style="color:var(--green)">Newsletter semanal</span>
+          <h2 style="margin-top:10px">{{ S.news_titulo }}</h2>
+          <p>{{ S.news_texto }}</p>
+        </div>
+        <form id="newsForm" novalidate>
+          <label class="eyebrow" for="newsEmail" style="color:var(--term-dim)">Seu melhor e-mail</label>
+          <div class="row">
+            <input id="newsEmail" name="email" type="email" placeholder="nome@email.com" autocomplete="email" required>
+            <input type="text" name="site" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px">
+            <button class="btn btn-primary" type="submit">Quero receber</button>
+          </div>
+          <div class="msg" id="newsMsg" role="status"></div>
+          <small>Sem spam. Você cancela quando quiser.</small>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  {% if faq %}
+  <section class="block" id="faq">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Dúvidas</span><h2>Perguntas frequentes</h2></div></div>
+      <div class="faq">
+        {% for f in faq %}<details><summary>{{ f.q }}</summary><p>{{ f.a }}</p></details>{% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>window.PROMPTS = {{ prompts_json|safe }};</script>
+{% endblock %}

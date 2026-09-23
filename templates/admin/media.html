@@ -1,0 +1,51 @@
+{% extends "admin/base.html" %}
+{% block title %}Arquivos e imagens{% endblock %}
+{% block content %}
+<div class="topbar">
+  <div>
+    <h1>Arquivos e imagens</h1>
+    <p class="sub">Envie imagens para usar nos artigos e PDFs ou planilhas para os materiais.</p>
+  </div>
+</div>
+
+<form class="panel" method="post" enctype="multipart/form-data" style="margin-bottom:20px">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <div class="fields">
+    <div class="field">
+      <label for="arquivos">Enviar arquivos</label>
+      <input type="file" id="arquivos" name="arquivos" multiple>
+      <span class="help">Imagens (PNG, JPG, WEBP, SVG), PDF, XLSX, DOCX, PPTX, ZIP. Para usar uma imagem dentro de um artigo, copie o endereço e escreva ![descrição](endereço) no texto.</span>
+    </div>
+    <div><button class="btn btn-primary" type="submit">Enviar</button></div>
+  </div>
+</form>
+
+{% if files %}
+<div class="media-grid">
+  {% for f in files %}
+  <div class="panel media-card">
+    <div class="prev">{% if f.imagem %}<img src="{{ f.url }}" alt="" loading="lazy">{% else %}<span>{{ f.nome.rsplit('.', 1)[-1] }}</span>{% endif %}</div>
+    <div class="info">
+      <span class="name">{{ f.nome }} · {{ f.kb }} KB</span>
+      <div class="row">
+        <button class="btn btn-sm" type="button" data-copy="{{ f.url }}">Copiar endereço</button>
+        <form method="post" action="{{ url_for('admin_media_delete', name=f.nome) }}" data-confirm="Excluir {{ f.nome }}? Se ele estiver em uso no site, vai sumir de lá também.">
+          <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+          <button class="btn btn-sm btn-danger" type="submit">Excluir</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<section class="panel"><div class="empty"><p>Nenhum arquivo enviado ainda.</p></div></section>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+<script>
+document.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", () => {
+  navigator.clipboard.writeText(b.dataset.copy).then(() => { b.textContent = "Copiado!"; setTimeout(() => b.textContent = "Copiar endereço", 1500); });
+}));
+</script>
+{% endblock %}

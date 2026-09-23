@@ -1,0 +1,66 @@
+{% extends "admin/base.html" %}
+{% block title %}Visão geral{% endblock %}
+{% block content %}
+<div class="topbar">
+  <div>
+    <h1>Visão geral</h1>
+    <p class="sub">Tudo o que aparece no site é editado por aqui.</p>
+  </div>
+  <a class="btn btn-primary" href="{{ url_for('admin_edit', kind='artigos') }}">+ Novo artigo</a>
+</div>
+
+{% if sem_link %}
+<div class="alert" style="margin-bottom:20px">
+  <span>⚠</span>
+  <div><strong>{{ sem_link|length }} produto(s) sem link da Hotmart:</strong>
+    {% for p in sem_link %}<a href="{{ url_for('admin_edit', kind='produtos', item_id=p.id) }}">{{ p.titulo }}</a>{{ ", " if not loop.last }}{% endfor %}.
+    O botão de compra aparece como “Em breve” até você colar o link.</div>
+</div>
+{% endif %}
+
+<div class="stats">
+  {% for k, e in entities.items() %}
+  <a class="panel stat" href="{{ url_for('admin_list', kind=k) }}">
+    <span class="k">{{ e.label }}</span>
+    <span class="v">{{ ativos[k] }}</span>
+    <span class="d">{{ ativos[k] }} no ar de {{ contagem[k] }} cadastrado(s)</span>
+  </a>
+  {% endfor %}
+  <a class="panel stat" href="{{ url_for('admin_subscribers') }}">
+    <span class="k">Inscritos na newsletter</span>
+    <span class="v">{{ inscritos }}</span>
+    <span class="d">{{ semana }} nos últimos 7 dias</span>
+  </a>
+</div>
+
+<div class="grid-2">
+  <section class="panel">
+    <h2>Artigos editados recentemente</h2>
+    <div class="table-wrap">
+      <table>
+        <tbody>
+          {% for r in recentes %}
+          <tr>
+            <td class="title"><a href="{{ url_for('admin_edit', kind='artigos', item_id=r.id) }}">{{ r.titulo }}</a></td>
+            <td><span class="pill {{ 'on' if r.ativo else 'off' }}" style="cursor:default">{{ 'No ar' if r.ativo else 'Rascunho' }}</span></td>
+            <td class="num muted">{{ r.atualizado_em[8:10] }}/{{ r.atualizado_em[5:7] }} {{ r.atualizado_em[11:16] }}</td>
+          </tr>
+          {% else %}
+          <tr><td class="muted">Nenhum artigo ainda.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <section class="panel">
+    <h2>Atalhos</h2>
+    <div class="body quick">
+      <a class="btn" href="{{ url_for('admin_edit', kind='produtos') }}">+ Cadastrar produto da Hotmart</a>
+      <a class="btn" href="{{ url_for('admin_edit', kind='materiais') }}">+ Adicionar material grátis</a>
+      <a class="btn" href="{{ url_for('admin_edit', kind='prompts') }}">+ Novo prompt do dia</a>
+      <a class="btn" href="{{ url_for('admin_settings') }}">Editar textos da página inicial</a>
+      <a class="btn" href="{{ url_for('admin_subscribers_csv') }}">Baixar lista de inscritos (CSV)</a>
+    </div>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Página não encontrada · MentesIA{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="wrap" style="display:block">
+    <span class="eyebrow">Erro 404</span>
+    <h1>Essa página <mark>não existe.</mark></h1>
+    <p class="lede">O endereço pode ter mudado ou o conteúdo foi removido.</p>
+    <div class="ctas"><a class="btn btn-primary" href="{{ url_for('home') }}">Ir para o início</a></div>
+  </div>
+</section>
+{% endblock %}

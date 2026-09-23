@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Entrar · Painel MentesIA</title>
+<link rel="icon" href="{{ url_for('static', filename='img/mentesia-icone.svg') }}" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Figtree:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+<div class="login">
+  <form class="panel login-card" method="post">
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+    <div class="brand"><img src="{{ url_for('static', filename='img/mentesia-icone.svg') }}" width="36" height="36" alt=""><span>Mentes<b>IA</b></span></div>
+    <div>
+      <h1 style="font-size:22px">Entrar no painel</h1>
+      <p class="muted" style="margin-top:4px">Área restrita para editar o conteúdo do site.</p>
+    </div>
+    {% if erro %}<div class="flash erro" role="alert" style="margin:0">{{ erro }}</div>{% endif %}
+    <div class="field">
+      <label for="usuario">Usuário</label>
+      <input id="usuario" name="usuario" type="text" autocomplete="username" required autofocus value="{{ request.form.usuario or '' }}">
+    </div>
+    <div class="field">
+      <label for="senha">Senha</label>
+      <input id="senha" name="senha" type="password" autocomplete="current-password" required>
+    </div>
+    <button class="btn btn-primary" type="submit">Entrar</button>
+    <a class="btn-link" href="{{ url_for('home') }}" style="text-align:center; font-size:14px; text-decoration:none">← Voltar para o site</a>
+  </form>
+</div>
+</body>
+</html>
