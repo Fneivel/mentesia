@@ -36,7 +36,10 @@
   h1,h2,h3{font-family:var(--display); line-height:1.12; letter-spacing:-0.025em; margin:0; text-wrap:balance}
   p{margin:0}
   .eyebrow{font-family:var(--mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2)}
-  mark,.grad-text{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
+  .grad-text{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
+/* Destaque do título: marca-texto verde da marca com letra escura (legível em qualquer tela) */
+mark{background:var(--green); color:#04110D; padding:0 .14em; margin-left:-.02em; border-radius:.06em;
+  -webkit-box-decoration-break:clone; box-decoration-break:clone}
 
   /* ---------- Header ---------- */
   .top{position:sticky; top:env(safe-area-inset-top, 0px); z-index:20; background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--line)}
@@ -291,3 +294,9 @@
 /* Âncoras não ficam escondidas atrás do cabeçalho fixo */
 section[id]{scroll-margin-top:72px}
 @media (max-width:640px){ .post.feature canvas{opacity:.4} }
+
+/* Destaque com capa: imagem inteira no topo do card, texto abaixo */
+.post.feature.has-cover{justify-content:flex-start; min-height:0; gap:14px; padding:14px 14px 28px}
+.post.feature.has-cover .feature-img{position:static; display:block; width:100%; aspect-ratio:1600/840; height:auto; object-fit:cover; opacity:1; border-radius:12px; margin-bottom:8px}
+.post.feature.has-cover > *:not(img){margin-inline:14px}
+@media (max-width:640px){ .post.feature.has-cover{padding:10px 10px 22px} .post.feature.has-cover > *:not(img){margin-inline:10px} }
