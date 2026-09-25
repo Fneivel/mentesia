@@ -39,7 +39,7 @@
   .grad-text{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
 /* Destaque do título: marca-texto verde da marca com letra escura (legível em qualquer tela) */
 mark{background:var(--green); color:#04110D; padding:0 .14em; margin-left:-.02em; border-radius:.06em;
-  -webkit-box-decoration-break:clone; box-decoration-break:clone}
+  display:inline-block; white-space:nowrap; line-height:1.08; margin-top:.1em}
 
   /* ---------- Header ---------- */
   .top{position:sticky; top:env(safe-area-inset-top, 0px); z-index:20; background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--line)}
