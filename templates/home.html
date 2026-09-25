@@ -53,9 +53,9 @@
       </div>
       <div class="posts" id="posts">
         {% for p in posts %}
-        <a class="post{% if loop.first %} feature{% endif %}" href="{{ url_for('post', slug=p.slug) }}" data-cat="{{ p.categoria }}">
+        <a class="post{% if loop.first %} feature{% if p.capa %} has-cover{% endif %}{% endif %}" href="{{ url_for('post', slug=p.slug) }}" data-cat="{{ p.categoria }}">
           {% if loop.first %}
-            {% if p.capa %}<img class="feature-img" src="{{ media_url(p.capa) }}" alt="">{% else %}<canvas data-seed="1"></canvas>{% endif %}
+            {% if p.capa %}<img class="feature-img" src="{{ media_url(p.capa) }}" alt="{{ p.titulo }}">{% else %}<canvas data-seed="1"></canvas>{% endif %}
           {% endif %}
           <div class="meta"><span class="cat">{{ p.categoria }}</span><span>· {{ p.tempo }} min de leitura</span></div>
           <h3>{{ p.titulo }}</h3>

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ p.titulo }} · MentesIA{% endblock %}
 {% block description %}{{ p.resumo }}{% endblock %}
+{% block og_image %}{% if p.capa %}{{ url_for('uploads', filename=p.capa, _external=True) if not p.capa.startswith('http') else p.capa }}{% else %}{{ url_for('static', filename='img/mentesia-icone.png', _external=True) }}{% endif %}{% endblock %}
 {% block content %}
 <article class="article">
   <div class="wrap">
