@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS produtos (
   titulo TEXT NOT NULL, tipo TEXT DEFAULT '', capa_texto TEXT DEFAULT '', imagem TEXT DEFAULT '',
   descricao TEXT DEFAULT '', itens TEXT DEFAULT '', preco REAL DEFAULT 0, preco_antigo REAL,
   parcelas INTEGER DEFAULT 12, selo TEXT DEFAULT '', link TEXT DEFAULT '',
-  botao TEXT DEFAULT 'Comprar na Hotmart',
+  botao TEXT DEFAULT 'Comprar na Hotmart', pagina TEXT DEFAULT '',
   ativo INTEGER DEFAULT 1, ordem INTEGER DEFAULT 0, criado_em TEXT, atualizado_em TEXT
 );
 CREATE TABLE IF NOT EXISTS prompts (
@@ -234,7 +234,8 @@ ENTITIES = {
             ("titulo", "Nome do produto", "text", {"required": True}),
             ("descricao", "Descrição", "textarea", {}),
             ("itens", "Benefícios (um por linha)", "lines", {}),
-            ("link", "Link de checkout da Hotmart", "url", {"required": True, "help": "Ex.: https://pay.hotmart.com/XXXXXXXX"}),
+            ("link", "Link de checkout da Hotmart", "url", {"help": "Ex.: https://pay.hotmart.com/XXXXXXXX. Enquanto estiver vazio, o botão de compra aparece como “Em breve”."}),
+            ("pagina", "Página de vendas no site", "text", {"side": True, "help": "Ex.: guia-copilot. Se preenchido, o card da loja leva para mentesia.com.br/produtos/guia-copilot. Deixe vazio para o botão ir direto à Hotmart."}),
             ("tipo", "Tipo", "text", {"side": True, "help": "Ex.: Curso em vídeo"}),
             ("preco", "Preço (R$)", "money", {"side": True}),
             ("preco_antigo", "Preço antigo riscado (R$)", "money", {"side": True, "help": "Deixe vazio para não mostrar."}),
@@ -306,9 +307,36 @@ def seed():
     c.commit()
 
 
+def migrate():
+    """Ajustes de estrutura em bancos já existentes (rodam a cada início, sem perder dados)."""
+    c = db()
+    cols = [r[1] for r in c.execute("PRAGMA table_info(produtos)")]
+    if "pagina" not in cols:
+        c.execute("ALTER TABLE produtos ADD COLUMN pagina TEXT DEFAULT ''")
+    c.commit()
+
+
+def seed_once():
+    """Conteúdos novos adicionados uma única vez (se você apagar pelo painel, não voltam)."""
+    c = db()
+    if not c.execute("SELECT 1 FROM config WHERE chave='seed_guia_copilot_v3'").fetchone():
+        c.execute("UPDATE produtos SET ordem = ordem + 1")
+        c.execute("INSERT INTO produtos (titulo, tipo, capa_texto, imagem, descricao, itens, preco, preco_antigo, parcelas, selo, link, botao, pagina, ativo, ordem, criado_em, atualizado_em)"
+                  " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,1,0,?,?)",
+                  ("Guia Definitivo do Copilot 3.0", "Guia digital + Study Hub", "Guia\nCopilot 3.0",
+                   "/static/img/produtos/guia-copilot-v3.png",
+                   "Microsoft 365 Copilot e Copilot Studio do básico aos agentes, atualizado com as novidades de 2025 e 2026.",
+                   "16 partes e 71 páginas\n13 fluxos de agentes ilustrados\nStudy Hub com quiz e flashcards",
+                   0, None, 12, "Novo · v3.0", "", "Quero o guia", "guia-copilot", now(), now()))
+        c.execute("INSERT INTO config (chave, valor) VALUES ('seed_guia_copilot_v3', '1')")
+        c.commit()
+
+
 with app.app_context():
     db().executescript(SCHEMA)
+    migrate()
     seed()
+    seed_once()
 
 
 # =====================================================================
@@ -429,6 +457,17 @@ def post(slug):
         abort(404)
     outros = db().execute("SELECT * FROM posts WHERE ativo=1 AND id<>? ORDER BY criado_em DESC LIMIT 3", (p["id"],)).fetchall()
     return render_template("post.html", p=p, outros=outros)
+
+
+@app.route("/produtos/<slug>")
+def produto_pagina(slug):
+    p = db().execute("SELECT * FROM produtos WHERE pagina=? AND (ativo=1 OR ?)",
+                     (slug, 1 if session.get("admin") else 0)).fetchone()
+    if not p:
+        abort(404)
+    especifico = f"produtos/{secure_filename(slug)}.html"
+    tpl = especifico if os.path.exists(os.path.join(BASE_DIR, "templates", especifico)) else "produtos/_padrao.html"
+    return render_template(tpl, p=p)
 
 
 @app.route("/material/<int:mid>")
@@ -604,6 +643,11 @@ def admin_edit(kind, item_id=None):
             values["ordem"] = int(form.get("ordem") or 0)
         except ValueError:
             values["ordem"] = 0
+
+        if kind == "produtos" and values.get("pagina"):
+            values["pagina"] = slugify(values["pagina"])
+            if c.execute("SELECT id FROM produtos WHERE pagina=? AND id<>?", (values["pagina"], item_id or 0)).fetchone():
+                erros.append("Já existe outro produto usando esse endereço de página.")
 
         if kind == "artigos":
             values["slug"] = slugify(values.get("slug") or values.get("titulo") or "")
