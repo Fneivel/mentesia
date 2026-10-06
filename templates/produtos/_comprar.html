@@ -1,0 +1,20 @@
+{# Bloco de compra reutilizável: preço e botão vêm do cadastro do produto no painel #}
+<div class="lp-buy">
+  {% if p.preco %}
+  <div class="lp-price">
+    {% if p.preco_antigo %}<span class="old">{{ p.preco_antigo|brl }}</span>{% endif %}
+    <span class="now">{{ p.preco|brl }}</span>
+    {% if p.parcelas and p.parcelas > 1 %}<span class="inst">ou em até {{ p.parcelas }}x no cartão</span>{% endif %}
+  </div>
+  {% endif %}
+  {% if p.link %}
+  <a class="btn btn-primary lp-cta" href="{{ p.link }}" target="_blank" rel="noopener">{{ p.botao or 'Comprar na Hotmart' }}</a>
+  <p class="lp-safe">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+    Compra segura pela Hotmart · Pix, boleto ou cartão · Garantia de 7 dias
+  </p>
+  {% else %}
+  <span class="btn btn-ghost is-disabled lp-cta" aria-disabled="true">Em breve</span>
+  <p class="lp-safe">As vendas abrem em breve. Assine a <a href="{{ url_for('home') }}#newsletter">newsletter</a> para ser avisado.</p>
+  {% endif %}
+</div>

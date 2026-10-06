@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+{% block title %}Guia Definitivo do Copilot 3.0 · MentesIA{% endblock %}
+{% block description %}Guia em PDF + Study Hub interativo: Microsoft 365 Copilot e Copilot Studio do uso diário à criação de agentes, atualizado com as novidades de 2025 e 2026.{% endblock %}
+{% block og_image %}{{ url_for('static', filename='img/produtos/guia-copilot-v3.png', _external=True) }}{% endblock %}
+
+{% set IMG = 'img/produtos/guia-copilot/' %}
+{% macro capa(cls='') %}<img class="lp-capa {{ cls }}" src="{{ url_for('static', filename=IMG ~ 'capa.webp') }}" width="489" height="724" alt="Capa do Guia Definitivo do Microsoft Copilot e Copilot Studio, versão 3.0">{% endmacro %}
+
+{% block content %}
+<!-- TOPO -->
+<section class="lp-hero">
+  <div class="wrap lp-hero-grid">
+    <div>
+      <a class="back" href="{{ url_for('home') }}#loja">← Voltar para a loja</a>
+      <span class="eyebrow">Guia em PDF + Study Hub interativo · Versão 3.0</span>
+      <h1>O guia definitivo do <mark>Microsoft Copilot</mark> e do Copilot Studio</h1>
+      <p class="lede">Do uso diário no Microsoft 365 à criação e governança de agentes, em português e atualizado com as novidades de 2025 e 2026. Leia no PDF quando quiser profundidade e estude no Study Hub quando quiser praticar.</p>
+      <ul class="lp-pills">
+        <li>Conteúdo técnico em português</li>
+        <li>PDF + plataforma no navegador</li>
+        <li>Para profissionais e empresas</li>
+      </ul>
+      {% include "produtos/_comprar.html" %}
+      <a class="lp-more" href="#formatos">Ver o que você recebe ↓</a>
+    </div>
+    <div class="lp-hero-art">
+      <div class="lp-capa-wrap">
+        {{ capa() }}
+        <span class="lp-capa-tag lp-capa-tag-1">+ Study Hub interativo</span>
+        <span class="lp-capa-tag lp-capa-tag-2">71 páginas · 16 partes</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEMAS -->
+<div class="lp-topics" aria-label="Temas do guia">
+  <div class="wrap">
+    <span>Microsoft 365 Copilot</span><span>Copilot Studio</span><span>Agent Mode</span><span>Cowork</span><span>Skills e Memória</span><span>Agent Flows</span><span>Power Fx</span><span>MCP</span><span>A2A</span><span>Agent 365</span><span>Copilot Credits</span><span>LGPD</span>
+  </div>
+</div>
+
+<!-- NÚMEROS -->
+<section class="lp-stats">
+  <div class="wrap">
+    <div><b>71</b><span>páginas</span></div>
+    <div><b>16</b><span>partes</span></div>
+    <div><b>13</b><span>exemplos de agentes</span></div>
+    <div><b>53</b><span>termos no glossário</span></div>
+    <div><b>32</b><span>perguntas de quiz</span></div>
+  </div>
+</section>
+
+<!-- DOIS FORMATOS -->
+<section class="block" id="formatos">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Não é só um ebook</span><h2>O mesmo conhecimento em dois formatos</h2><p>O PDF é o manual de referência, para ler, consultar e imprimir. O Study Hub transforma o mesmo conteúdo numa trilha de estudo, com busca, progresso e prática.</p></div></div>
+    <div class="lp-vs">
+      <div class="lp-vs-col lp-vs-off">
+        <h3>Ebook comum</h3>
+        <ul><li>Leitura só em sequência</li><li>Visual estático</li><li>Busca limitada</li><li>Nenhum exercício</li></ul>
+      </div>
+      <div class="lp-vs-col lp-vs-on">
+        <h3>Este guia</h3>
+        <ul class="lp-checks"><li>PDF completo + Study Hub no navegador</li><li>Menu por partes e busca no guia inteiro</li><li>Progresso marcado seção por seção</li><li>Quiz, flashcards, decisor e calculadora</li></ul>
+      </div>
+    </div>
+
+    <h3 class="lp-subhead">O que você recebe</h3>
+    <div class="lp-cards3">
+      <article class="lp-card">
+        <svg class="lp-ico-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg>
+        <h3>Guia em PDF</h3>
+        <p>71 páginas em 16 partes, com 13 fluxos de agentes ilustrados, glossário e referências. Para ler do começo ao fim ou consultar quando precisar.</p>
+      </article>
+      <article class="lp-card">
+        <svg class="lp-ico-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 9h4M7 12h7"/></svg>
+        <h3>Study Hub interativo</h3>
+        <p>Um arquivo que abre no navegador, no computador ou no celular, sem instalar nada. Busca, trilhas por objetivo, progresso e ferramentas de prática.</p>
+      </article>
+      <article class="lp-card">
+        <svg class="lp-ico-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6v3H9z"/><path d="M7 5H5v16h14V5h-2"/><path d="m9 13 2 2 4-4"/></svg>
+        <h3>Templates e checklists</h3>
+        <p>Modelos prontos para copiar, template de test set, checklists e roadmap de estudo para aplicar em projetos reais.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- STUDY HUB -->
+<section class="block lp-hub-sec" id="study-hub">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Por dentro do Study Hub</span><h2>Estude no seu ritmo, com prática em cada etapa</h2><p>Estas são telas reais do Study Hub que acompanha o guia. Clique para trocar.</p></div></div>
+    <div class="lp-tour">
+      <div class="lp-tour-tabs" role="tablist" aria-label="Telas do Study Hub">
+        <button role="tab" aria-selected="true" data-shot="home"><b>Visão geral</b><span>Trilha pelas 16 partes e progresso</span></button>
+        <button role="tab" aria-selected="false" data-shot="quiz"><b>Quiz de fixação</b><span>32 perguntas com explicação</span></button>
+        <button role="tab" aria-selected="false" data-shot="decisor"><b>Qual ferramenta usar?</b><span>Três perguntas e a recomendação</span></button>
+        <button role="tab" aria-selected="false" data-shot="calc"><b>Calculadora de créditos</b><span>Custo mensal de um agente</span></button>
+        <button role="tab" aria-selected="false" data-shot="flash"><b>Flashcards</b><span>Os 53 termos do glossário</span></button>
+        <button role="tab" aria-selected="false" data-shot="tl"><b>Linha do tempo</b><span>O que mudou em 2025 e 2026</span></button>
+      </div>
+      <figure class="lp-tour-frame">
+        <div class="lp-hub-bar"><i></i><i></i><i></i><span>Copilot Study Hub 3.0</span></div>
+        <img id="tourImg" src="{{ url_for('static', filename=IMG ~ 'hub-home.webp') }}" width="1600" height="1000" alt="Tela do Study Hub: Visão geral" loading="lazy">
+      </figure>
+    </div>
+    <div class="lp-hub-mobile">
+      <img src="{{ url_for('static', filename=IMG ~ 'hub-celular.webp') }}" width="390" height="844" alt="Study Hub aberto no celular" loading="lazy">
+      <div>
+        <h3>Funciona também no celular</h3>
+        <p class="lp-p">O Study Hub se adapta à tela, tem modo claro e escuro e guarda o seu progresso no próprio navegador. Depois de baixado, funciona sem internet.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARA QUEM É -->
+<section class="block" id="para-quem">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Trilhas por objetivo</span><h2>Comece pelo que você precisa resolver agora</h2></div></div>
+    <div class="lp-cards3">
+      <article class="lp-card"><span class="lp-ico">01 · Usar</span><h3>Usar melhor o Copilot no dia a dia</h3><p>Word, Excel, Outlook e Teams, a arte do prompt, Agent Mode, Cowork e os agentes Researcher e Analyst.</p></article>
+      <article class="lp-card"><span class="lp-ico">02 · Construir</span><h3>Construir agentes</h3><p>Do primeiro tópico no Copilot Studio ao agente com Skills, Memória, fontes de conhecimento, ferramentas e testes automatizados.</p></article>
+      <article class="lp-card"><span class="lp-ico">03 · Governar</span><h3>Governar e justificar</h3><p>Arquitetura, segurança, LGPD, consumo de créditos com exemplo de cálculo e o material para montar o business case.</p></article>
+    </div>
+    <p class="lp-note"><strong>Não é para você se</strong> procura um curso em vídeo ou não usa Microsoft 365 no trabalho. É um material de leitura e consulta, com exercícios no Study Hub.</p>
+  </div>
+</section>
+
+<!-- CONTEÚDO -->
+<section class="block" id="conteudo">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">O que tem dentro</span><h2>16 partes, do primeiro prompt ao agente em produção</h2></div></div>
+    <ol class="lp-parts">
+      <li><b>Fundamentos e Microsoft 365 Copilot</b></li>
+      <li><b>Copilot Studio: criando seus agentes</b></li>
+      <li><b>Arquitetura, governança e analytics</b></li>
+      <li><b>Casos de uso multissetoriais</b></li>
+      <li><b>Referência completa do Copilot Studio</b></li>
+      <li><b>13 exemplos de agentes</b></li>
+      <li><b>Boas práticas e anti-padrões</b></li>
+      <li><b>Instructions e Skills</b></li>
+      <li><b>Testes, debugging e qualidade</b></li>
+      <li><b>Power Fx aplicado</b></li>
+      <li><b>Fluxos de decisão rápida</b></li>
+      <li><b>LGPD, privacidade e conformidade</b></li>
+      <li><b>ROI e business case</b></li>
+      <li><b>Templates prontos para copiar</b></li>
+      <li><b>Roadmap de aprendizado</b></li>
+      <li><b>Linha do tempo 2025–2026</b></li>
+    </ol>
+  </div>
+</section>
+
+<!-- EXEMPLO DE FLUXO -->
+<section class="block" id="exemplo">
+  <div class="wrap lp-split">
+    <div>
+      <span class="eyebrow">Um dos 13 exemplos</span>
+      <h2>Agente que opera um sistema antigo, com aprovação humana</h2>
+      <p class="lp-p">Os exemplos vão do simples ao agêntico. Cada um traz objetivo, complexidade, setores em que se aplica, diagrama do fluxo e a configuração passo a passo. Este usa Computer Use para trabalhar num sistema sem integração e só conclui depois que uma pessoa aprova.</p>
+      <ul class="lp-checks"><li>Diagrama do fluxo completo</li><li>Configuração passo a passo no Copilot Studio</li><li>Pontos de atenção de segurança e custo</li></ul>
+    </div>
+    <figure class="lp-flow" aria-label="Diagrama: pedido, agente, sistema legado, aprovação humana, registro">
+      <svg viewBox="0 0 420 330" role="img">
+        <defs><linearGradient id="fl" x1="0" x2="420" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#2F6BFF"/><stop offset=".5" stop-color="#16C6E0"/><stop offset="1" stop-color="#1FE38E"/></linearGradient>
+        <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#16C6E0"/></marker></defs>
+        <g font-family="Figtree, Arial, sans-serif" font-size="14" font-weight="600" fill="#F5F7FA">
+          <rect x="20" y="20" width="160" height="56" rx="12" fill="#151A22" stroke="#344050"/><text x="100" y="53" text-anchor="middle">Pedido do usuário</text>
+          <rect x="240" y="20" width="160" height="56" rx="12" fill="#0C2A35" stroke="url(#fl)" stroke-width="2"/><text x="320" y="53" text-anchor="middle">Agente</text>
+          <rect x="240" y="137" width="160" height="56" rx="12" fill="#151A22" stroke="#344050"/><text x="320" y="162" text-anchor="middle">Sistema legado</text><text x="320" y="180" text-anchor="middle" font-size="11" font-weight="500" fill="#A9B3C1">via Computer Use</text>
+          <rect x="20" y="137" width="160" height="56" rx="12" fill="#14261D" stroke="#1FE38E" stroke-width="2"/><text x="100" y="162" text-anchor="middle">Aprovação humana</text><text x="100" y="180" text-anchor="middle" font-size="11" font-weight="500" fill="#A9B3C1">antes de concluir</text>
+          <rect x="130" y="254" width="160" height="56" rx="12" fill="#151A22" stroke="#344050"/><text x="210" y="287" text-anchor="middle">Registro e aviso</text>
+        </g>
+        <g stroke="#16C6E0" stroke-width="2" fill="none" marker-end="url(#ar)">
+          <path d="M180 48 H236"/><path d="M320 76 V133"/><path d="M240 165 H184"/><path d="M100 193 V282 H126"/>
+        </g>
+      </svg>
+      <figcaption>Representação simplificada de um dos exemplos do guia.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- NOVO NA 3.0 -->
+<section class="block" id="novidades-3">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Novo na versão 3.0</span><h2>Tudo o que mudou no Copilot entre 2025 e 2026</h2><p>16 seções novas nesta edição. Os destaques:</p></div></div>
+    <ul class="lp-new">
+      <li><b>Agent Mode e Cowork</b><span>Delegar trabalhos inteiros ao Copilot, não só pedir respostas.</span></li>
+      <li><b>Researcher e Analyst</b><span>Agentes de pesquisa profunda e de análise de dados.</span></li>
+      <li><b>Skills e Memória</b><span>Agentes que reaproveitam procedimentos e lembram o contexto.</span></li>
+      <li><b>Os três motores de execução</b><span>Quando usar cada harness do Copilot Studio.</span></li>
+      <li><b>Agentes de voz</b><span>Atendimento em tempo real por voz.</span></li>
+      <li><b>Agent 365 e identidade</b><span>Agentes geridos como parte da empresa.</span></li>
+      <li><b>Testes automatizados</b><span>Agent Evaluations, Agent Readiness e template de test set.</span></li>
+      <li><b>Pronto ou próprio?</b><span>Guia de decisão entre o Copilot pronto e um agente seu.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- COMPRA -->
+<section class="block" id="comprar">
+  <div class="wrap">
+    <div class="lp-offer">
+      <div class="lp-offer-art">{{ capa('lp-capa-sm') }}</div>
+      <div>
+        <span class="eyebrow">Acesso imediato · Entrega pela Hotmart</span>
+        <h2>Guia em PDF + Study Hub</h2>
+        <ul class="lp-checks">
+          <li>Guia completo com 71 páginas e 16 partes</li>
+          <li>13 exemplos de agentes com diagrama</li>
+          <li>Study Hub com quiz, flashcards, decisor e calculadora</li>
+          <li>Templates, test set e roadmap de estudo</li>
+        </ul>
+        {% include "produtos/_comprar.html" %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="block" id="faq-produto">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Dúvidas</span><h2>Perguntas antes da compra</h2></div></div>
+    <div class="faq">
+      <details><summary>É um curso em vídeo?</summary><p>Não. É um guia em PDF acompanhado do Study Hub, uma plataforma interativa que abre no navegador.</p></details>
+      <details><summary>Preciso instalar algum programa?</summary><p>Não. O PDF abre em qualquer leitor e o Study Hub abre no navegador do computador, tablet ou celular. Depois de baixado, funciona sem internet.</p></details>
+      <details><summary>Serve para quem está começando?</summary><p>Sim. O conteúdo começa pelos fundamentos e pelo uso do Copilot no dia a dia, e avança até agentes, governança e protocolos. Há um roadmap de estudo para seguir.</p></details>
+      <details><summary>Preciso ter o Microsoft 365 Copilot?</summary><p>Para ler e entender, não. Para praticar, você vai precisar de acesso aos recursos citados, que dependem da licença e do que está liberado no ambiente da sua empresa. O guia explica qual licença dá acesso a cada recurso.</p></details>
+      <details><summary>Como recebo o material?</summary><p>Pela Hotmart, logo após a confirmação do pagamento. O acesso chega no e-mail usado na compra e fica disponível na sua conta Hotmart.</p></details>
+      <details><summary>Tem garantia?</summary><p>Sim. Garantia de 7 dias pela Hotmart: se não for o que você esperava, peça o reembolso direto na plataforma.</p></details>
+      <details><summary>Os preços de licenças citados são oficiais?</summary><p>São valores de referência pesquisados até a data da edição. Preços e regras mudam com frequência e variam por contrato, então confirme com a Microsoft ou com um parceiro antes de decidir uma compra.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CHAMADA FINAL -->
+<section class="block">
+  <div class="wrap">
+    <div class="lp-final">
+      <h2>Pronto para estudar Copilot de um jeito diferente?</h2>
+      <p>Leitura em PDF quando quiser profundidade. Study Hub quando quiser praticar.</p>
+      <a class="btn btn-primary lp-cta" href="#comprar">Quero o guia</a>
+    </div>
+    <p class="lp-legal">Material independente, produzido pela MentesIA, sem vínculo com a Microsoft. Microsoft, Microsoft 365, Copilot e Copilot Studio são marcas da Microsoft Corporation.</p>
+  </div>
+</section>
+
+<!-- Barra fixa de compra no celular -->
+{% if p.link %}
+<div class="lp-sticky" id="lpSticky">
+  <div><b>Guia Copilot 3.0</b>{% if p.preco %}<span>{{ p.preco|brl }}</span>{% endif %}</div>
+  <a class="btn btn-primary" href="{{ p.link }}" target="_blank" rel="noopener">{{ p.botao or 'Comprar' }}</a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* Tour do Study Hub: troca a tela ao clicar */
+(function () {
+  const img = document.getElementById("tourImg"), base = "{{ url_for('static', filename=IMG) }}";
+  const tabs = document.querySelectorAll(".lp-tour-tabs [role=tab]");
+  tabs.forEach(t => {
+    const pre = new Image(); pre.src = base + "hub-" + t.dataset.shot + ".webp";
+    t.addEventListener("click", () => {
+      tabs.forEach(x => x.setAttribute("aria-selected", x === t));
+      img.src = base + "hub-" + t.dataset.shot + ".webp";
+      img.alt = "Tela do Study Hub: " + t.querySelector("b").textContent;
+    });
+  });
+})();
+/* Barra fixa no celular: aparece depois do topo e some na seção de compra */
+(function () {
+  const bar = document.getElementById("lpSticky"); if (!bar) return;
+  const hero = document.querySelector(".lp-hero"), offer = document.getElementById("comprar");
+  let heroOut = false, offerIn = false;
+  const upd = () => bar.classList.toggle("show", heroOut && !offerIn);
+  new IntersectionObserver(([e]) => { heroOut = !e.isIntersecting; upd(); }).observe(hero);
+  new IntersectionObserver(([e]) => { offerIn = e.isIntersecting; upd(); }).observe(offer);
+})();
+</script>
+{% endblock %}
