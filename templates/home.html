@@ -107,22 +107,27 @@
       <div class="shop">
         {% for p in produtos %}
         <article class="product{% if p.selo %} best{% endif %}">
-          <div class="cover">
+          {% set pg = url_for('produto_pagina', slug=p.pagina) if p.pagina else '' %}
+          {% if pg %}<a class="cover cover-link" href="{{ pg }}" aria-label="Ver detalhes de {{ p.titulo }}">{% else %}<div class="cover">{% endif %}
             {% if p.imagem %}<img class="cover-img" src="{{ media_url(p.imagem) }}" alt="">{% else %}<canvas data-seed="{{ loop.index + 2 }}"></canvas>{% endif %}
             {% if p.selo %}<span class="badge">{{ p.selo }}</span>{% endif %}
             {% if not p.imagem %}<span class="ctitle">{{ p.capa_texto|default(p.titulo, true)|replace('\n', '<br>'|safe) }}</span>{% endif %}
-          </div>
+          {% if pg %}</a>{% else %}</div>{% endif %}
           <div class="pbody">
             <span class="ptype">{{ p.tipo }}</span>
-            <h3>{{ p.titulo }}</h3>
+            <h3>{% if pg %}<a class="plink" href="{{ pg }}">{{ p.titulo }}</a>{% else %}{{ p.titulo }}{% endif %}</h3>
             <p>{{ p.descricao }}</p>
             <ul>{% for t in p.itens|lines %}<li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>{{ t }}</span></li>{% endfor %}</ul>
+            {% if p.preco %}
             <div class="price">
               <span class="now">{{ p.preco|brl }}</span>
               {% if p.preco_antigo %}<span class="old">{{ p.preco_antigo|brl }}</span>{% endif %}
               {% if p.parcelas and p.parcelas > 1 %}<span class="inst">ou até {{ p.parcelas }}x no cartão</span>{% endif %}
             </div>
-            {% if p.link %}
+            {% endif %}
+            {% if pg %}
+            <a class="btn btn-primary" href="{{ pg }}">Ver detalhes</a>
+            {% elif p.link %}
             <a class="btn btn-primary" href="{{ p.link }}" target="_blank" rel="noopener">{{ p.botao or 'Comprar na Hotmart' }}</a>
             {% else %}
             <span class="btn btn-ghost is-disabled" aria-disabled="true">Em breve</span>
