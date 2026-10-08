@@ -9,6 +9,15 @@
     setTimeout(() => el.classList.remove("show"), 2200);
   }
 
+  /* Pixel da Meta: eventos de conversão (só roda se o pixel estiver ativo) */
+  function track(ev, data) { try { window.fbq && fbq("track", ev, data || {}); } catch (e) {} }
+  document.addEventListener("click", e => {
+    const a = e.target.closest("a[href]"); if (!a) return;
+    const href = a.getAttribute("href") || "";
+    if (/pay\.hotmart\.com|go\.hotmart\.com/.test(href)) track("InitiateCheckout", { content_name: document.title });
+    else if (/^\/material\//.test(href) || /\/material\/\d+/.test(href)) track("Lead", { content_name: "Material grátis" });
+  });
+
   /* Menu do celular */
   const top = $(".top"), menuBtn = $("#menuBtn");
   function setMenu(open) {
@@ -94,7 +103,7 @@
         body: JSON.stringify({ email, site: form.site.value }) });
       const d = await r.json();
       msg.textContent = d.ok ? d.mensagem : d.erro;
-      if (d.ok) form.reset();
+      if (d.ok) { form.reset(); track("Lead", { content_name: "Newsletter" }); }
     } catch { msg.textContent = "Não foi possível enviar agora. Verifique sua conexão e tente de novo."; }
     btn.disabled = false;
   });
