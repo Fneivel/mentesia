@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ p.titulo }} · MentesIA{% endblock %}
 {% block description %}{{ p.descricao }}{% endblock %}
+{% block pixel_events %}fbq('track', 'ViewContent', {content_name: {{ p.titulo|tojson }}, content_type: 'product', content_ids: [{{ (p.pagina or p.id|string)|tojson }}]{% if p.preco %}, value: {{ '%.2f'|format(p.preco) }}, currency: 'BRL'{% endif %}});{% endblock %}
 {% block content %}
 <section class="lp-hero">
   <div class="wrap lp-hero-grid">

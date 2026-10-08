@@ -3,6 +3,8 @@
 {% block description %}Guia em PDF + Study Hub interativo: Microsoft 365 Copilot e Copilot Studio do uso diário à criação de agentes, atualizado com as novidades de 2025 e 2026.{% endblock %}
 {% block og_image %}{{ url_for('static', filename='img/produtos/guia-copilot-v3.png', _external=True) }}{% endblock %}
 
+{% block pixel_events %}fbq('track', 'ViewContent', {content_name: 'Guia Definitivo do Copilot 3.0', content_type: 'product', content_ids: ['guia-copilot']{% if p.preco %}, value: {{ '%.2f'|format(p.preco) }}, currency: 'BRL'{% endif %}});{% endblock %}
+
 {% set IMG = 'img/produtos/guia-copilot/' %}
 {% macro capa(cls='') %}<img class="lp-capa {{ cls }}" src="{{ url_for('static', filename=IMG ~ 'capa.webp') }}" width="489" height="724" alt="Capa do Guia Definitivo do Microsoft Copilot e Copilot Studio, versão 3.0">{% endmacro %}
 
