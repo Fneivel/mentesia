@@ -51,6 +51,9 @@ _pw_hash = os.environ.get("ADMIN_PASSWORD_HASH")
 _pw_plain = os.environ.get("ADMIN_PASSWORD")
 ADMIN_PASSWORD_HASH = _pw_hash or (generate_password_hash(_pw_plain) if _pw_plain else None)
 
+# Pixel da Meta (anúncios do Instagram/Facebook). Deixe META_PIXEL_ID vazio no Render para desligar.
+META_PIXEL_ID = "".join(ch for ch in os.environ.get("META_PIXEL_ID", "1835420714682410") if ch.isdigit())
+
 IMAGE_EXT = {"png", "jpg", "jpeg", "webp", "gif", "svg"}
 FILE_EXT = IMAGE_EXT | {"pdf", "zip", "xlsx", "docx", "pptx", "csv", "txt"}
 
@@ -376,7 +379,7 @@ app.jinja_env.globals["media_url"] = media_url
 @app.context_processor
 def inject():
     return {"S": get_settings() if request.endpoint not in ("static", "uploads") else {},
-            "csrf_token": csrf_token, "ano": datetime.now().year}
+            "csrf_token": csrf_token, "ano": datetime.now().year, "pixel_id": META_PIXEL_ID}
 
 
 # =====================================================================
