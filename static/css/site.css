@@ -514,3 +514,12 @@ footer .legal a:hover{color:var(--cyan); text-decoration:underline}
 .lp-final h2{font-size:clamp(26px, 3vw, 42px); font-weight:700; max-width:22em}
 .lp-final p{color:var(--ink-2); font-size:17px}
 .lp-final .lp-cta{margin-top:8px}
+
+/* ===== Aviso de cookies (LGPD) ===== */
+.cookiebar{position:fixed; left:50%; bottom:calc(16px + env(safe-area-inset-bottom, 0px)); transform:translateX(-50%); width:min(760px, calc(100% - 24px)); z-index:40;
+  display:flex; align-items:center; gap:16px 20px; padding:16px 18px; border-radius:16px; background:var(--surface); border:1px solid var(--line); box-shadow:0 20px 50px -12px rgba(0,0,0,.7)}
+.cookiebar[hidden]{display:none}
+.cookiebar p{font-size:14px; color:var(--ink-2); line-height:1.5; margin:0}
+.cookiebar a{color:var(--cyan)}
+.cookiebar-btns{display:flex; gap:10px; flex-shrink:0}
+@media (max-width:640px){ .cookiebar{flex-direction:column; align-items:stretch} .cookiebar-btns > *{flex:1} }
