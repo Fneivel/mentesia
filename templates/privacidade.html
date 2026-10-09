@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Política de privacidade · MentesIA{% endblock %}
+{% block description %}Como o MentesIA coleta, usa e protege seus dados pessoais, de acordo com a LGPD.{% endblock %}
+{% block content %}
+<article class="article">
+  <div class="wrap">
+    <a class="back" href="{{ url_for('home') }}">← Voltar para o início</a>
+    <div class="meta"><span class="cat">LGPD</span><span>· Atualizada em 9 de outubro de 2026</span></div>
+    <h1>Política de privacidade</h1>
+    <p class="lede">Explicamos aqui, sem juridiquês, quais dados o MentesIA coleta, para quê, com quem compartilha e como você pode pedir para ver, corrigir ou apagar seus dados.</p>
+    <div class="prose">
+      <h2>1. Quem somos</h2>
+      <p>O MentesIA (www.mentesia.com.br) é um site de conteúdo sobre inteligência artificial, com materiais gratuitos e venda de produtos digitais. Somos o controlador dos dados pessoais coletados neste site, nos termos da Lei Geral de Proteção de Dados (Lei nº 13.709/2018).</p>
+
+      <h2>2. Quais dados coletamos</h2>
+      <ul>
+        <li><strong>E-mail</strong>, quando você assina a newsletter. Guardamos também a data da inscrição.</li>
+        <li><strong>Dados de navegação</strong>, coletados automaticamente: endereço IP, tipo de navegador e dispositivo, páginas visitadas e cliques em botões, como “Quero o guia” ou o download de um material.</li>
+        <li><strong>Cookies e tecnologias semelhantes</strong>, descritos na seção 5.</li>
+      </ul>
+      <p>Não coletamos dados de pagamento. Quando você compra um produto, o pagamento é feito no ambiente da Hotmart, que trata seus dados segundo a política de privacidade dela.</p>
+
+      <h2>3. Para que usamos seus dados</h2>
+      <ul>
+        <li><strong>Enviar a newsletter</strong> e avisos sobre materiais gratuitos, com base no seu consentimento. Você pode cancelar quando quiser.</li>
+        <li><strong>Medir o desempenho do site e dos anúncios</strong>, para saber quais conteúdos e campanhas funcionam e mostrar anúncios mais relevantes, com base no nosso legítimo interesse e na sua escolha sobre cookies.</li>
+        <li><strong>Manter o site seguro e funcionando</strong>, por exemplo para bloquear robôs e tentativas de abuso.</li>
+      </ul>
+
+      <h2>4. Com quem compartilhamos</h2>
+      <p>Não vendemos seus dados. Compartilhamos o mínimo necessário com estes parceiros:</p>
+      <ul>
+        <li><strong>Meta (Facebook e Instagram):</strong> pelo Pixel da Meta, que registra visitas e ações no site para medir e direcionar anúncios. O e-mail informado na newsletter pode ser enviado de forma criptografada (hash) para ajudar a identificar conversões.</li>
+        <li><strong>Hotmart:</strong> plataforma que processa as compras e entrega os produtos.</li>
+        <li><strong>Render:</strong> serviço de hospedagem onde o site e o banco de dados ficam armazenados.</li>
+        <li><strong>Google Fonts:</strong> fornece as fontes do site e recebe o seu endereço IP ao carregá-las.</li>
+      </ul>
+      <p>Alguns desses parceiros podem armazenar dados fora do Brasil, sempre com as garantias previstas na LGPD.</p>
+
+      <h2>5. Cookies</h2>
+      <p>Usamos o Pixel da Meta, que grava cookies no seu navegador (como o <code>_fbp</code>) para medir anúncios. Na primeira visita, mostramos um aviso em que você pode <strong>aceitar ou recusar</strong> esses cookies. Se recusar, o pixel deixa de enviar dados de navegação para a Meta.</p>
+      <p>Para mudar sua escolha, <a href="#" data-cookie-reset>clique aqui para rever o aviso de cookies</a>. Você também pode apagar cookies nas configurações do seu navegador.</p>
+
+      <h2>6. Por quanto tempo guardamos</h2>
+      <ul>
+        <li><strong>E-mail da newsletter:</strong> enquanto você estiver inscrito. Se pedir para sair, ele é apagado.</li>
+        <li><strong>Dados de navegação e registros de acesso:</strong> pelo tempo necessário para as finalidades acima e para cumprir o Marco Civil da Internet, que exige guardar registros de acesso por 6 meses.</li>
+      </ul>
+
+      <h2>7. Seus direitos</h2>
+      <p>Pela LGPD, você pode a qualquer momento pedir: confirmação de que tratamos seus dados, acesso a eles, correção, anonimização, bloqueio ou eliminação, portabilidade, informação sobre com quem compartilhamos e revogação do consentimento. Você também pode reclamar à Autoridade Nacional de Proteção de Dados (ANPD).</p>
+
+      <h2>8. Como falar com a gente</h2>
+      {% if S.email_contato %}
+      <p>Envie seu pedido para <a href="mailto:{{ S.email_contato }}">{{ S.email_contato }}</a>. Respondemos em até 15 dias.</p>
+      {% else %}
+      <p>Envie seu pedido pelos canais de contato informados no rodapé do site. Respondemos em até 15 dias.</p>
+      {% endif %}
+
+      <h2>9. Mudanças nesta política</h2>
+      <p>Podemos atualizar esta política quando o site ou a lei mudarem. A data da última atualização fica sempre no topo desta página.</p>
+    </div>
+  </div>
+</article>
+{% endblock %}

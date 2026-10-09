@@ -25,6 +25,7 @@ n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
 n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
+try{if(localStorage.getItem('mi_cookies')==='nao')fbq('consent','revoke');}catch(e){}
 fbq('init', '{{ pixel_id }}');
 fbq('track', 'PageView');
 {% block pixel_events %}{% endblock %}
@@ -68,7 +69,7 @@ fbq('track', 'PageView');
     </div>
     <div class="cols">
       <div><strong>Conteúdo</strong><a href="{{ url_for('home') }}#novidades">Novidades</a><a href="{{ url_for('home') }}#gratis">Materiais grátis</a><a href="{{ url_for('home') }}#newsletter">Newsletter</a></div>
-      <div><strong>Loja</strong><a href="{{ url_for('home') }}#loja">Cursos e produtos</a><a href="{{ url_for('home') }}#como-comprar">Como comprar</a><a href="{{ url_for('home') }}#faq">Dúvidas</a></div>
+      <div><strong>Loja</strong><a href="{{ url_for('home') }}#loja">Cursos e produtos</a><a href="{{ url_for('home') }}#como-comprar">Como comprar</a><a href="{{ url_for('home') }}#faq">Dúvidas</a><a href="{{ url_for('privacidade') }}">Política de privacidade</a></div>
       {% if S.instagram or S.youtube or S.email_contato %}
       <div><strong>Contato</strong>
         {% if S.instagram %}<a href="{{ S.instagram }}" target="_blank" rel="noopener">Instagram</a>{% endif %}
@@ -82,6 +83,15 @@ fbq('track', 'PageView');
 </footer>
 
 <div class="toast" id="toast" role="status"></div>
+{% if pixel_id %}
+<div class="cookiebar" id="cookieBar" role="dialog" aria-live="polite" aria-label="Aviso de cookies" hidden>
+  <p>Usamos cookies do Pixel da Meta para medir visitas e melhorar nossos anúncios. Veja a <a href="{{ url_for('privacidade') }}">política de privacidade</a>.</p>
+  <div class="cookiebar-btns">
+    <button type="button" class="btn btn-ghost btn-sm" data-cookie="nao">Recusar</button>
+    <button type="button" class="btn btn-primary btn-sm" data-cookie="sim">Aceitar</button>
+  </div>
+</div>
+{% endif %}
 {% block scripts %}{% endblock %}
 <script src="{{ url_for('static', filename='js/site.js') }}"></script>
 </body>
