@@ -18,6 +18,23 @@
     else if (/^\/material\//.test(href) || /\/material\/\d+/.test(href)) track("Lead", { content_name: "Material grátis" });
   });
 
+  /* Aviso de cookies (LGPD): guarda a escolha e liga/desliga o pixel */
+  const bar = $("#cookieBar");
+  const getChoice = () => { try { return localStorage.getItem("mi_cookies"); } catch (e) { return null; } };
+  if (bar && !getChoice()) bar.hidden = false;
+  bar?.addEventListener("click", e => {
+    const b = e.target.closest("[data-cookie]"); if (!b) return;
+    const v = b.dataset.cookie;
+    try { localStorage.setItem("mi_cookies", v); } catch (err) {}
+    try { window.fbq && fbq("consent", v === "sim" ? "grant" : "revoke"); } catch (err) {}
+    bar.hidden = true;
+  });
+  $$("[data-cookie-reset]").forEach(a => a.addEventListener("click", e => {
+    e.preventDefault();
+    try { localStorage.removeItem("mi_cookies"); } catch (err) {}
+    if (bar) { bar.hidden = false; bar.querySelector("button")?.focus(); }
+  }));
+
   /* Menu do celular */
   const top = $(".top"), menuBtn = $("#menuBtn");
   function setMenu(open) {
