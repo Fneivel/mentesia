@@ -473,6 +473,11 @@ def produto_pagina(slug):
     return render_template(tpl, p=p)
 
 
+@app.route("/privacidade")
+def privacidade():
+    return render_template("privacidade.html")
+
+
 @app.route("/material/<int:mid>")
 def material(mid):
     m = db().execute("SELECT * FROM materiais WHERE id=? AND ativo=1", (mid,)).fetchone()
