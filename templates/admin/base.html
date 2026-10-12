@@ -72,6 +72,13 @@
   const side = document.getElementById("side"), menuBtn = document.getElementById("menuBtn");
   menuBtn?.addEventListener("click", () => { const o = side.classList.toggle("open"); menuBtn.setAttribute("aria-expanded", o); });
   document.addEventListener("click", e => { if (side.classList.contains("open") && !side.contains(e.target) && e.target !== menuBtn) side.classList.remove("open"); });
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-copy]"); if (!b) return;
+    const txt = b.dataset.copy, label = b.textContent;
+    const ok = () => { b.textContent = "Link copiado ✓"; setTimeout(() => b.textContent = label, 1800); };
+    if (navigator.clipboard) navigator.clipboard.writeText(txt).then(ok, () => prompt("Copie o link:", txt));
+    else prompt("Copie o link:", txt);
+  });
   document.querySelectorAll("form[data-confirm]").forEach(f => f.addEventListener("submit", e => { if (!confirm(f.dataset.confirm)) e.preventDefault(); }));
 </script>
 {% block scripts %}{% endblock %}

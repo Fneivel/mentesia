@@ -54,6 +54,12 @@
   {% if kind == 'artigos' and item_id %}
     <a class="btn" href="{{ url_for('post', slug=v.slug) }}" target="_blank" rel="noopener">Ver no site ↗</a>
   {% endif %}
+  {% if kind == 'materiais' and item_id and v.slug %}
+    <div style="display:flex; gap:8px; flex-wrap:wrap">
+      <button class="btn" type="button" data-copy="{{ url_for('material_pagina', slug=v.slug, _external=True) }}">Copiar link para as redes</button>
+      <a class="btn" href="{{ url_for('material_pagina', slug=v.slug) }}" target="_blank" rel="noopener">Ver no site ↗</a>
+    </div>
+  {% endif %}
 </div>
 
 {% if erros %}
