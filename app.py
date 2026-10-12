@@ -23,6 +23,7 @@ from flask import (Flask, Response, abort, flash, g, jsonify, redirect, render_t
                    request, send_from_directory, session, url_for)
 from markupsafe import Markup
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.utils import secure_filename
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -58,6 +59,8 @@ IMAGE_EXT = {"png", "jpg", "jpeg", "webp", "gif", "svg"}
 FILE_EXT = IMAGE_EXT | {"pdf", "zip", "xlsx", "docx", "pptx", "csv", "txt"}
 
 app = Flask(__name__)
+# O Render entrega o site por HTTPS na frente do app: assim os links completos saem com https://
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 app.config.update(
     SECRET_KEY=os.environ.get("SECRET_KEY") or secrets.token_hex(32),
     MAX_CONTENT_LENGTH=int(os.environ.get("MAX_UPLOAD_MB", "25")) * 1024 * 1024,
@@ -226,8 +229,11 @@ ENTITIES = {
             ("itens", "Tópicos (um por linha)", "lines", {}),
             ("link", "Link de acesso", "url", {"help": "Ex.: produto gratuito na Hotmart. Se enviar um arquivo abaixo, o botão baixa o arquivo."}),
             ("arquivo", "Ou envie o arquivo (PDF, planilha…)", "file", {}),
+            ("conteudo", "Texto da página do material (opcional)", "markdown", {"help": "Aparece na página própria do material, abaixo dos tópicos. Use **negrito**, ## Subtítulo e - listas."}),
             ("formato", "Formato", "text", {"side": True, "help": "Ex.: PDF · 24 páginas"}),
             ("botao", "Texto do botão", "text", {"side": True}),
+            ("slug", "Endereço da página", "slug", {"side": True, "help": "Fica mentesia.com.br/materiais-gratis/endereco. Gerado a partir do título se ficar vazio. Evite mudar depois de divulgar o link."}),
+            ("capa", "Imagem de capa", "image", {"side": True, "help": "Aparece na página e na prévia do link no WhatsApp e redes. Ideal: 1200×630."}),
         ],
     },
     "produtos": {
@@ -316,7 +322,24 @@ def migrate():
     cols = [r[1] for r in c.execute("PRAGMA table_info(produtos)")]
     if "pagina" not in cols:
         c.execute("ALTER TABLE produtos ADD COLUMN pagina TEXT DEFAULT ''")
+    mcols = [r[1] for r in c.execute("PRAGMA table_info(materiais)")]
+    for col in ("slug", "conteudo", "capa"):
+        if col not in mcols:
+            c.execute(f"ALTER TABLE materiais ADD COLUMN {col} TEXT DEFAULT ''")
+    usados = {r[0] for r in c.execute("SELECT slug FROM materiais WHERE slug<>''")}
+    for r in c.execute("SELECT id, titulo FROM materiais WHERE slug IS NULL OR slug=''").fetchall():
+        c.execute("UPDATE materiais SET slug=? WHERE id=?", (slug_livre(r["titulo"], usados), r["id"]))
     c.commit()
+
+
+def slug_livre(texto, usados):
+    """Endereço a partir do texto, sem repetir um que já está em uso."""
+    base = slugify(texto) or "material"
+    slug, n = base, 2
+    while slug in usados:
+        slug, n = f"{base}-{n}", n + 1
+    usados.add(slug)
+    return slug
 
 
 def seed_once():
@@ -471,6 +494,17 @@ def novidades():
 def materiais():
     itens = db().execute("SELECT * FROM materiais WHERE ativo=1 ORDER BY ordem, id").fetchall()
     return render_template("materiais.html", materiais=itens)
+
+
+@app.route("/materiais-gratis/<slug>")
+def material_pagina(slug):
+    c = db()
+    m = c.execute("SELECT * FROM materiais WHERE slug=? AND (ativo=1 OR ?)",
+                  (slug, 1 if session.get("admin") else 0)).fetchone()
+    if not m:
+        abort(404)
+    outros = c.execute("SELECT * FROM materiais WHERE ativo=1 AND id<>? ORDER BY ordem, id LIMIT 3", (m["id"],)).fetchall()
+    return render_template("material.html", m=m, outros=outros)
 
 
 @app.route("/loja")
@@ -692,6 +726,10 @@ def admin_edit(kind, item_id=None):
             values["pagina"] = slugify(values["pagina"])
             if c.execute("SELECT id FROM produtos WHERE pagina=? AND id<>?", (values["pagina"], item_id or 0)).fetchone():
                 erros.append("Já existe outro produto usando esse endereço de página.")
+
+        if kind == "materiais":
+            usados = {r[0] for r in c.execute("SELECT slug FROM materiais WHERE id<>? AND slug<>''", (item_id or 0,))}
+            values["slug"] = slug_livre(values.get("slug") or values.get("titulo") or "", usados)
 
         if kind == "artigos":
             values["slug"] = slugify(values.get("slug") or values.get("titulo") or "")
