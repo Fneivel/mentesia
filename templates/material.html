@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% import "_secoes.html" as sec with context %}
+{% block title %}{{ m.titulo }} · Material grátis · MentesIA{% endblock %}
+{% block description %}{{ m.descricao }}{% endblock %}
+{% block og_image %}{% if m.capa %}{{ m.capa if m.capa.startswith('http') else (request.url_root.rstrip('/') ~ media_url(m.capa)) }}{% else %}{{ url_for('static', filename='img/mentesia-icone.png', _external=True) }}{% endif %}{% endblock %}
+{% block pixel_events %}fbq('track', 'ViewContent', {content_name: {{ m.titulo|tojson }}, content_type: 'material_gratis'});{% endblock %}
+
+{% macro botao(m, grande=false) -%}
+{% if m.arquivo or m.link %}
+<a class="btn btn-primary{% if grande %} btn-lg{% endif %}" href="{{ url_for('material', mid=m.id) }}" {% if not m.arquivo %}target="_blank" rel="noopener"{% endif %}>
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
+  {{ m.botao or 'Quero o material grátis' }}
+</a>
+{% else %}
+<span class="btn btn-ghost is-disabled{% if grande %} btn-lg{% endif %}" aria-disabled="true">Em breve</span>
+{% endif %}
+{%- endmacro %}
+
+{% block content %}
+<section class="lp-hero mat-hero">
+  <div class="wrap lp-hero-grid">
+    <div>
+      <a class="back" href="{{ url_for('materiais') }}">← Todos os materiais grátis</a>
+      {% if not m.ativo %}<p class="draft-note">Oculto: só você (logado no painel) vê esta página.</p>{% endif %}
+      <div class="mat-tags">
+        <span class="mat-free">Grátis</span>
+        {% if m.formato %}<span class="fmt">{{ m.formato }}</span>{% endif %}
+      </div>
+      <h1>{{ m.titulo }}</h1>
+      {% if m.descricao %}<p class="lede">{{ m.descricao }}</p>{% endif %}
+      <div class="mat-cta">
+        {{ botao(m, true) }}
+        <button class="btn btn-ghost" type="button" data-share data-title="{{ m.titulo }}">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+          Compartilhar
+        </button>
+      </div>
+      <p class="mat-note">Sem custo e sem cartão. {% if m.arquivo %}O download começa na hora.{% else %}Você recebe o acesso direto no link.{% endif %}</p>
+    </div>
+
+    <div class="lp-hero-art">
+      {% if m.capa %}
+      <img class="lp-cover-img" src="{{ media_url(m.capa) }}" alt="{{ m.titulo }}">
+      {% else %}
+      <div class="mat-doc" aria-hidden="true">
+        <canvas data-seed="{{ m.id + 7 }}"></canvas>
+        <span class="mat-doc-fmt">{{ m.formato or 'Material grátis' }}</span>
+        <span class="mat-doc-title">{{ m.titulo }}</span>
+        <span class="mat-doc-brand">Mentes<b>IA</b></span>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% if m.itens or m.conteudo %}
+<section class="block mat-body">
+  <div class="wrap">
+    <div class="mat-grid">
+      {% if m.itens %}
+      <div>
+        <span class="eyebrow">O que você vai encontrar</span>
+        <ul class="mat-list">
+          {% for t in m.itens|lines %}<li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>{{ t }}</span></li>{% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% if m.conteudo %}<div class="prose mat-prose">{{ m.conteudo|markdown }}</div>{% endif %}
+    </div>
+    <div class="mat-again">
+      <div><strong>{{ m.titulo }}</strong><span>{{ m.formato or 'Material grátis' }}</span></div>
+      {{ botao(m) }}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if outros %}
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="eyebrow">Continue aprendendo</span><h2>Outros materiais grátis</h2></div>
+      {{ sec.ver_todos('materiais', 'Ver todos os materiais') }}
+    </div>
+    {{ sec.cards_materiais(outros) }}
+  </div>
+</section>
+{% endif %}
+
+{{ sec.newsletter() }}
+{% endblock %}

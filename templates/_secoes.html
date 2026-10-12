@@ -32,8 +32,9 @@
 <div class="free">
   {% for m in materiais %}
   <article class="freebie">
+    {% set mp = url_for('material_pagina', slug=m.slug) if m.slug else '' %}
     {% if m.formato %}<span class="fmt">{{ m.formato }}</span>{% endif %}
-    <h3>{{ m.titulo }}</h3>
+    <h3>{% if mp %}<a class="plink" href="{{ mp }}">{{ m.titulo }}</a>{% else %}{{ m.titulo }}{% endif %}</h3>
     <p>{{ m.descricao }}</p>
     <ul>{% for t in m.itens|lines %}<li>{{ t }}</li>{% endfor %}</ul>
     {% if m.arquivo or m.link %}
@@ -41,6 +42,7 @@
     {% else %}
     <span class="btn btn-ghost is-disabled" aria-disabled="true">Em breve</span>
     {% endif %}
+    {% if mp %}<a class="freebie-more" href="{{ mp }}">Ver detalhes <span aria-hidden="true">→</span></a>{% endif %}
   </article>
   {% endfor %}
 </div>

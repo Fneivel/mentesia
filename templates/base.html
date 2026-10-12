@@ -35,7 +35,7 @@ fbq('track', 'PageView');
 </head>
 <body>
 {% set aqui = request.endpoint %}
-{% set link_news = '#newsletter' if aqui in ('home', 'novidades', 'materiais', 'loja') else url_for('home') ~ '#newsletter' %}
+{% set link_news = '#newsletter' if aqui in ('home', 'novidades', 'materiais', 'material_pagina', 'loja') else url_for('home') ~ '#newsletter' %}
 <header class="top">
   <div class="wrap">
     <a class="logo" href="{{ url_for('home') }}" aria-label="MentesIA, início">
@@ -44,7 +44,7 @@ fbq('track', 'PageView');
     </a>
     <nav class="nav" id="mainNav" aria-label="Principal">
       <a href="{{ url_for('novidades') }}"{% if aqui in ('novidades', 'post') %} class="is-active" aria-current="page"{% endif %}>Novidades</a>
-      <a href="{{ url_for('materiais') }}"{% if aqui == 'materiais' %} class="is-active" aria-current="page"{% endif %}>Materiais grátis</a>
+      <a href="{{ url_for('materiais') }}"{% if aqui in ('materiais', 'material_pagina') %} class="is-active" aria-current="page"{% endif %}>Materiais grátis</a>
       <a href="{{ url_for('loja') }}"{% if aqui in ('loja', 'produto_pagina') %} class="is-active" aria-current="page"{% endif %}>Loja</a>
       <a href="{{ link_news }}">Newsletter</a>
     </nav>
