@@ -453,6 +453,42 @@ def home():
                            faq=parse_faq(get_settings().get("faq")))
 
 
+def categorias_de(posts):
+    cats = []
+    for p in posts:
+        if p["categoria"] and p["categoria"] not in cats:
+            cats.append(p["categoria"])
+    return cats
+
+
+@app.route("/novidades")
+def novidades():
+    posts = db().execute("SELECT * FROM posts WHERE ativo=1 ORDER BY destaque DESC, ordem, criado_em DESC").fetchall()
+    return render_template("novidades.html", posts=posts, categorias=categorias_de(posts))
+
+
+@app.route("/materiais-gratis")
+def materiais():
+    itens = db().execute("SELECT * FROM materiais WHERE ativo=1 ORDER BY ordem, id").fetchall()
+    return render_template("materiais.html", materiais=itens)
+
+
+@app.route("/loja")
+def loja():
+    produtos = db().execute("SELECT * FROM produtos WHERE ativo=1 ORDER BY ordem, id").fetchall()
+    return render_template("loja.html", produtos=produtos, faq=parse_faq(get_settings().get("faq")))
+
+
+# Endereços alternativos que as pessoas costumam digitar
+@app.route("/blog")
+@app.route("/materiais")
+@app.route("/gratis")
+@app.route("/produtos")
+def atalhos():
+    destino = {"/blog": "novidades", "/materiais": "materiais", "/gratis": "materiais", "/produtos": "loja"}
+    return redirect(url_for(destino[request.path]), code=301)
+
+
 @app.route("/blog/<slug>")
 def post(slug):
     p = db().execute("SELECT * FROM posts WHERE slug=? AND (ativo=1 OR ?)", (slug, 1 if session.get("admin") else 0)).fetchone()
