@@ -17,8 +17,11 @@ import unicodedata
 import uuid
 from datetime import datetime
 from functools import wraps
+from urllib.parse import urlparse
 
 import markdown as md
+
+import acessos
 from flask import (Flask, Response, abort, flash, g, jsonify, redirect, render_template,
                    request, send_from_directory, session, url_for)
 from markupsafe import Markup
@@ -360,9 +363,12 @@ def seed_once():
 
 with app.app_context():
     db().executescript(SCHEMA)
+    db().executescript(acessos.SCHEMA)
+    db().execute("PRAGMA journal_mode=WAL")  # leituras do painel não travam a gravação dos acessos
     migrate()
     seed()
     seed_once()
+    migrate()  # dá endereço também aos materiais de exemplo criados agora
 
 
 # =====================================================================
@@ -446,6 +452,35 @@ def login_required(f):
             return redirect(url_for("admin_login", next=request.path))
         return f(*a, **kw)
     return wrapper
+
+
+GEO = acessos.Geo(DATA_DIR)
+acessos.configurar(DATA_DIR)
+PAGINAS_CONTADAS = {"home", "novidades", "materiais", "material_pagina", "loja", "produto_pagina", "post", "privacidade"}
+
+
+def registrar_acesso(tipo, alvo=""):
+    try:
+        ua = request.headers.get("User-Agent", "")
+        if session.get("admin") or acessos.eh_robo(ua):
+            return
+        GEO.garantir()
+        pagina = request.path
+        if tipo == "hotmart" and request.referrer:
+            pagina = urlparse(request.referrer).path or "/"
+        acessos.registrar(db(), GEO, app.config["SECRET_KEY"], tipo=tipo, pagina=pagina, alvo=alvo,
+                          ip=client_ip(), ua=ua, referrer=request.referrer or "", args=request.args,
+                          host=request.host)
+    except Exception as e:  # estatística nunca pode derrubar o site
+        app.logger.warning("acesso não registrado: %s", e)
+
+
+@app.after_request
+def contar_acesso(resp):
+    if (request.method == "GET" and resp.status_code == 200 and request.endpoint in PAGINAS_CONTADAS
+            and "prefetch" not in (request.headers.get("Purpose", "") + request.headers.get("Sec-Purpose", ""))):
+        registrar_acesso("pagina")
+    return resp
 
 
 @app.after_request
@@ -553,6 +588,8 @@ def material(mid):
     m = db().execute("SELECT * FROM materiais WHERE id=? AND ativo=1", (mid,)).fetchone()
     if not m:
         abort(404)
+    if m["arquivo"] or m["link"]:
+        registrar_acesso("download", m["titulo"])
     if m["arquivo"]:
         return send_from_directory(UPLOAD_DIR, m["arquivo"], as_attachment=True)
     if m["link"]:
@@ -566,6 +603,15 @@ def uploads(filename):
     # SVG pode conter scripts: servir isolado
     resp.headers["Content-Security-Policy"] = "default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'; sandbox"
     return resp
+
+
+@app.route("/api/clique", methods=["POST"])
+def api_clique():
+    data = request.get_json(silent=True, force=True) or {}
+    if not too_many("clique:" + client_ip(), 30, 600):
+        alvo = str(data.get("produto") or data.get("url") or "")[:200]
+        registrar_acesso("hotmart", alvo)
+    return ("", 204)
 
 
 @app.route("/api/newsletter", methods=["POST"])
@@ -796,6 +842,62 @@ def admin_reorder(kind):
 @login_required
 def admin_preview():
     return jsonify(html=str(render_md(request.form.get("texto", ""))))
+
+
+@app.route("/admin/acessos")
+@login_required
+def admin_acessos():
+    c = db()
+    GEO.garantir()
+    acessos._arquivar_seguro(c)
+    nomes = {"/": "Início", "/novidades": "Novidades", "/materiais-gratis": "Materiais grátis",
+             "/loja": "Loja", "/privacidade": "Política de privacidade"}
+    for r in c.execute("SELECT slug, titulo FROM posts"):
+        nomes[f"/blog/{r['slug']}"] = r["titulo"]
+    for r in c.execute("SELECT slug, titulo FROM materiais WHERE slug<>''"):
+        nomes[f"/materiais-gratis/{r['slug']}"] = r["titulo"]
+    for r in c.execute("SELECT pagina, titulo FROM produtos WHERE pagina<>''"):
+        nomes[f"/produtos/{r['pagina']}"] = r["titulo"]
+
+    mes = request.args.get("mes", "")
+    if re.fullmatch(r"20\d\d-(0[1-9]|1[0-2])", mes):
+        rel, dias = acessos.relatorio_mes(c, mes, nomes), 0
+    else:
+        try:
+            dias = int(request.args.get("dias", 30))
+        except ValueError:
+            dias = 30
+        dias, mes = (dias if dias in (1, 7, 30) else 30), ""
+        rel = acessos.relatorio_periodo(c, dias, nomes)
+
+    links = [("Início", url_for("home", _external=True)), ("Materiais grátis", url_for("materiais", _external=True)),
+             ("Loja", url_for("loja", _external=True)), ("Novidades", url_for("novidades", _external=True))]
+    links += [(f"Material: {r['titulo']}", url_for("material_pagina", slug=r["slug"], _external=True))
+              for r in c.execute("SELECT slug, titulo FROM materiais WHERE ativo=1 AND slug<>'' ORDER BY ordem, id")]
+    links += [(f"Produto: {r['titulo']}", url_for("produto_pagina", slug=r["pagina"], _external=True))
+              for r in c.execute("SELECT pagina, titulo FROM produtos WHERE ativo=1 AND pagina<>'' ORDER BY ordem, id")]
+    banco, arquivos = acessos.espaco_usado(DB_PATH)
+    return render_template("admin/acessos.html", r=rel, dias=dias, mes=mes, nomes=nomes, links=links,
+                           historico=acessos.historico(c), espaco={"banco": banco, "arquivos": arquivos},
+                           mantido_desde=acessos.primeiro_dia_mantido(), geo_status=GEO.status(), entities=ENTITIES)
+
+
+@app.route("/admin/acessos/<mes>.zip")
+@login_required
+def admin_acessos_zip(mes):
+    if not re.fullmatch(r"20\d\d-(0[1-9]|1[0-2])", mes):
+        abort(404)
+    arq = acessos.arquivo_do_mes(mes)
+    if os.path.exists(arq):
+        return send_from_directory(os.path.dirname(arq), os.path.basename(arq), as_attachment=True)
+    # Mês ainda com detalhe guardado: gera na hora
+    texto = acessos.csv_do_mes_atual(db(), mes)
+    buf = io.BytesIO()
+    import zipfile
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
+        z.writestr(f"acessos-{mes}.csv", texto)
+    return Response(buf.getvalue(), mimetype="application/zip",
+                    headers={"Content-Disposition": f"attachment; filename=acessos-{mes}.zip"})
 
 
 @app.route("/admin/textos", methods=["GET", "POST"])
