@@ -108,6 +108,14 @@
     });
   });
 
+  /* Compartilhar (página do material): menu nativo no celular, copiar link no computador */
+  $$("[data-share]").forEach(b => b.addEventListener("click", async () => {
+    const url = location.href.split("#")[0];
+    if (navigator.share) { try { await navigator.share({ title: b.dataset.title || document.title, url }); } catch (e) {} return; }
+    try { await navigator.clipboard.writeText(url); toast("Link copiado"); }
+    catch (e) { prompt("Copie o link:", url); }
+  }));
+
   /* Newsletter */
   $("#newsForm")?.addEventListener("submit", async e => {
     e.preventDefault();
