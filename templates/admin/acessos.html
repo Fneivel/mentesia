@@ -1,0 +1,255 @@
+{% extends "admin/base.html" %}
+{% block title %}Acessos{% endblock %}
+
+{% macro barras(itens, rotulo_n, vazio='Nenhum acesso neste período.', extra_label=None) -%}
+{% if itens %}
+<ol class="rank">
+  {% for i in itens %}
+  <li>
+    <div class="rank-top">
+      <span class="rank-name" title="{{ i.titulo or i.nome }}">{{ i.titulo or i.nome }}</span>
+      <span class="rank-n">{{ i.n }}{% if extra_label and i.extra %} <small>· {{ i.extra }} {{ extra_label }}</small>{% endif %}</span>
+    </div>
+    <div class="rank-bar" aria-hidden="true"><i style="width:{{ [i.pct, 2]|max }}%"></i></div>
+  </li>
+  {% endfor %}
+</ol>
+<p class="rank-foot">{{ rotulo_n }}</p>
+{% else %}
+<p class="muted empty-note">{{ vazio }}</p>
+{% endif %}
+{%- endmacro %}
+
+{% block content %}
+{% set MESES = ['', 'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'] %}
+<div class="topbar">
+  <div>
+    {% if mes %}<div class="crumb"><a href="{{ url_for('admin_acessos') }}">Acessos</a> / Mês</div>{% endif %}
+    <h1>{% if mes %}Acessos de {{ MESES[mes[5:]|int] }} de {{ mes[:4] }}{% else %}Acessos{% endif %}</h1>
+    <p class="sub">{{ r.inicio.strftime('%d/%m/%Y') }}{% if r.fim != r.inicio %} a {{ r.fim.strftime('%d/%m/%Y') }}{% endif %} · horário de Brasília · suas visitas logado no painel não contam</p>
+  </div>
+  <div class="top-actions">
+    <nav class="seg" aria-label="Período">
+      {% for d, nome in [(1, 'Hoje'), (7, '7 dias'), (30, '30 dias')] %}
+      <a href="{{ url_for('admin_acessos', dias=d) }}" {% if d == dias %}aria-current="page"{% endif %}>{{ nome }}</a>
+      {% endfor %}
+      <a href="#historico">Mês a mês</a>
+    </nav>
+    {% if mes %}<a class="btn" href="{{ url_for('admin_acessos_zip', mes=mes) }}">Baixar CSV do mês</a>{% endif %}
+  </div>
+</div>
+{% if mes and r.arquivado %}
+<div class="alert info" style="margin-bottom:18px"><span>ℹ</span><div>Mês arquivado: este é o resumo guardado. O detalhe de cada acesso está no CSV.</div></div>
+{% endif %}
+
+{% set s = r.resumo %}
+<div class="stats">
+  <div class="panel stat">
+    <span class="k">Visitantes</span><span class="v">{{ s.visitantes }}</span>
+    <span class="d">
+      {% if not mes and s.visitantes_antes %}{% set dif = ((s.visitantes - s.visitantes_antes) * 100 / s.visitantes_antes)|round|int %}
+        <b class="{{ 'up' if dif >= 0 else 'down' }}">{{ '▲' if dif >= 0 else '▼' }} {{ dif|abs }}%</b> vs. período anterior ({{ s.visitantes_antes }})
+      {% else %}pessoas diferentes por dia, somadas{% endif %}
+    </span>
+  </div>
+  <div class="panel stat"><span class="k">Páginas vistas</span><span class="v">{{ s.visitas }}</span>
+    <span class="d">{{ '%.1f'|format(s.visitas / s.visitantes) if s.visitantes else '0' }} páginas por visitante</span></div>
+  <div class="panel stat"><span class="k">Downloads de materiais</span><span class="v">{{ s.downloads }}</span>
+    <span class="d">cliques em “Quero o material grátis”</span></div>
+  <div class="panel stat"><span class="k">Cliques para a Hotmart</span><span class="v">{{ s.hotmart }}</span>
+    <span class="d">pessoas que foram ao checkout</span></div>
+</div>
+
+{% if dias != 1 %}
+{% set maior = (r.serie|map(attribute='visitantes')|max) or 0 %}
+{% set teto = [maior, 4]|max %}
+<section class="panel chart-panel">
+  <h2>Visitantes por dia</h2>
+  <div class="body">
+    {% if maior == 0 %}
+      <p class="muted empty-note">Ainda não há acessos neste período. Assim que alguém abrir o site, aparece aqui.</p>
+    {% else %}
+    {% set n = r.serie|length %}
+    <div class="chart" style="--n:{{ n }}">
+      <div class="chart-y" aria-hidden="true"><span>{{ teto }}</span><span>{{ (teto / 2)|round|int }}</span><span>0</span></div>
+      <div class="chart-plot" role="img" aria-label="Visitantes por dia: máximo de {{ maior }} em um dia">
+        <div class="chart-grid" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="chart-bars">
+          {% for p in r.serie %}
+          <div class="col" tabindex="0">
+            <i style="height:{{ (p.visitantes * 100 / teto)|round(1) }}%"></i>
+            <span class="tip"><b>{{ p.dia.strftime('%d/%m') }}</b>{{ p.visitantes }} visitante{{ 's' if p.visitantes != 1 }} · {{ p.visitas }} página{{ 's' if p.visitas != 1 }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="chart-x" aria-hidden="true">
+          <span>{{ r.serie[0].dia.strftime('%d/%m') }}</span>
+          {% if n > 6 %}<span>{{ r.serie[n // 2].dia.strftime('%d/%m') }}</span>{% endif %}
+          <span>{{ r.serie[-1].dia.strftime('%d/%m') }}</span>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+<div class="grid-3">
+  <section class="panel">
+    <h2>De onde vieram</h2>
+    <div class="body">{{ barras(r.origens, 'Visitantes por origem. “Direto / sem origem” inclui links abertos pelo WhatsApp, digitados ou salvos.', extra_label='downloads') }}</div>
+  </section>
+  <section class="panel">
+    <h2>Cidades</h2>
+    <div class="body">{{ barras(r.cidades, 'Visitantes por cidade (aproximada).', vazio='Nenhuma cidade identificada ainda.') }}</div>
+  </section>
+  <section class="panel">
+    <h2>Estados e países</h2>
+    <div class="body">{{ barras(r.estados, 'Visitantes por estado.', vazio='Nenhum estado identificado ainda.') }}</div>
+  </section>
+</div>
+
+<div class="grid-2 mt">
+  <section class="panel">
+    <h2>Páginas mais vistas</h2>
+    <div class="body">{{ barras(r.paginas, 'Páginas vistas · o número menor é de visitantes.', extra_label='visitantes') }}</div>
+  </section>
+  <section class="panel">
+    <h2>Aparelho</h2>
+    <div class="body">{{ barras(r.aparelhos, 'Visitantes por tipo de aparelho.') }}</div>
+  </section>
+</div>
+
+<div class="grid-3 mt">
+  <section class="panel">
+    <h2>Materiais baixados</h2>
+    <div class="body">{{ barras(r.downloads, 'Cliques no botão de download, por material.', vazio='Nenhum download neste período.') }}</div>
+  </section>
+  <section class="panel">
+    <h2>Cliques para a Hotmart</h2>
+    <div class="body">{{ barras(r.cliques, 'Cliques nos botões de compra, por produto.', vazio='Nenhum clique de compra neste período.') }}</div>
+  </section>
+  <section class="panel">
+    <h2>Campanhas</h2>
+    <div class="body">{{ barras(r.campanhas, 'Visitantes por campanha (links criados abaixo com nome de campanha).', vazio='Nenhuma campanha ainda. Crie links com nome de campanha no gerador abaixo.', extra_label='downloads') }}</div>
+  </section>
+</div>
+
+<section class="panel mt" id="gerador">
+  <h2>Gerar link rastreável para as redes</h2>
+  <div class="body builder">
+    <p class="muted">Quem abre o site pelo app do Instagram, Facebook ou TikTok já é reconhecido automaticamente. Use este gerador para separar <b>onde</b> você postou (bio, stories, anúncio) e para o WhatsApp, que não avisa de onde a pessoa veio.</p>
+    <div class="builder-row">
+      <label class="field"><span class="label">Página</span>
+        <select id="bPagina">{% for nome, url in links %}<option value="{{ url }}">{{ nome }}</option>{% endfor %}</select>
+      </label>
+      <label class="field"><span class="label">Onde vai postar</span>
+        <select id="bRede">
+          <option value="instagram|bio">Instagram · link da bio</option>
+          <option value="instagram|stories">Instagram · stories</option>
+          <option value="instagram|post">Instagram · post / reels</option>
+          <option value="facebook|social">Facebook</option>
+          <option value="tiktok|bio">TikTok · bio</option>
+          <option value="whatsapp|mensagem">WhatsApp</option>
+          <option value="youtube|video">YouTube</option>
+          <option value="linkedin|social">LinkedIn</option>
+          <option value="email|newsletter">E-mail / newsletter</option>
+        </select>
+      </label>
+      <label class="field"><span class="label">Nome da campanha <small class="muted">(opcional)</small></span>
+        <input id="bCamp" type="text" placeholder="ex.: lancamento-guia-claude" maxlength="60">
+      </label>
+    </div>
+    <div class="builder-out">
+      <code id="bOut"></code>
+      <button class="btn btn-primary" type="button" id="bCopy">Copiar link</button>
+    </div>
+  </div>
+</section>
+
+{% if not mes %}
+<section class="panel mt">
+  <h2>Últimos acessos</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Quando</th><th>O quê</th><th>Origem</th><th>Local</th><th>Aparelho</th></tr></thead>
+      <tbody>
+        {% for a in r.ultimos %}
+        <tr>
+          <td class="num muted">{{ a.quando[8:10] }}/{{ a.quando[5:7] }} {{ a.quando[11:16] }}</td>
+          <td class="title">
+            {% if a.tipo == 'download' %}<span class="tag tag-dl">Download</span> {{ a.alvo }}
+            {% elif a.tipo == 'hotmart' %}<span class="tag tag-buy">Hotmart</span> {{ a.alvo }}
+            {% else %}{{ nomes.get(a.pagina, a.pagina) }}{% endif %}
+          </td>
+          <td>{{ a.origem }}{% if a.campanha %} <small class="muted">· {{ a.campanha }}</small>{% endif %}</td>
+          <td class="muted">{{ [a.cidade, a.estado]|select|join(' · ') or a.pais or '—' }}</td>
+          <td class="muted">{{ a.dispositivo }} · {{ a.navegador }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="muted">Nenhum acesso registrado ainda.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+
+<section class="panel mt" id="historico">
+  <h2>Mês a mês</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Mês</th><th class="num">Visitantes</th><th class="num">Páginas vistas</th><th class="num">Downloads</th><th class="num">Hotmart</th><th>Guardado como</th><th></th></tr></thead>
+      <tbody>
+        {% for h in historico %}
+        <tr{% if h.mes == mes %} class="sel"{% endif %}>
+          <td class="title"><a href="{{ url_for('admin_acessos', mes=h.mes) }}">{{ MESES[h.mes[5:]|int]|capitalize }} de {{ h.mes[:4] }}</a></td>
+          <td class="num">{{ h.visitantes }}</td><td class="num">{{ h.visitas }}</td>
+          <td class="num">{{ h.downloads }}</td><td class="num">{{ h.hotmart }}</td>
+          <td class="muted">{% if h.arquivado %}Resumo + CSV ({{ (h.tamanho / 1024)|round(1) }} KB){% else %}Detalhe completo{% endif %}</td>
+          <td class="actions"><a class="btn btn-sm" href="{{ url_for('admin_acessos_zip', mes=h.mes) }}">CSV</a></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="muted">Ainda não há meses registrados.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="rank-foot" style="padding:0 18px 16px">
+    O detalhe de cada acesso fica guardado desde {{ mantido_desde.strftime('%d/%m/%Y') }} (mês atual e anterior).
+    Meses mais antigos são resumidos automaticamente; o detalhe vai para o CSV compactado e sai do banco.
+    Espaço usado: banco {{ (espaco.banco / 1048576)|round(1) }} MB · arquivos de CSV {{ (espaco.arquivos / 1048576)|round(2) }} MB.
+  </p>
+</section>
+
+<p class="foot-note">
+  Localização aproximada pelo endereço de internet: em celular (4G/5G) costuma aparecer a cidade da operadora, não a da pessoa.
+  O endereço de internet não é guardado. {{ geo_status }}
+  Localização por <a href="https://db-ip.com" target="_blank" rel="noopener">IP Geolocation by DB-IP</a> (CC BY 4.0).
+</p>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  const pag = document.getElementById("bPagina"), rede = document.getElementById("bRede"),
+        camp = document.getElementById("bCamp"), out = document.getElementById("bOut"), btn = document.getElementById("bCopy");
+  const limpa = t => t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  function monta() {
+    const [src, med] = rede.value.split("|");
+    const u = new URL(pag.value);
+    u.searchParams.set("utm_source", src);
+    u.searchParams.set("utm_medium", med);
+    const c = limpa(camp.value);
+    if (c) u.searchParams.set("utm_campaign", c);
+    out.textContent = u.toString();
+  }
+  [pag, rede, camp].forEach(el => el.addEventListener("input", monta));
+  btn.addEventListener("click", () => {
+    const t = out.textContent, ok = () => { btn.textContent = "Copiado ✓"; setTimeout(() => btn.textContent = "Copiar link", 1800); };
+    navigator.clipboard ? navigator.clipboard.writeText(t).then(ok, () => prompt("Copie o link:", t)) : prompt("Copie o link:", t);
+  });
+  monta();
+})();
+</script>
+{% endblock %}
