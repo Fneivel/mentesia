@@ -34,6 +34,8 @@ fbq('track', 'PageView');
 {% endif %}
 </head>
 <body>
+{% set aqui = request.endpoint %}
+{% set link_news = '#newsletter' if aqui in ('home', 'novidades', 'materiais', 'loja') else url_for('home') ~ '#newsletter' %}
 <header class="top">
   <div class="wrap">
     <a class="logo" href="{{ url_for('home') }}" aria-label="MentesIA, início">
@@ -41,12 +43,12 @@ fbq('track', 'PageView');
       <span>Mentes<b>IA</b></span>
     </a>
     <nav class="nav" id="mainNav" aria-label="Principal">
-      <a href="{{ url_for('home') }}#novidades">Novidades</a>
-      <a href="{{ url_for('home') }}#gratis">Materiais grátis</a>
-      <a href="{{ url_for('home') }}#loja">Loja</a>
-      <a href="{{ url_for('home') }}#newsletter">Newsletter</a>
+      <a href="{{ url_for('novidades') }}"{% if aqui in ('novidades', 'post') %} class="is-active" aria-current="page"{% endif %}>Novidades</a>
+      <a href="{{ url_for('materiais') }}"{% if aqui == 'materiais' %} class="is-active" aria-current="page"{% endif %}>Materiais grátis</a>
+      <a href="{{ url_for('loja') }}"{% if aqui in ('loja', 'produto_pagina') %} class="is-active" aria-current="page"{% endif %}>Loja</a>
+      <a href="{{ link_news }}">Newsletter</a>
     </nav>
-    <a class="btn btn-primary btn-sm" href="{{ url_for('home') }}#loja">Ver produtos</a>
+    <a class="btn btn-primary btn-sm" href="{{ url_for('loja') }}">Ver produtos</a>
     <button class="menu-btn" type="button" id="menuBtn" aria-controls="mainNav" aria-expanded="false" aria-label="Abrir menu">
       <svg class="bars" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       <svg class="x" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -68,8 +70,8 @@ fbq('track', 'PageView');
       <p style="font-size:14px; color:var(--ink-2)">{{ S.rodape_texto }}</p>
     </div>
     <div class="cols">
-      <div><strong>Conteúdo</strong><a href="{{ url_for('home') }}#novidades">Novidades</a><a href="{{ url_for('home') }}#gratis">Materiais grátis</a><a href="{{ url_for('home') }}#newsletter">Newsletter</a></div>
-      <div><strong>Loja</strong><a href="{{ url_for('home') }}#loja">Cursos e produtos</a><a href="{{ url_for('home') }}#como-comprar">Como comprar</a><a href="{{ url_for('home') }}#faq">Dúvidas</a><a href="{{ url_for('privacidade') }}">Política de privacidade</a></div>
+      <div><strong>Conteúdo</strong><a href="{{ url_for('novidades') }}">Novidades</a><a href="{{ url_for('materiais') }}">Materiais grátis</a><a href="{{ link_news }}">Newsletter</a></div>
+      <div><strong>Loja</strong><a href="{{ url_for('loja') }}">Cursos e produtos</a><a href="{{ url_for('loja') }}#como-comprar">Como comprar</a><a href="{{ url_for('loja') }}#faq">Dúvidas</a><a href="{{ url_for('privacidade') }}">Política de privacidade</a></div>
       {% if S.instagram or S.youtube or S.email_contato %}
       <div><strong>Contato</strong>
         {% if S.instagram %}<a href="{{ S.instagram }}" target="_blank" rel="noopener">Instagram</a>{% endif %}

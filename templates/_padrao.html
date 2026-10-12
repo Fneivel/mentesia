@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{ p.titulo }} · MentesIA{% endblock %}
+{% block description %}{{ p.descricao }}{% endblock %}
+{% block pixel_events %}fbq('track', 'ViewContent', {content_name: {{ p.titulo|tojson }}, content_type: 'product', content_ids: [{{ (p.pagina or p.id|string)|tojson }}]{% if p.preco %}, value: {{ '%.2f'|format(p.preco) }}, currency: 'BRL'{% endif %}});{% endblock %}
+{% block content %}
+<section class="lp-hero">
+  <div class="wrap lp-hero-grid">
+    <div>
+      <a class="back" href="{{ url_for('loja') }}">← Voltar para a loja</a>
+      <span class="eyebrow">{{ p.tipo }}</span>
+      <h1>{{ p.titulo }}</h1>
+      <p class="lede">{{ p.descricao }}</p>
+      <ul class="lp-checks">{% for t in p.itens|lines %}<li>{{ t }}</li>{% endfor %}</ul>
+      {% include "produtos/_comprar.html" %}
+    </div>
+    {% if p.imagem %}<img class="lp-cover-img" src="{{ media_url(p.imagem) }}" alt="{{ p.titulo }}">{% endif %}
+  </div>
+</section>
+{% endblock %}

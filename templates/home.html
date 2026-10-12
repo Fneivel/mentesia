@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "_secoes.html" as sec with context %}
 {% block content %}
   <!-- TOPO -->
   <section class="hero">
@@ -8,8 +9,8 @@
         <h1>{{ S.hero_titulo }} <mark>{{ S.hero_destaque }}</mark></h1>
         <p class="lede">{{ S.hero_subtitulo }}</p>
         <div class="ctas">
-          <a class="btn btn-primary" href="#gratis">{{ S.hero_botao1 }}</a>
-          <a class="btn btn-ghost" href="#novidades">{{ S.hero_botao2 }}</a>
+          <a class="btn btn-primary" href="{{ url_for('materiais') }}">{{ S.hero_botao1 }}</a>
+          <a class="btn btn-ghost" href="{{ url_for('novidades') }}">{{ S.hero_botao2 }}</a>
         </div>
         <div class="facts">
           {% for selo in S.hero_selos|lines %}<span>{{ selo }}</span>{% endfor %}
@@ -34,7 +35,7 @@
     </div>
   </section>
 
-  <!-- NOVIDADES -->
+  <!-- NOVIDADES (prévia; a lista completa fica em /novidades) -->
   {% if posts %}
   <section class="block" id="novidades">
     <div class="wrap">
@@ -44,152 +45,50 @@
           <h2>{{ S.blog_titulo }}</h2>
           <p>{{ S.blog_texto }}</p>
         </div>
-        {% if categorias|length > 1 %}
-        <div class="chips" role="group" aria-label="Filtrar por categoria" id="chips">
-          <button class="chip" type="button" aria-pressed="true" data-cat="">Todos</button>
-          {% for c in categorias %}<button class="chip" type="button" aria-pressed="false" data-cat="{{ c }}">{{ c }}</button>{% endfor %}
-        </div>
-        {% endif %}
+        {{ sec.ver_todos('novidades', 'Ver todas as novidades') }}
       </div>
-      <div class="posts" id="posts">
-        {% for p in posts %}
-        <a class="post{% if loop.first %} feature{% if p.capa %} has-cover{% endif %}{% endif %}" href="{{ url_for('post', slug=p.slug) }}" data-cat="{{ p.categoria }}">
-          {% if loop.first %}
-            {% if p.capa %}<img class="feature-img" src="{{ media_url(p.capa) }}" alt="{{ p.titulo }}">{% else %}<canvas data-seed="1"></canvas>{% endif %}
-          {% endif %}
-          <div class="meta"><span class="cat">{{ p.categoria }}</span><span>· {{ p.tempo }} min de leitura</span></div>
-          <h3>{{ p.titulo }}</h3>
-          <p>{{ p.resumo }}</p>
-        </a>
-        {% endfor %}
-      </div>
+      {{ sec.cards_posts(posts[:3]) }}
     </div>
   </section>
   {% endif %}
 
-  <!-- MATERIAIS GRATUITOS -->
+  <!-- MATERIAIS GRATUITOS (prévia; a lista completa fica em /materiais-gratis) -->
   {% if materiais %}
   <section class="block" id="gratis">
     <div class="wrap">
-      <div class="sec-head"><div>
-        <span class="eyebrow">Materiais gratuitos</span>
-        <h2>{{ S.gratis_titulo }}</h2>
-        <p>{{ S.gratis_texto }}</p>
-      </div></div>
-      <div class="free">
-        {% for m in materiais %}
-        <article class="freebie">
-          {% if m.formato %}<span class="fmt">{{ m.formato }}</span>{% endif %}
-          <h3>{{ m.titulo }}</h3>
-          <p>{{ m.descricao }}</p>
-          <ul>{% for t in m.itens|lines %}<li>{{ t }}</li>{% endfor %}</ul>
-          {% if m.arquivo or m.link %}
-          <a class="btn btn-ghost" href="{{ url_for('material', mid=m.id) }}" {% if not m.arquivo %}target="_blank" rel="noopener"{% endif %}>{{ m.botao or 'Quero o material grátis' }}</a>
-          {% else %}
-          <span class="btn btn-ghost is-disabled" aria-disabled="true">Em breve</span>
-          {% endif %}
-        </article>
-        {% endfor %}
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow">Materiais gratuitos</span>
+          <h2>{{ S.gratis_titulo }}</h2>
+          <p>{{ S.gratis_texto }}</p>
+        </div>
+        {{ sec.ver_todos('materiais', 'Ver todos os materiais') }}
       </div>
+      {{ sec.cards_materiais(materiais[:3]) }}
     </div>
   </section>
   {% endif %}
 
-  <!-- LOJA -->
+  <!-- LOJA (prévia; a vitrine completa fica em /loja) -->
   {% if produtos %}
   <section class="block" id="loja">
     <div class="wrap">
-      <div class="sec-head"><div>
-        <span class="eyebrow">Loja</span>
-        <h2>{{ S.loja_titulo }}</h2>
-        <p>{{ S.loja_texto }}</p>
-      </div></div>
-      <div class="shop">
-        {% for p in produtos %}
-        <article class="product{% if p.selo %} best{% endif %}">
-          {% set pg = url_for('produto_pagina', slug=p.pagina) if p.pagina else '' %}
-          {% if pg %}<a class="cover cover-link" href="{{ pg }}" aria-label="Ver detalhes de {{ p.titulo }}">{% else %}<div class="cover">{% endif %}
-            {% if p.imagem %}<img class="cover-img" src="{{ media_url(p.imagem) }}" alt="">{% else %}<canvas data-seed="{{ loop.index + 2 }}"></canvas>{% endif %}
-            {% if p.selo %}<span class="badge">{{ p.selo }}</span>{% endif %}
-            {% if not p.imagem %}<span class="ctitle">{{ p.capa_texto|default(p.titulo, true)|replace('\n', '<br>'|safe) }}</span>{% endif %}
-          {% if pg %}</a>{% else %}</div>{% endif %}
-          <div class="pbody">
-            <span class="ptype">{{ p.tipo }}</span>
-            <h3>{% if pg %}<a class="plink" href="{{ pg }}">{{ p.titulo }}</a>{% else %}{{ p.titulo }}{% endif %}</h3>
-            <p>{{ p.descricao }}</p>
-            <ul>{% for t in p.itens|lines %}<li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>{{ t }}</span></li>{% endfor %}</ul>
-            {% if p.preco %}
-            <div class="price">
-              <span class="now">{{ p.preco|brl }}</span>
-              {% if p.preco_antigo %}<span class="old">{{ p.preco_antigo|brl }}</span>{% endif %}
-              {% if p.parcelas and p.parcelas > 1 %}<span class="inst">ou até {{ p.parcelas }}x no cartão</span>{% endif %}
-            </div>
-            {% endif %}
-            {% if pg %}
-            <a class="btn btn-primary" href="{{ pg }}">Ver detalhes</a>
-            {% elif p.link %}
-            <a class="btn btn-primary" href="{{ p.link }}" target="_blank" rel="noopener">{{ p.botao or 'Comprar na Hotmart' }}</a>
-            {% else %}
-            <span class="btn btn-ghost is-disabled" aria-disabled="true">Em breve</span>
-            {% endif %}
-          </div>
-        </article>
-        {% endfor %}
-      </div>
-      <p class="secure">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-        {{ S.loja_seguranca }}
-      </p>
-    </div>
-  </section>
-
-  <!-- COMO COMPRAR -->
-  <section class="block" id="como-comprar">
-    <div class="wrap">
-      <div class="sec-head"><div><span class="eyebrow">Como comprar</span><h2>Do clique ao acesso em minutos</h2></div></div>
-      <div class="steps">
-        <div class="step"><span class="n">1</span><h3>Escolha o produto</h3><p>Clique no botão de compra do produto que você quer.</p></div>
-        <div class="step"><span class="n">2</span><h3>Pague com segurança</h3><p>Você finaliza a compra no checkout da Hotmart, com Pix, boleto ou cartão.</p></div>
-        <div class="step"><span class="n">3</span><h3>Receba o acesso</h3><p>O link de acesso chega no seu e-mail e fica disponível na sua conta Hotmart.</p></div>
-      </div>
-    </div>
-  </section>
-  {% endif %}
-
-  <!-- NEWSLETTER -->
-  <section class="block" id="newsletter" style="border-top:0; padding-top:0">
-    <div class="wrap">
-      <div class="news">
+      <div class="sec-head">
         <div>
-          <span class="eyebrow" style="color:var(--green)">Newsletter semanal</span>
-          <h2 style="margin-top:10px">{{ S.news_titulo }}</h2>
-          <p>{{ S.news_texto }}</p>
+          <span class="eyebrow">Loja</span>
+          <h2>{{ S.loja_titulo }}</h2>
+          <p>{{ S.loja_texto }}</p>
         </div>
-        <form id="newsForm" novalidate>
-          <label class="eyebrow" for="newsEmail" style="color:var(--term-dim)">Seu melhor e-mail</label>
-          <div class="row">
-            <input id="newsEmail" name="email" type="email" placeholder="nome@email.com" autocomplete="email" required>
-            <input type="text" name="site" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px">
-            <button class="btn btn-primary" type="submit">Quero receber</button>
-          </div>
-          <div class="msg" id="newsMsg" role="status"></div>
-          <small>Sem spam. Você cancela quando quiser.</small>
-        </form>
+        {{ sec.ver_todos('loja', 'Ver todos os produtos') }}
       </div>
+      {{ sec.cards_produtos(produtos[:3]) }}
     </div>
   </section>
-
-  <!-- FAQ -->
-  {% if faq %}
-  <section class="block" id="faq">
-    <div class="wrap">
-      <div class="sec-head"><div><span class="eyebrow">Dúvidas</span><h2>Perguntas frequentes</h2></div></div>
-      <div class="faq">
-        {% for f in faq %}<details><summary>{{ f.q }}</summary><p>{{ f.a }}</p></details>{% endfor %}
-      </div>
-    </div>
-  </section>
+  {{ sec.como_comprar() }}
   {% endif %}
+
+  {{ sec.newsletter() }}
+  {{ sec.faq_bloco(faq) }}
 {% endblock %}
 
 {% block scripts %}

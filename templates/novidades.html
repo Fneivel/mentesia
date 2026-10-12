@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% import "_secoes.html" as sec with context %}
+{% block title %}Novidades de IA · MentesIA{% endblock %}
+{% block description %}{{ S.blog_texto }}{% endblock %}
+{% block content %}
+  {{ sec.cabecalho('Novidades', S.blog_titulo, S.blog_texto) }}
+  <section class="block page-body" id="novidades">
+    <div class="wrap">
+      {% if posts %}
+        {% if categorias|length > 1 %}<div class="filter-bar">{{ sec.chips(categorias) }}</div>{% endif %}
+        {{ sec.cards_posts(posts) }}
+      {% else %}
+        {{ sec.vazio('Os primeiros artigos estão chegando. Assine a newsletter para receber assim que saírem.') }}
+      {% endif %}
+    </div>
+  </section>
+  {{ sec.newsletter() }}
+{% endblock %}

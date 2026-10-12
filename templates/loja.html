@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% import "_secoes.html" as sec with context %}
+{% block title %}Loja: cursos e produtos de IA · MentesIA{% endblock %}
+{% block description %}{{ S.loja_texto }}{% endblock %}
+{% block content %}
+  {{ sec.cabecalho('Loja', S.loja_titulo, S.loja_texto) }}
+  <section class="block page-body" id="loja">
+    <div class="wrap">
+      {% if produtos %}
+        {{ sec.cards_produtos(produtos) }}
+      {% else %}
+        {{ sec.vazio('Os primeiros produtos chegam em breve. Assine a newsletter para saber do lançamento.') }}
+      {% endif %}
+    </div>
+  </section>
+  {% if produtos %}{{ sec.como_comprar() }}{% endif %}
+  {{ sec.faq_bloco(faq) }}
+  {{ sec.newsletter() }}
+{% endblock %}

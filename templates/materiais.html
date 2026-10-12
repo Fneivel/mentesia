@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% import "_secoes.html" as sec with context %}
+{% block title %}Materiais grátis de IA · MentesIA{% endblock %}
+{% block description %}{{ S.gratis_texto }}{% endblock %}
+{% block content %}
+  {{ sec.cabecalho('Materiais grátis', S.gratis_titulo, S.gratis_texto) }}
+  <section class="block page-body" id="gratis">
+    <div class="wrap">
+      {% if materiais %}
+        {{ sec.cards_materiais(materiais) }}
+      {% else %}
+        {{ sec.vazio('Novos materiais gratuitos estão a caminho. Assine a newsletter para ser avisado.') }}
+      {% endif %}
+    </div>
+  </section>
+  {{ sec.newsletter() }}
+{% endblock %}
