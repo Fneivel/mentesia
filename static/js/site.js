@@ -14,7 +14,13 @@
   document.addEventListener("click", e => {
     const a = e.target.closest("a[href]"); if (!a) return;
     const href = a.getAttribute("href") || "";
-    if (/pay\.hotmart\.com|go\.hotmart\.com/.test(href)) track("InitiateCheckout", { content_name: document.title });
+    if (/pay\.hotmart\.com|go\.hotmart\.com/.test(href)) {
+      track("InitiateCheckout", { content_name: document.title });
+      try {
+        const nome = a.closest(".product")?.querySelector("h3")?.textContent.trim() || document.title.replace(/ · MentesIA$/, "");
+        navigator.sendBeacon?.("/api/clique", new Blob([JSON.stringify({ produto: nome, url: href })], { type: "application/json" }));
+      } catch (err) {}
+    }
     else if (/^\/material\//.test(href) || /\/material\/\d+/.test(href)) track("Lead", { content_name: "Material grátis" });
   });
 
