@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+{% block title %}Biblioteca de Skills para Claude · MentesIA{% endblock %}
+{% block description %}36 skills em português para o Claude, organizadas por perfil: escritório, pequeno negócio e conteúdo. Com seletor de kit, instalador, ZIPs para o app, teste guiado e manual em PDF.{% endblock %}
+{% block pixel_events %}fbq('track', 'ViewContent', {content_name: 'Biblioteca de Skills para Claude', content_type: 'product', content_ids: ['biblioteca-skills']{% if p.preco %}, value: {{ '%.2f'|format(p.preco) }}, currency: 'BRL'{% endif %}});{% endblock %}
+{% block og_image %}{{ url_for('static', filename='img/produtos/biblioteca-skills.png', _external=True) }}{% endblock %}
+
+{% set IMG = 'img/produtos/biblioteca-skills/' %}
+{% macro capa(cls='') %}<img class="lp-capa {{ cls }}" src="{{ url_for('static', filename=IMG ~ 'capa.webp') }}" width="489" height="691" alt="Capa do manual da Biblioteca de Skills MentesIA para Claude">{% endmacro %}
+
+{% block content %}
+<!-- TOPO -->
+<section class="lp-hero">
+  <div class="wrap lp-hero-grid">
+    <div>
+      <a class="back" href="{{ url_for('loja') }}">← Voltar para a loja</a>
+      <span class="eyebrow">36 skills · laboratório interativo · manual em PDF</span>
+      <h1>Skills prontas para o Claude <mark>trabalhar do seu jeito</mark></h1>
+      <p class="lede">Instruções em português que ensinam o Claude a fazer as tarefas da sua rotina sempre bem feitas: atas, relatórios, propostas, preço, posts, roteiros e muito mais. Você conta como trabalha, a biblioteca monta o seu kit e você instala só o que vai usar.</p>
+      <ul class="lp-pills">
+        <li>Para escritório, negócio e conteúdo</li>
+        <li>App do Claude, Cowork e Claude Code</li>
+        <li>Instala em minutos</li>
+      </ul>
+      {% include "produtos/_comprar.html" %}
+      <a class="lp-more" href="#video">Ver em 30 segundos ↓</a>
+    </div>
+    <div class="lp-hero-art">
+      <div class="lp-capa-wrap">
+        {{ capa() }}
+        <span class="lp-capa-tag lp-capa-tag-1">+ laboratório interativo</span>
+        <span class="lp-capa-tag lp-capa-tag-2">36 skills · 4 pacotes</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEMAS -->
+<div class="lp-topics" aria-label="Alguns temas da biblioteca">
+  <div class="wrap">
+    <span>Atas de reunião</span><span>Revisão de texto</span><span>Relatórios</span><span>Fórmulas de planilha</span><span>Contratos</span><span>Precificação</span><span>Fluxo de caixa</span><span>Propostas</span><span>WhatsApp</span><span>Carrosséis</span><span>Roteiros de Reels</span><span>Newsletter</span>
+  </div>
+</div>
+
+<!-- NÚMEROS -->
+<section class="lp-stats">
+  <div class="wrap">
+    <div><b>36</b><span>skills em português</span></div>
+    <div><b>4</b><span>pacotes por perfil</span></div>
+    <div><b>2</b><span>perguntas para montar o kit</span></div>
+    <div><b>3</b><span>lugares: app, Cowork e Code</span></div>
+    <div><b>15</b><span>páginas de manual</span></div>
+  </div>
+</section>
+
+<!-- VÍDEO -->
+<section class="block" id="video">
+  <div class="wrap">
+    <div class="sh-video">
+      <video src="{{ url_for('static', filename=IMG ~ 'video.mp4') }}" poster="{{ url_for('static', filename=IMG ~ 'video-poster.webp') }}" width="720" height="1280" controls muted playsinline preload="none" aria-label="Vídeo de 30 segundos apresentando a Biblioteca de Skills"></video>
+      <div>
+        <span class="eyebrow">Em 30 segundos</span>
+        <h2>Você pede normal. A skill certa entra.</h2>
+        <p class="lp-p">Uma skill é um conjunto de instruções que o Claude segue sempre que o seu pedido combina com ela. Você não precisa decorar comandos nem escrever prompts longos:</p>
+        <ol class="sh-steps">
+          <li><b>Responda duas perguntas</b><span>Como você trabalha e o que quer resolver.</span></li>
+          <li><b>Receba o seu kit</b><span>A biblioteca escolhe as skills e mostra quanto espaço elas ocupam.</span></li>
+          <li><b>Instale</b><span>Um ZIP por pacote no app do Claude, ou um instalador no Claude Code.</span></li>
+          <li><b>Peça como sempre pediu</b><span>“Faz a ata dessa reunião” e o Claude entrega no formato certo.</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANTES E DEPOIS -->
+<section class="block" id="diferenca">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Por que skills</span><h2>Pare de repetir o mesmo prompt toda semana</h2><p>A skill guarda o jeito certo de fazer a tarefa: as perguntas que o Claude precisa fazer, os passos, o formato da resposta e as regras que evitam erro.</p></div></div>
+    <div class="lp-vs">
+      <div class="lp-vs-col lp-vs-off">
+        <h3>Sem skills</h3>
+        <ul><li>Explicar o contexto em toda conversa</li><li>Resultado diferente a cada vez</li><li>Respostas genéricas, sem formato</li><li>Números e fatos sem conferência</li></ul>
+      </div>
+      <div class="lp-vs-col lp-vs-on">
+        <h3>Com a Biblioteca</h3>
+        <ul class="lp-checks"><li>Você pede em uma linha, a skill completa o resto</li><li>O mesmo formato bem feito, toda vez</li><li>Pergunta o que falta antes de começar</li><li>Regras que pedem fonte e não inventam dados</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PACOTES -->
+<section class="block" id="pacotes">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">36 skills em 4 pacotes</span><h2>Instale só o que combina com você</h2><p>Cada skill instalada ocupa um pouco de espaço nas conversas, mesmo quando não é usada. Por isso a biblioteca é dividida em pacotes que você liga e desliga separadamente.</p></div></div>
+    <div class="bs-packs">
+      <article class="bs-pack" style="--pc:#3D8BFF"><header><h3>Essencial</h3><span>mentesia-essencial · 9 skills</span></header><p>Para qualquer pessoa: atas, revisão, e-mails difíceis, planilhas, checagem de fatos, documentos longos, decisões, planos e aprendizado.</p><ul><li>Resumo de reunião</li><li>Revisor de texto</li><li>E-mail delicado</li><li>Explica planilha</li><li>Checagem de fatos</li><li>Resumo de documento</li><li>Decisão estruturada</li><li>Plano de ação</li><li>Aprender rápido</li></ul></article>
+      <article class="bs-pack" style="--pc:#22D39A"><header><h3>Escritório</h3><span>mentesia-escritorio · 9 skills</span></header><p>Para quem trabalha em empresa: relatórios, apresentações, procedimentos, comunicados, pautas, feedback, prioridades, fórmulas e contratos.</p><ul><li>Relatório gerencial</li><li>Apresentação executiva</li><li>Procedimento padrão</li><li>Comunicado interno</li><li>Pauta de reunião</li><li>Feedback construtivo</li><li>Prioridades da semana</li><li>Fórmula de planilha</li><li>Leitura de contrato</li></ul></article>
+      <article class="bs-pack" style="--pc:#F5A524"><header><h3>Pequeno negócio</h3><span>mentesia-negocios · 9 skills</span></header><p>Para quem tem negócio próprio ou é autônomo: propostas, preço, caixa, atendimento, vendas, concorrência, plano de negócio, metas e descrição de produto.</p><ul><li>Proposta comercial</li><li>Precificação</li><li>Fluxo de caixa</li><li>Atendimento por WhatsApp</li><li>Roteiro de vendas</li><li>Análise de concorrentes</li><li>Plano de negócio enxuto</li><li>Metas e indicadores</li><li>Descrição de produto</li></ul></article>
+      <article class="bs-pack" style="--pc:#B794F6"><header><h3>Conteúdo e marketing</h3><span>mentesia-conteudo · 9 skills</span></header><p>Para quem cria conteúdo: calendário, posts, roteiros, LinkedIn, newsletter, pautas, reaproveitamento, títulos e público.</p><ul><li>Calendário editorial</li><li>Post para Instagram</li><li>Roteiro de vídeo curto</li><li>Post para LinkedIn</li><li>Newsletter</li><li>Ideias de pauta</li><li>Reaproveitar conteúdo</li><li>Títulos e ganchos</li><li>Persona do público</li></ul></article>
+    </div>
+  </div>
+</section>
+
+<!-- LABORATÓRIO -->
+<section class="block lp-hub-sec" id="laboratorio">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Por dentro do laboratório</span><h2>Do perfil ao teste, tudo num arquivo só</h2><p>Estas são telas reais do laboratório que acompanha a biblioteca. Ele abre no navegador, sem instalar nada. Clique para trocar.</p></div></div>
+    <div class="lp-tour">
+      <div class="lp-tour-tabs" role="tablist" aria-label="Telas do laboratório">
+        <button role="tab" aria-selected="true" data-shot="perfil"><b>Seletor de perfil</b><span>Duas perguntas montam o kit</span></button>
+        <button role="tab" aria-selected="false" data-shot="kit"><b>Seu kit sugerido</b><span>Skills por pacote e espaço ocupado</span></button>
+        <button role="tab" aria-selected="false" data-shot="skills"><b>Todas as skills</b><span>Leia, ajuste, copie ou baixe</span></button>
+        <button role="tab" aria-selected="false" data-shot="instalar"><b>Instalação</b><span>ZIPs para o app ou instalador</span></button>
+        <button role="tab" aria-selected="false" data-shot="teste"><b>Teste guiado</b><span>Prove que cada skill entrou</span></button>
+      </div>
+      <figure class="lp-tour-frame">
+        <div class="lp-hub-bar"><i></i><i></i><i></i><span>Biblioteca de Skills MentesIA</span></div>
+        <img id="tourImg" src="{{ url_for('static', filename=IMG ~ 'tela-perfil.webp') }}" width="1600" height="1000" alt="Tela do laboratório: Seletor de perfil" loading="lazy">
+      </figure>
+    </div>
+    <div class="lp-hub-mobile">
+      <img src="{{ url_for('static', filename=IMG ~ 'tela-celular.webp') }}" width="390" height="844" alt="Laboratório aberto no celular" loading="lazy">
+      <div>
+        <h3>Funciona também no celular</h3>
+        <p class="lp-p">O laboratório se adapta à tela, guarda o seu progresso no navegador e funciona sem internet. Para instalar, o computador é mais prático.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARA QUEM É -->
+<section class="block" id="para-quem">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Para quem é</span><h2>Feita para a rotina de quem trabalha</h2></div></div>
+    <ul class="bs-quiz">
+      <li><i>Escritório</i><b>Trabalha em empresa</b><span>Relatórios para a diretoria, pautas, comunicados, fórmulas e leitura de contratos.</span></li>
+      <li><i>Negócio próprio</i><b>Empreende ou é autônomo</b><span>Quanto cobrar, para onde vai o caixa, propostas, atendimento e vendas.</span></li>
+      <li><i>Conteúdo</i><b>Cria conteúdo ou faz marketing</b><span>Calendário, carrosséis, roteiros, LinkedIn, newsletter e ganchos.</span></li>
+      <li><i>Essencial</i><b>Quer o básico bem feito</b><span>Atas, revisão, e-mails difíceis, resumos, decisões e planos.</span></li>
+    </ul>
+    <p class="lp-note"><strong>Não é para você se</strong> procura um curso em vídeo ou não usa o Claude. As skills funcionam no Claude (app, Cowork e Claude Code); o Claude Code exige plano pago.</p>
+  </div>
+</section>
+
+<!-- COMPRA -->
+<section class="block" id="comprar">
+  <div class="wrap">
+    <div class="lp-offer">
+      <div class="lp-offer-art">{{ capa('lp-capa-sm') }}</div>
+      <div>
+        <span class="eyebrow">Acesso imediato · Entrega pela Hotmart</span>
+        <h2>Biblioteca de Skills MentesIA</h2>
+        <ul class="lp-checks">
+          <li>36 skills em português, em 4 pacotes por perfil</li>
+          <li>Laboratório interativo: seletor de kit, instalador e teste guiado</li>
+          <li>4 pacotes prontos em ZIP para subir no app do Claude</li>
+          <li>Manual em PDF com passo a passo e catálogo completo</li>
+          <li>Criador de skills para você montar as suas</li>
+        </ul>
+        {% include "produtos/_comprar.html" %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="block" id="faq-produto">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Dúvidas</span><h2>Perguntas antes da compra</h2></div></div>
+    <div class="faq">
+      <details><summary>O que é uma skill?</summary><p>É um arquivo de instruções que ensina o Claude a fazer um tipo de tarefa sempre do mesmo jeito: o que perguntar, os passos, o formato da resposta e as regras. Depois de instalada, ela entra sozinha quando o seu pedido combina com ela.</p></details>
+      <details><summary>Funciona no plano gratuito do Claude?</summary><p>Skills funcionam no app do Claude, com a execução de código ligada nas configurações. O Claude Code exige plano pago. Recursos e planos mudam com frequência: o manual indica onde conferir na central de ajuda oficial.</p></details>
+      <details><summary>Preciso saber programar?</summary><p>Não. No app do Claude, a instalação é subir um ZIP por pacote. O instalador para o terminal é opcional, para quem usa o Claude Code.</p></details>
+      <details><summary>Preciso instalar as 36?</summary><p>Não, e nem é o recomendado. O laboratório monta o kit a partir do seu perfil, e você instala só os pacotes que vai usar. Dá para ligar e desligar pacotes quando quiser.</p></details>
+      <details><summary>Posso editar as skills ou criar as minhas?</summary><p>Sim. Os arquivos são abertos para você ajustar ao seu jeito, e o laboratório tem um criador de skills que monta o arquivo a partir de um formulário.</p></details>
+      <details><summary>Como recebo o material?</summary><p>Pela Hotmart, logo após a confirmação do pagamento. Você baixa um arquivo ZIP com o laboratório, os pacotes prontos e o manual em PDF.</p></details>
+      <details><summary>Tem garantia?</summary><p>Sim. Garantia de 7 dias pela Hotmart: se não for o que você esperava, peça o reembolso direto na plataforma.</p></details>
+      <details><summary>E quando o Claude mudar?</summary><p>As atualizações da biblioteca entram na sua área de membros. O número da versão aparece no laboratório, para você saber se está com a mais recente.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CHAMADA FINAL -->
+<section class="block">
+  <div class="wrap">
+    <div class="lp-final">
+      <h2>Seu Claude, trabalhando do seu jeito</h2>
+      <p>Duas perguntas, um kit sob medida e skills que entram sozinhas quando você precisa.</p>
+      <a class="btn btn-primary lp-cta" href="#comprar">Quero a biblioteca</a>
+    </div>
+    <p class="lp-legal">Material independente, produzido pela MentesIA, sem vínculo com a Anthropic. Claude, Claude Code e Cowork são marcas da Anthropic PBC. As skills apoiam o seu trabalho, mas não substituem orientação profissional jurídica, contábil ou financeira.</p>
+  </div>
+</section>
+
+<!-- Barra fixa de compra no celular -->
+{% if p.link %}
+<div class="lp-sticky" id="lpSticky">
+  <div><b>Biblioteca de Skills</b>{% if p.preco %}<span>{{ p.preco|brl }}</span>{% endif %}</div>
+  <a class="btn btn-primary" href="{{ p.link }}" data-value="{{ '%.2f'|format(p.preco or 0) }}" data-produto="{{ p.pagina or p.id }}" target="_blank" rel="noopener">{{ p.botao or 'Comprar' }}</a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* Tour do laboratório: troca a tela ao clicar */
+(function () {
+  const img = document.getElementById("tourImg"), base = "{{ url_for('static', filename=IMG) }}";
+  const tabs = document.querySelectorAll(".lp-tour-tabs [role=tab]");
+  tabs.forEach(t => {
+    const pre = new Image(); pre.src = base + "tela-" + t.dataset.shot + ".webp";
+    t.addEventListener("click", () => {
+      tabs.forEach(x => x.setAttribute("aria-selected", x === t));
+      img.src = base + "tela-" + t.dataset.shot + ".webp";
+      img.alt = "Tela do laboratório: " + t.querySelector("b").textContent;
+    });
+  });
+})();
+/* Barra fixa no celular: aparece depois do topo e some na seção de compra */
+(function () {
+  const bar = document.getElementById("lpSticky"); if (!bar) return;
+  const hero = document.querySelector(".lp-hero"), offer = document.getElementById("comprar");
+  let heroOut = false, offerIn = false;
+  const upd = () => bar.classList.toggle("show", heroOut && !offerIn);
+  new IntersectionObserver(([e]) => { heroOut = !e.isIntersecting; upd(); }).observe(hero);
+  new IntersectionObserver(([e]) => { offerIn = e.isIntersecting; upd(); }).observe(offer);
+})();
+</script>
+{% endblock %}

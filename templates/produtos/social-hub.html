@@ -209,7 +209,7 @@
 {% if p.link %}
 <div class="lp-sticky" id="lpSticky">
   <div><b>MentesIA Social Hub</b>{% if p.preco %}<span>{{ p.preco|brl }}</span>{% endif %}</div>
-  <a class="btn btn-primary" href="{{ p.link }}" target="_blank" rel="noopener">{{ p.botao or 'Comprar' }}</a>
+  <a class="btn btn-primary" href="{{ p.link }}" data-value="{{ '%.2f'|format(p.preco or 0) }}" data-produto="{{ p.pagina or p.id }}" target="_blank" rel="noopener">{{ p.botao or 'Comprar' }}</a>
 </div>
 {% endif %}
 {% endblock %}

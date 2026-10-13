@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+{% block title %}Guia Definitivo do Claude · MentesIA{% endblock %}
+{% block description %}E-book em PDF + Study Hub interativo: aprenda a usar o Claude, assistente de IA da Anthropic, do primeiro prompt aos sistemas automatizados. Em português, atualizado em outubro de 2026.{% endblock %}
+{% block pixel_events %}fbq('track', 'ViewContent', {content_name: 'Guia Definitivo do Claude', content_type: 'product', content_ids: ['guia-claude']{% if p.preco %}, value: {{ '%.2f'|format(p.preco) }}, currency: 'BRL'{% endif %}});{% endblock %}
+{% block og_image %}{{ url_for('static', filename='img/produtos/guia-claude.png', _external=True) }}{% endblock %}
+
+{% set IMG = 'img/produtos/guia-claude/' %}
+{% macro capa(cls='') %}<img class="lp-capa {{ cls }}" src="{{ url_for('static', filename=IMG ~ 'capa.webp') }}" width="489" height="691" alt="Capa do Guia Definitivo do Claude, edição 1.0">{% endmacro %}
+
+{% block content %}
+<!-- TOPO -->
+<section class="lp-hero">
+  <div class="wrap lp-hero-grid">
+    <div>
+      <a class="back" href="{{ url_for('loja') }}">← Voltar para a loja</a>
+      <span class="eyebrow">E-book em PDF + Study Hub interativo · Edição 1.0</span>
+      <h1>O guia definitivo do <mark>Claude</mark>, do primeiro prompt ao sistema que trabalha por você</h1>
+      <p class="lede">Aprenda a usar o assistente de IA da Anthropic com método: prompts que funcionam, artefatos, Projetos, memória, skills, conectores, tarefas agendadas e Claude Code. Em português, com exemplos prontos para copiar.</p>
+      <ul class="lp-pills">
+        <li>Do zero ao avançado</li>
+        <li>PDF + plataforma no navegador</li>
+        <li>Conferido em outubro de 2026</li>
+      </ul>
+      {% include "produtos/_comprar.html" %}
+      <a class="lp-more" href="#formatos">Ver o que você recebe ↓</a>
+    </div>
+    <div class="lp-hero-art">
+      <div class="lp-capa-wrap">
+        {{ capa() }}
+        <span class="lp-capa-tag lp-capa-tag-1">+ Study Hub interativo</span>
+        <span class="lp-capa-tag lp-capa-tag-2">84 páginas · 10 capítulos</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEMAS -->
+<div class="lp-topics" aria-label="Temas do guia">
+  <div class="wrap">
+    <span>Prompts</span><span>Modelos e planos</span><span>Artefatos</span><span>Docs e Slides</span><span>Projetos</span><span>Memória</span><span>Skills</span><span>Conectores</span><span>MCP</span><span>Plugins</span><span>Tarefas agendadas</span><span>Claude Code</span>
+  </div>
+</div>
+
+<!-- NÚMEROS -->
+<section class="lp-stats">
+  <div class="wrap">
+    <div><b>84</b><span>páginas</span></div>
+    <div><b>10</b><span>capítulos</span></div>
+    <div><b>106</b><span>tópicos</span></div>
+    <div><b>50</b><span>prompts prontos</span></div>
+    <div><b>5</b><span>skills para copiar</span></div>
+  </div>
+</section>
+
+<!-- DOIS FORMATOS -->
+<section class="block" id="formatos">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Não é só um ebook</span><h2>O mesmo conteúdo em dois formatos</h2><p>O PDF é o manual para ler, consultar e imprimir. O Study Hub transforma o mesmo conteúdo numa trilha de estudo, com busca, progresso e prompts que você copia com um clique.</p></div></div>
+    <div class="lp-vs">
+      <div class="lp-vs-col lp-vs-off">
+        <h3>Listas soltas de prompts</h3>
+        <ul><li>Frases sem explicar o porquê</li><li>Nada sobre recursos e planos</li><li>Desatualizadas em poucos meses</li><li>Sem método para criar os seus</li></ul>
+      </div>
+      <div class="lp-vs-col lp-vs-on">
+        <h3>Este guia</h3>
+        <ul class="lp-checks"><li>Método explicado, com exemplo e erro comum em cada tópico</li><li>Todos os recursos do Claude, do chat ao Claude Code</li><li>Dados conferidos nas fontes oficiais, com a data</li><li>Biblioteca de prompts e modelos de skill para adaptar</li></ul>
+      </div>
+    </div>
+
+    <h3 class="lp-subhead">O que você recebe</h3>
+    <div class="lp-cards3">
+      <article class="lp-card">
+        <svg class="lp-ico-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg>
+        <h3>E-book em PDF</h3>
+        <p>84 páginas em 10 capítulos e 106 tópicos. Cada tópico traz explicação, exemplo pronto para copiar e o erro mais comum.</p>
+      </article>
+      <article class="lp-card">
+        <svg class="lp-ico-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 9h4M7 12h7"/></svg>
+        <h3>Study Hub interativo</h3>
+        <p>Um arquivo que abre no navegador, no computador ou no celular. Busca no guia inteiro, progresso por tópico e botão de copiar em cada prompt.</p>
+      </article>
+      <article class="lp-card">
+        <svg class="lp-ico-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6v3H9z"/><path d="M7 5H5v16h14V5h-2"/><path d="m9 13 2 2 4-4"/></svg>
+        <h3>Kit de bolso</h3>
+        <p>50 prompts prontos por situação, 5 modelos de skill, glossário, checklist de evolução e a tabela de erros de iniciante.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- STUDY HUB -->
+<section class="block lp-hub-sec" id="study-hub">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Por dentro do Study Hub</span><h2>Estude no seu ritmo e aplique na hora</h2><p>Estas são telas reais do Study Hub que acompanha o guia. Clique para trocar.</p></div></div>
+    <div class="lp-tour">
+      <div class="lp-tour-tabs" role="tablist" aria-label="Telas do Study Hub">
+        <button role="tab" aria-selected="true" data-shot="home"><b>Visão geral</b><span>Os 10 capítulos e seu progresso</span></button>
+        <button role="tab" aria-selected="false" data-shot="capitulo"><b>Tópicos com exemplo</b><span>Explicação, tabela e prompt pronto</span></button>
+        <button role="tab" aria-selected="false" data-shot="skill"><b>Modelos de skill</b><span>Estrutura completa para adaptar</span></button>
+        <button role="tab" aria-selected="false" data-shot="busca"><b>Busca no guia inteiro</b><span>Ache qualquer assunto em segundos</span></button>
+        <button role="tab" aria-selected="false" data-shot="prompts"><b>Biblioteca de prompts</b><span>50 prompts organizados por situação</span></button>
+      </div>
+      <figure class="lp-tour-frame">
+        <div class="lp-hub-bar"><i></i><i></i><i></i><span>Claude Study Hub</span></div>
+        <img id="tourImg" src="{{ url_for('static', filename=IMG ~ 'hub-home.webp') }}" width="1600" height="1000" alt="Tela do Study Hub: Visão geral" loading="lazy">
+      </figure>
+    </div>
+    <div class="lp-hub-mobile">
+      <img src="{{ url_for('static', filename=IMG ~ 'hub-celular.webp') }}" width="390" height="844" alt="Study Hub aberto no celular" loading="lazy">
+      <div>
+        <h3>Funciona também no celular</h3>
+        <p class="lp-p">O Study Hub se adapta à tela e guarda o seu progresso no próprio navegador. Depois de baixado, funciona sem internet.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARA QUEM É -->
+<section class="block" id="para-quem">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Trilhas por objetivo</span><h2>Comece pelo que você precisa resolver agora</h2></div></div>
+    <div class="lp-cards3">
+      <article class="lp-card"><span class="lp-ico">01 · Começar</span><h3>Usar o Claude com intenção</h3><p>Modelos, planos e limites, como a conversa funciona e a fórmula de prompt que gera respostas previsíveis desde o primeiro dia.</p></article>
+      <article class="lp-card"><span class="lp-ico">02 · Produzir</span><h3>Entregar trabalho pronto</h3><p>Documentos, apresentações, planilhas e painéis como artefatos, Projetos com contexto fixo e memória para não repetir explicações.</p></article>
+      <article class="lp-card"><span class="lp-ico">03 · Automatizar</span><h3>Montar o seu sistema</h3><p>Skills, conectores, plugins, tarefas longas e agendadas, Claude Code e como combinar tudo em fluxos que rodam sozinhos.</p></article>
+    </div>
+    <p class="lp-note"><strong>Não é para você se</strong> procura um curso em vídeo ou um material sobre programar com a API da Anthropic. É um guia de uso do Claude, para leitura, consulta e prática.</p>
+  </div>
+</section>
+
+<!-- CONTEÚDO -->
+<section class="block" id="conteudo">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">O que tem dentro</span><h2>10 capítulos em ordem de evolução, mais um kit de bolso</h2></div></div>
+    <ol class="lp-parts">
+      <li><b>Fundamentos: modelos, planos e limites</b></li>
+      <li><b>Prompts que funcionam</b></li>
+      <li><b>Artefatos e entregas</b></li>
+      <li><b>Projetos e memória</b></li>
+      <li><b>Skills</b></li>
+      <li><b>Conectores, MCP e plugins</b></li>
+      <li><b>Tarefas longas e agendadas</b></li>
+      <li><b>Claude Code</b></li>
+      <li><b>10 casos de uso com prompt pronto</b></li>
+      <li><b>Nível avançado: sistemas e automação</b></li>
+      <li><b>Kit de bolso: prompts, skills, glossário e checklist</b></li>
+    </ol>
+  </div>
+</section>
+
+<!-- EXEMPLO -->
+<section class="block" id="exemplo">
+  <div class="wrap lp-split">
+    <div>
+      <span class="eyebrow">Do capítulo 10</span>
+      <h2>Quatro peças que transformam o Claude num sistema</h2>
+      <p class="lp-p">O salto para o nível avançado é parar de usar os recursos isolados. O guia mostra como combinar Projeto, skill, conector e agendamento num fluxo que roda sem você explicar tudo de novo, com um ponto de revisão antes de qualquer coisa sair.</p>
+      <ul class="lp-checks"><li>Exemplo completo de relatório semanal automático</li><li>Modelo de uma página para montar o seu sistema</li><li>Quando automatizar e quando ainda não</li></ul>
+    </div>
+    <figure class="lp-flow" aria-label="Diagrama: Projeto, skill, conector e agendamento formando um sistema com revisão humana">
+      <svg viewBox="0 0 420 330" role="img">
+        <defs><linearGradient id="fl" x1="0" x2="420" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#2F6BFF"/><stop offset=".5" stop-color="#16C6E0"/><stop offset="1" stop-color="#1FE38E"/></linearGradient>
+        <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#16C6E0"/></marker></defs>
+        <g font-family="Figtree, Arial, sans-serif" font-size="14" font-weight="600" fill="#F5F7FA">
+          <rect x="20" y="20" width="160" height="50" rx="12" fill="#151A22" stroke="#344050"/><text x="100" y="41" text-anchor="middle">Projeto</text><text x="100" y="58" text-anchor="middle" font-size="11" font-weight="500" fill="#A9B3C1">sobre o quê</text>
+          <rect x="20" y="88" width="160" height="50" rx="12" fill="#151A22" stroke="#344050"/><text x="100" y="109" text-anchor="middle">Skill</text><text x="100" y="126" text-anchor="middle" font-size="11" font-weight="500" fill="#A9B3C1">de que jeito</text>
+          <rect x="20" y="156" width="160" height="50" rx="12" fill="#151A22" stroke="#344050"/><text x="100" y="177" text-anchor="middle">Conector</text><text x="100" y="194" text-anchor="middle" font-size="11" font-weight="500" fill="#A9B3C1">com quais dados</text>
+          <rect x="20" y="224" width="160" height="50" rx="12" fill="#151A22" stroke="#344050"/><text x="100" y="245" text-anchor="middle">Agendamento</text><text x="100" y="262" text-anchor="middle" font-size="11" font-weight="500" fill="#A9B3C1">quando</text>
+          <rect x="250" y="102" width="150" height="62" rx="12" fill="#0C2A35" stroke="url(#fl)" stroke-width="2"/><text x="325" y="129" text-anchor="middle">Seu sistema</text><text x="325" y="147" text-anchor="middle" font-size="11" font-weight="500" fill="#A9B3C1">roda sozinho</text>
+          <rect x="250" y="236" width="150" height="62" rx="12" fill="#14261D" stroke="#1FE38E" stroke-width="2"/><text x="325" y="263" text-anchor="middle">Revisão humana</text><text x="325" y="281" text-anchor="middle" font-size="11" font-weight="500" fill="#A9B3C1">antes de sair</text>
+        </g>
+        <g stroke="#16C6E0" stroke-width="2" fill="none" marker-end="url(#ar)">
+          <path d="M180 45 L246 120"/><path d="M180 113 L246 128"/><path d="M180 181 L246 140"/><path d="M180 249 L246 148"/><path d="M325 164 V232"/>
+        </g>
+      </svg>
+      <figcaption>Representação simplificada de um dos fluxos do guia.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- O QUE ESTÁ ATUALIZADO -->
+<section class="block" id="atualizado">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Edição 1.0 · Outubro de 2026</span><h2>Atualizado com o Claude de hoje</h2><p>Planos, modelos e recursos conferidos nas páginas oficiais da Anthropic. Os destaques:</p></div></div>
+    <ul class="lp-new">
+      <li><b>Chat e tarefas num só Claude</b><span>Como delegar trabalhos inteiros e acompanhar pelo celular.</span></li>
+      <li><b>Docs, Slides e Design</b><span>Documentos, apresentações e peças visuais editáveis e compartilháveis.</span></li>
+      <li><b>Memória e busca em conversas</b><span>O que o Claude lembra, como editar e quando usar o chat anônimo.</span></li>
+      <li><b>Skills</b><span>Anatomia do SKILL.md e 5 modelos prontos para adaptar.</span></li>
+      <li><b>Conectores, MCP e plugins</b><span>Drive, Gmail, Notion, Slack, GitHub, Microsoft 365 e Chrome.</span></li>
+      <li><b>Tarefas agendadas</b><span>Rotinas que o Claude inicia sozinho no dia e horário certos.</span></li>
+      <li><b>Claude Code</b><span>Instalação, CLAUDE.md, testes, Git e subagentes.</span></li>
+      <li><b>Modelos e planos</b><span>Haiku, Sonnet, Opus e Fable, e o que cada plano libera.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- COMPRA -->
+<section class="block" id="comprar">
+  <div class="wrap">
+    <div class="lp-offer">
+      <div class="lp-offer-art">{{ capa('lp-capa-sm') }}</div>
+      <div>
+        <span class="eyebrow">Acesso imediato · Entrega pela Hotmart</span>
+        <h2>E-book em PDF + Study Hub</h2>
+        <ul class="lp-checks">
+          <li>84 páginas, 10 capítulos e 106 tópicos</li>
+          <li>Exemplo pronto e erro comum em cada tópico</li>
+          <li>Study Hub com busca, progresso e botão de copiar</li>
+          <li>50 prompts, 5 modelos de skill, glossário e checklist</li>
+        </ul>
+        {% include "produtos/_comprar.html" %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="block" id="faq-produto">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Dúvidas</span><h2>Perguntas antes da compra</h2></div></div>
+    <div class="faq">
+      <details><summary>É um curso em vídeo?</summary><p>Não. É um e-book em PDF acompanhado do Study Hub, uma plataforma interativa que abre no navegador.</p></details>
+      <details><summary>Preciso instalar algum programa?</summary><p>Não. O PDF abre em qualquer leitor e o Study Hub abre no navegador do computador, tablet ou celular. Depois de baixado, funciona sem internet.</p></details>
+      <details><summary>Serve para quem nunca usou o Claude?</summary><p>Sim. O guia começa pelos fundamentos e avança até automação e Claude Code. O capítulo de abertura indica por onde começar conforme o seu nível.</p></details>
+      <details><summary>Preciso de um plano pago do Claude?</summary><p>Não para começar. Boa parte do conteúdo funciona no plano gratuito. O guia indica quais recursos dependem de plano pago, como Claude Code, tarefas agendadas e Research.</p></details>
+      <details><summary>Preciso saber programar?</summary><p>Não. Só o capítulo de Claude Code é voltado a quem programa ou quer começar, e mesmo ele parte do básico.</p></details>
+      <details><summary>Como recebo o material?</summary><p>Pela Hotmart, logo após a confirmação do pagamento. O acesso chega no e-mail usado na compra e fica disponível na sua conta Hotmart.</p></details>
+      <details><summary>Tem garantia?</summary><p>Sim. Garantia de 7 dias pela Hotmart: se não for o que você esperava, peça o reembolso direto na plataforma.</p></details>
+      <details><summary>E se o Claude mudar?</summary><p>Os recursos mudam com frequência, por isso o guia informa a data em que cada dado foi conferido e traz a lista de fontes oficiais para você acompanhar as novidades.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CHAMADA FINAL -->
+<section class="block">
+  <div class="wrap">
+    <div class="lp-final">
+      <h2>Pronto para usar o Claude com método?</h2>
+      <p>O Claude não é mágica. Resultado bom vem de contexto bom.</p>
+      <a class="btn btn-primary lp-cta" href="#comprar">Quero o guia</a>
+    </div>
+    <p class="lp-legal">Material independente, produzido pela MentesIA, sem vínculo com a Anthropic. Claude é marca da Anthropic PBC.</p>
+  </div>
+</section>
+
+<!-- Barra fixa de compra no celular -->
+{% if p.link %}
+<div class="lp-sticky" id="lpSticky">
+  <div><b>Guia do Claude</b>{% if p.preco %}<span>{{ p.preco|brl }}</span>{% endif %}</div>
+  <a class="btn btn-primary" href="{{ p.link }}" data-value="{{ '%.2f'|format(p.preco or 0) }}" data-produto="{{ p.pagina or p.id }}" target="_blank" rel="noopener">{{ p.botao or 'Comprar' }}</a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* Tour do Study Hub: troca a tela ao clicar */
+(function () {
+  const img = document.getElementById("tourImg"), base = "{{ url_for('static', filename=IMG) }}";
+  const tabs = document.querySelectorAll(".lp-tour-tabs [role=tab]");
+  tabs.forEach(t => {
+    const pre = new Image(); pre.src = base + "hub-" + t.dataset.shot + ".webp";
+    t.addEventListener("click", () => {
+      tabs.forEach(x => x.setAttribute("aria-selected", x === t));
+      img.src = base + "hub-" + t.dataset.shot + ".webp";
+      img.alt = "Tela do Study Hub: " + t.querySelector("b").textContent;
+    });
+  });
+})();
+/* Barra fixa no celular: aparece depois do topo e some na seção de compra */
+(function () {
+  const bar = document.getElementById("lpSticky"); if (!bar) return;
+  const hero = document.querySelector(".lp-hero"), offer = document.getElementById("comprar");
+  let heroOut = false, offerIn = false;
+  const upd = () => bar.classList.toggle("show", heroOut && !offerIn);
+  new IntersectionObserver(([e]) => { heroOut = !e.isIntersecting; upd(); }).observe(hero);
+  new IntersectionObserver(([e]) => { offerIn = e.isIntersecting; upd(); }).observe(offer);
+})();
+</script>
+{% endblock %}
