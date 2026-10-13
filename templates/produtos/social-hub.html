@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% block title %}MentesIA Social Hub · Calendário editorial para Windows · MentesIA{% endblock %}
+{% block description %}Planeje, organize e acompanhe as postagens de todas as suas marcas em um calendário editorial que roda no seu Windows, sem internet e sem mensalidade de plataforma.{% endblock %}
+{% block og_image %}{{ url_for('static', filename='img/produtos/social-hub.png', _external=True) }}{% endblock %}
+
+{% block pixel_events %}fbq('track', 'ViewContent', {content_name: 'MentesIA Social Hub', content_type: 'product', content_ids: ['social-hub']{% if p.preco %}, value: {{ '%.2f'|format(p.preco) }}, currency: 'BRL'{% endif %}});{% endblock %}
+
+{% set IMG = 'img/produtos/social-hub/' %}
+
+{% block content %}
+<!-- TOPO -->
+<section class="lp-hero">
+  <div class="wrap lp-hero-grid">
+    <div>
+      <a class="back" href="{{ url_for('loja') }}">← Voltar para a loja</a>
+      <span class="eyebrow">Programa para Windows · Funciona sem internet</span>
+      <h1>Seu conteúdo organizado. <mark>Sua rotina mais simples.</mark></h1>
+      <p class="lede">O MentesIA Social Hub é um calendário editorial que roda no seu computador. Planeje as postagens de todas as suas marcas, acompanhe cada uma do rascunho ao publicado e tenha tudo num só lugar, sem planilha espalhada e sem print perdido.</p>
+      <ul class="lp-pills">
+        <li>Windows 10 e 11</li>
+        <li>Python incluído no instalador</li>
+        <li>Seus dados no seu computador</li>
+      </ul>
+      {% include "produtos/_comprar.html" %}
+      <a class="lp-more" href="#video">Ver o programa funcionando ↓</a>
+    </div>
+    <div class="lp-hero-art">
+      <div class="sh-hero-shot">
+        <figure class="lp-tour-frame">
+          <div class="lp-hub-bar"><i></i><i></i><i></i><span>MentesIA Social Hub</span></div>
+          <img src="{{ url_for('static', filename=IMG ~ 'tela-calendario.webp') }}" width="1440" height="880" alt="Calendário editorial do MentesIA Social Hub com postagens de exemplo em vários dias do mês">
+        </figure>
+        <span class="lp-capa-tag lp-capa-tag-1">Instale e use offline</span>
+        <span class="lp-capa-tag lp-capa-tag-2">8 redes sociais</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REDES -->
+<div class="lp-topics" aria-label="Redes sociais que você pode organizar">
+  <div class="wrap">
+    <span>Instagram</span><span>Facebook</span><span>LinkedIn</span><span>TikTok</span><span>YouTube</span><span>Threads</span><span>Pinterest</span><span>X</span>
+  </div>
+</div>
+
+<!-- NÚMEROS -->
+<section class="lp-stats">
+  <div class="wrap">
+    <div><b>8</b><span>redes sociais</span></div>
+    <div><b>8</b><span>formatos de conteúdo</span></div>
+    <div><b>4</b><span>etapas no workflow</span></div>
+    <div><b>5</b><span>telas de trabalho</span></div>
+    <div><b>100%</b><span>offline</span></div>
+  </div>
+</section>
+
+<!-- VÍDEO -->
+<section class="block" id="video">
+  <div class="wrap">
+    <div class="sh-video">
+      <video src="{{ url_for('static', filename=IMG ~ 'tutorial.mp4') }}" poster="{{ url_for('static', filename=IMG ~ 'tutorial-poster.webp') }}" width="720" height="1280" controls muted playsinline preload="none" aria-label="Vídeo tutorial do MentesIA Social Hub"></video>
+      <div>
+        <span class="eyebrow">Em menos de um minuto</span>
+        <h2>Veja como é usar no dia a dia</h2>
+        <p class="lp-p">O vídeo mostra o programa de verdade, com os exemplos que vêm na instalação. É assim que funciona:</p>
+        <ol class="sh-steps">
+          <li><b>Abra o painel</b><span>Veja quanto foi publicado, agendado e planejado.</span></li>
+          <li><b>Clique num dia do calendário</b><span>A data já vem preenchida na nova postagem.</span></li>
+          <li><b>Escolha marca, rede, formato e status</b><span>Escreva o título, a legenda e salve.</span></li>
+          <li><b>Acompanhe no workflow</b><span>Mova cada conteúdo do rascunho até o publicado.</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOUR -->
+<section class="block lp-hub-sec" id="telas">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Por dentro do programa</span><h2>Cada tela resolve uma parte da rotina</h2><p>Estas são telas reais do MentesIA Social Hub. Clique para trocar.</p></div></div>
+    <div class="lp-tour">
+      <div class="lp-tour-tabs" role="tablist" aria-label="Telas do MentesIA Social Hub">
+        <button role="tab" aria-selected="true" data-shot="dashboard"><b>Dashboard</b><span>Números e próximas publicações</span></button>
+        <button role="tab" aria-selected="false" data-shot="calendario"><b>Calendário editorial</b><span>O mês inteiro com rede e status</span></button>
+        <button role="tab" aria-selected="false" data-shot="postagem"><b>Nova postagem</b><span>Marca, rede, formato, legenda e link</span></button>
+        <button role="tab" aria-selected="false" data-shot="workflow"><b>Workflow</b><span>Rascunho, planejado, agendado, publicado</span></button>
+        <button role="tab" aria-selected="false" data-shot="conteudos"><b>Biblioteca de conteúdos</b><span>Busca, filtro, CSV e backup</span></button>
+        <button role="tab" aria-selected="false" data-shot="marcas"><b>Contas e marcas</b><span>Os perfis de cada cliente juntos</span></button>
+        <button role="tab" aria-selected="false" data-shot="escuro"><b>Tema escuro</b><span>Para quem trabalha até tarde</span></button>
+      </div>
+      <figure class="lp-tour-frame">
+        <div class="lp-hub-bar"><i></i><i></i><i></i><span>MentesIA Social Hub</span></div>
+        <img id="tourImg" src="{{ url_for('static', filename=IMG ~ 'tela-dashboard.webp') }}" width="1440" height="880" alt="Tela do MentesIA Social Hub: Dashboard" loading="lazy">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFÍCIOS -->
+<section class="block" id="beneficios">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Por que usar</span><h2>Menos tempo procurando, mais tempo criando</h2></div></div>
+    <div class="sh-cards4">
+      <article class="lp-card">
+        <svg class="lp-ico-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M8 14h2M14 14h2M8 17h2"/></svg>
+        <h3>Planeje com clareza</h3>
+        <p>Veja o mês inteiro no calendário, com o ícone da rede e a cor do status em cada postagem. Clique num dia e crie o conteúdo ali mesmo.</p>
+      </article>
+      <article class="lp-card">
+        <svg class="lp-ico-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></svg>
+        <h3>Centralize suas marcas</h3>
+        <p>Cadastre cada marca ou cliente com os perfis de todas as redes. Ideal para quem cuida de mais de um negócio ao mesmo tempo.</p>
+      </article>
+      <article class="lp-card">
+        <svg class="lp-ico-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 3 3 5-6"/></svg>
+        <h3>Acompanhe cada etapa</h3>
+        <p>O workflow mostra o que ainda é rascunho, o que está planejado, o que já foi agendado e o que foi publicado.</p>
+      </article>
+      <article class="lp-card">
+        <svg class="lp-ico-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
+        <h3>Tenha seus dados com você</h3>
+        <p>Tudo fica salvo no seu computador. Exporte em CSV para o Excel e faça backup em JSON quando quiser.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARAÇÃO -->
+<section class="block" id="comparacao">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Antes e depois</span><h2>Chega de planejar em cinco lugares diferentes</h2></div></div>
+    <div class="lp-vs">
+      <div class="lp-vs-col lp-vs-off">
+        <h3>Planilha, bloco de notas e prints</h3>
+        <ul><li>Ideias espalhadas em vários arquivos</li><li>Difícil ver o mês de uma vez</li><li>Ninguém sabe o que já foi publicado</li><li>Marcas e clientes misturados</li></ul>
+      </div>
+      <div class="lp-vs-col lp-vs-on">
+        <h3>MentesIA Social Hub</h3>
+        <ul class="lp-checks"><li>Calendário com todas as postagens</li><li>Status de cada conteúdo à vista</li><li>Marcas separadas, cada uma com seus perfis</li><li>Busca, filtro e exportação em um clique</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARA QUEM É -->
+<section class="block" id="para-quem">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Para quem é</span><h2>Feito para quem publica toda semana</h2></div></div>
+    <div class="lp-cards3">
+      <article class="lp-card"><span class="lp-ico">01 · Criadores</span><h3>Criadores de conteúdo</h3><p>Organize ideias, roteiros e legendas e saiba exatamente o que sai em cada dia e em cada rede.</p></article>
+      <article class="lp-card"><span class="lp-ico">02 · Social media</span><h3>Social media e freelancers</h3><p>Separe o planejamento de cada cliente, acompanhe o andamento e exporte o cronograma para enviar.</p></article>
+      <article class="lp-card"><span class="lp-ico">03 · Negócios</span><h3>Pequenos negócios</h3><p>Mantenha a frequência de postagem da sua loja, cafeteria ou estúdio sem depender de outra plataforma.</p></article>
+    </div>
+    <p class="lp-note"><strong>Não é para você se</strong> procura um programa que publica sozinho nas redes ou se usa Mac. O Social Hub organiza e acompanha o planejamento; a publicação continua sendo feita no app de cada rede. Roda apenas no Windows.</p>
+  </div>
+</section>
+
+<!-- COMPRA -->
+<section class="block" id="comprar">
+  <div class="wrap">
+    <div class="lp-offer">
+      <div class="lp-offer-art"><img class="sh-offer-img" src="{{ url_for('static', filename='img/produtos/social-hub.png') }}" width="1200" height="750" alt="MentesIA Social Hub" loading="lazy"></div>
+      <div>
+        <span class="eyebrow">Acesso imediato · Entrega pela Hotmart</span>
+        <h2>O que você recebe</h2>
+        <ul class="lp-checks">
+          <li>Programa completo, com o Python já incluído no instalador</li>
+          <li>Instalação em poucos cliques e atalho na Área de Trabalho</li>
+          <li>Manual em PDF com o passo a passo</li>
+          <li>Vídeo tutorial mostrando como usar</li>
+        </ul>
+        {% include "produtos/_comprar.html" %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="block" id="faq-produto">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Dúvidas</span><h2>Perguntas antes da compra</h2></div></div>
+    <div class="faq">
+      <details><summary>O programa publica automaticamente nas redes?</summary><p>Não. O Social Hub é um calendário editorial: você planeja, organiza e acompanha o status de cada postagem. A publicação é feita no app de cada rede, e depois você marca o conteúdo como publicado e guarda o link.</p></details>
+      <details><summary>Funciona no Mac ou no celular?</summary><p>Não. Ele roda no Windows 10 ou 11, 64 bits.</p></details>
+      <details><summary>Preciso de internet para usar?</summary><p>Não. O instalador já traz o Python necessário, então a instalação e o uso funcionam sem internet.</p></details>
+      <details><summary>É difícil de instalar?</summary><p>Não. Você extrai o arquivo baixado, dá dois cliques no instalador e abre o programa pelo atalho criado na Área de Trabalho. O manual e o vídeo mostram cada passo.</p></details>
+      <details><summary>Onde ficam os meus dados?</summary><p>No seu próprio computador. Nada é enviado para servidores. Você pode exportar tudo em CSV e fazer backup em JSON quando quiser.</p></details>
+      <details><summary>Posso organizar mais de uma marca?</summary><p>Sim. Cadastre quantas marcas ou clientes precisar, cada uma com os seus perfis nas redes sociais.</p></details>
+      <details><summary>Como recebo o programa?</summary><p>Pela Hotmart, logo após a confirmação do pagamento. O acesso chega no e-mail usado na compra e fica disponível na sua conta Hotmart.</p></details>
+      <details><summary>Tem garantia?</summary><p>Sim. Garantia de 7 dias pela Hotmart: se não for o que você esperava, peça o reembolso direto na plataforma.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CHAMADA FINAL -->
+<section class="block">
+  <div class="wrap">
+    <div class="lp-final">
+      <h2>Quer organizar suas postagens?</h2>
+      <p>Um calendário, todas as marcas e cada etapa à vista, direto no seu Windows.</p>
+      <a class="btn btn-primary lp-cta" href="#comprar">Quero o Social Hub</a>
+    </div>
+    <p class="lp-legal">Programa independente, produzido pela MentesIA, sem vínculo com as redes sociais citadas. Instagram, Facebook, Threads, LinkedIn, TikTok, YouTube, Pinterest, X e Windows são marcas de seus respectivos donos. As marcas e perfis mostrados nas telas são exemplos fictícios.</p>
+  </div>
+</section>
+
+<!-- Barra fixa de compra no celular -->
+{% if p.link %}
+<div class="lp-sticky" id="lpSticky">
+  <div><b>MentesIA Social Hub</b>{% if p.preco %}<span>{{ p.preco|brl }}</span>{% endif %}</div>
+  <a class="btn btn-primary" href="{{ p.link }}" target="_blank" rel="noopener">{{ p.botao or 'Comprar' }}</a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* Tour das telas: troca a imagem ao clicar */
+(function () {
+  const img = document.getElementById("tourImg"), base = "{{ url_for('static', filename=IMG) }}";
+  const tabs = document.querySelectorAll(".lp-tour-tabs [role=tab]");
+  tabs.forEach(t => {
+    const pre = new Image(); pre.src = base + "tela-" + t.dataset.shot + ".webp";
+    t.addEventListener("click", () => {
+      tabs.forEach(x => x.setAttribute("aria-selected", x === t));
+      img.src = base + "tela-" + t.dataset.shot + ".webp";
+      img.alt = "Tela do MentesIA Social Hub: " + t.querySelector("b").textContent;
+    });
+  });
+})();
+/* Barra fixa no celular: aparece depois do topo e some na seção de compra */
+(function () {
+  const bar = document.getElementById("lpSticky"); if (!bar) return;
+  const hero = document.querySelector(".lp-hero"), offer = document.getElementById("comprar");
+  let heroOut = false, offerIn = false;
+  const upd = () => bar.classList.toggle("show", heroOut && !offerIn);
+  new IntersectionObserver(([e]) => { heroOut = !e.isIntersecting; upd(); }).observe(hero);
+  new IntersectionObserver(([e]) => { offerIn = e.isIntersecting; upd(); }).observe(offer);
+})();
+</script>
+{% endblock %}
