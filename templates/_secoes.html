@@ -73,7 +73,7 @@
       {% if pg %}
       <a class="btn btn-primary" href="{{ pg }}">Ver detalhes</a>
       {% elif p.link %}
-      <a class="btn btn-primary" href="{{ p.link }}" target="_blank" rel="noopener">{{ p.botao or 'Comprar na Hotmart' }}</a>
+      <a class="btn btn-primary" href="{{ p.link }}" data-value="{{ '%.2f'|format(p.preco or 0) }}" data-produto="{{ p.pagina or p.id }}" target="_blank" rel="noopener">{{ p.botao or 'Comprar na Hotmart' }}</a>
       {% else %}
       <span class="btn btn-ghost is-disabled" aria-disabled="true">Em breve</span>
       {% endif %}
