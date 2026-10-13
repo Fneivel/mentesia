@@ -15,7 +15,12 @@
     const a = e.target.closest("a[href]"); if (!a) return;
     const href = a.getAttribute("href") || "";
     if (/pay\.hotmart\.com|go\.hotmart\.com/.test(href)) {
-      track("InitiateCheckout", { content_name: document.title });
+      // A Meta pede "value" numérico maior que zero: só envia valor quando o preço está cadastrado no painel
+      const ev = { content_name: document.title, content_type: "product", currency: "BRL" };
+      const v = parseFloat(a.dataset.value || "0");
+      if (v > 0) ev.value = v;
+      if (a.dataset.produto) ev.content_ids = [a.dataset.produto];
+      track("InitiateCheckout", ev);
       try {
         const nome = a.closest(".product")?.querySelector("h3")?.textContent.trim() || document.title.replace(/ · MentesIA$/, "");
         navigator.sendBeacon?.("/api/clique", new Blob([JSON.stringify({ produto: nome, url: href })], { type: "application/json" }));
