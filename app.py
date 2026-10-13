@@ -359,6 +359,18 @@ def seed_once():
                    0, None, 12, "Novo · v3.0", "", "Quero o guia", "guia-copilot", now(), now()))
         c.execute("INSERT INTO config (chave, valor) VALUES ('seed_guia_copilot_v3', '1')")
         c.commit()
+    if not c.execute("SELECT 1 FROM config WHERE chave='seed_social_hub'").fetchone():
+        # Entra logo depois do primeiro produto da vitrine. Preço e link da Hotmart: preencher no painel.
+        c.execute("UPDATE produtos SET ordem = ordem + 1 WHERE ordem >= 1")
+        c.execute("INSERT INTO produtos (titulo, tipo, capa_texto, imagem, descricao, itens, preco, preco_antigo, parcelas, selo, link, botao, pagina, ativo, ordem, criado_em, atualizado_em)"
+                  " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,1,1,?,?)",
+                  ("MentesIA Social Hub", "Programa para Windows", "Social\nHub",
+                   "/static/img/produtos/social-hub.png",
+                   "Calendário editorial para organizar as postagens de todas as suas marcas, direto no seu computador e sem internet.",
+                   "Calendário com 8 redes sociais\nWorkflow do rascunho ao publicado\nPython incluído · funciona offline",
+                   0, None, 12, "Novo", "", "Quero o Social Hub", "social-hub", now(), now()))
+        c.execute("INSERT INTO config (chave, valor) VALUES ('seed_social_hub', '1')")
+        c.commit()
 
 
 with app.app_context():
