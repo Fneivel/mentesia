@@ -592,3 +592,24 @@ section.block.page-body{padding-top:clamp(28px, 4vw, 48px)}
   .mat-doc{width:100%; max-width:420px; aspect-ratio:16/10}
 }
 @media (max-width:640px){ .mat-cta{flex-direction:column; align-items:stretch} .mat-again .btn{width:100%} }
+
+/* ===== Página do MentesIA Social Hub ===== */
+.sh-hero-shot{position:relative; width:min(620px, 100%)}
+.sh-hero-shot::before{content:""; position:absolute; inset:6% -8% 0 -8%; background:radial-gradient(closest-side, rgba(22,198,224,.30), rgba(47,107,255,.12) 60%, transparent); filter:blur(24px); z-index:-1}
+.sh-hero-shot .lp-capa-tag-1{left:-5%; top:auto; bottom:-14px}
+.sh-hero-shot .lp-capa-tag-2{right:-4%; top:-14px}
+.sh-video{display:grid; grid-template-columns:auto 1fr; gap:clamp(28px, 5vw, 72px); align-items:center; max-width:960px}
+.sh-video video{width:min(300px, 70vw); height:auto; aspect-ratio:9/16; border-radius:28px; border:6px solid #1A1F29; background:#000; box-shadow:0 30px 80px -24px rgba(22,198,224,.35)}
+.sh-video h2{font-size:clamp(28px, 3.2vw, 46px); font-weight:700; margin-top:10px}
+.sh-steps{list-style:none; counter-reset:sh; margin:22px 0 0; padding:0; display:grid; gap:14px}
+.sh-steps li{counter-increment:sh; position:relative; padding-left:48px; display:grid; gap:2px}
+.sh-steps li::before{content:counter(sh); position:absolute; left:0; top:0; width:32px; height:32px; border-radius:50%; display:grid; place-items:center;
+  font-family:var(--display); font-weight:700; font-size:15px; color:#04110D; background:var(--grad)}
+.sh-steps b{font-family:var(--display); font-size:17px; color:var(--ink)}
+.sh-steps span{color:var(--ink-2); font-size:15px}
+.sh-cards4{display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:16px}
+.sh-offer-img{display:block; width:420px; max-width:100%; height:auto; border-radius:18px; box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
+@media (max-width:1000px){ .sh-cards4{grid-template-columns:repeat(2, minmax(0, 1fr))} }
+@media (max-width:760px){ .sh-video{grid-template-columns:1fr; justify-items:center} .sh-video > div{width:100%} }
+@media (max-width:900px){ .sh-hero-shot::before{inset:6% 0 0 0} .sh-hero-shot .lp-capa-tag-1{left:10px} .sh-hero-shot .lp-capa-tag-2{right:10px} }
+@media (max-width:560px){ .sh-cards4{grid-template-columns:1fr} .sh-hero-shot .lp-capa-tag{font-size:12px; padding:6px 10px} }
