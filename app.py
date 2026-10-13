@@ -371,6 +371,31 @@ def seed_once():
                    0, None, 12, "Novo", "", "Quero o Social Hub", "social-hub", now(), now()))
         c.execute("INSERT INTO config (chave, valor) VALUES ('seed_social_hub', '1')")
         c.commit()
+    if not c.execute("SELECT 1 FROM config WHERE chave='seed_guia_claude_v1'").fetchone():
+        # Entra logo depois do guia do Copilot. Preço e link da Hotmart são preenchidos pelo painel;
+        # enquanto o link estiver vazio, o botão aparece como "Em breve".
+        c.execute("UPDATE produtos SET ordem = ordem + 1 WHERE ordem >= 1")
+        c.execute("INSERT INTO produtos (titulo, tipo, capa_texto, imagem, descricao, itens, preco, preco_antigo, parcelas, selo, link, botao, pagina, ativo, ordem, criado_em, atualizado_em)"
+                  " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,1,1,?,?)",
+                  ("Guia Definitivo do Claude", "E-book + Study Hub", "Guia\nClaude",
+                   "/static/img/produtos/guia-claude.png",
+                   "Do primeiro prompt aos sistemas automatizados, com tudo o que o Claude faz em 2026.",
+                   "84 páginas em 10 capítulos\n50 prompts e 5 modelos de skill\nStudy Hub com busca e progresso",
+                   0, None, 12, "Lançamento", "", "Quero o guia", "guia-claude", now(), now()))
+        c.execute("INSERT INTO config (chave, valor) VALUES ('seed_guia_claude_v1', '1')")
+        c.commit()
+    if not c.execute("SELECT 1 FROM config WHERE chave='seed_biblioteca_skills_v1'").fetchone():
+        # Entra no topo da vitrine como lançamento. Preço e link da Hotmart: preencher no painel.
+        c.execute("UPDATE produtos SET ordem = ordem + 1")
+        c.execute("INSERT INTO produtos (titulo, tipo, capa_texto, imagem, descricao, itens, preco, preco_antigo, parcelas, selo, link, botao, pagina, ativo, ordem, criado_em, atualizado_em)"
+                  " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,1,0,?,?)",
+                  ("Biblioteca de Skills para Claude", "Skills + laboratório + manual", "Skills\nClaude",
+                   "/static/img/produtos/biblioteca-skills.png",
+                   "36 skills em português que fazem o Claude trabalhar do seu jeito, organizadas por perfil.",
+                   "36 skills em 4 pacotes\nSeletor de kit por perfil\nInstalador, ZIPs e manual em PDF",
+                   0, None, 12, "Lançamento", "", "Quero a biblioteca", "biblioteca-skills", now(), now()))
+        c.execute("INSERT INTO config (chave, valor) VALUES ('seed_biblioteca_skills_v1', '1')")
+        c.commit()
 
 
 with app.app_context():
