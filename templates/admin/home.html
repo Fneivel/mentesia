@@ -18,6 +18,15 @@
 </div>
 {% endif %}
 
+{% if ofertas %}
+<div class="alert" style="margin-bottom:20px">
+  <span>⏱</span>
+  <div><strong>{{ ofertas|length }} oferta(s) com contador no ar:</strong>
+    <ul class="oferta-lista">{% for p in ofertas %}<li><a href="{{ url_for('admin_edit', kind='produtos', item_id=p.id) }}">{{ p.titulo }}</a>: {{ p.preco|brl }} até {{ p.oferta_fim_txt }}</li>{% endfor %}</ul>
+    Confira se o cupom na Hotmart vence no mesmo horário.</div>
+</div>
+{% endif %}
+
 <div class="stats">
   {% for k, e in entities.items() %}
   <a class="panel stat" href="{{ url_for('admin_list', kind=k) }}">

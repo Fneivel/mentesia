@@ -24,6 +24,8 @@
     {% elif ftype in ('int', 'money') %}
       <input type="text" inputmode="decimal" id="f_{{ name }}" name="{{ name }}"
              value="{{ ('%.2f'|format(val)).replace('.', ',') if ftype == 'money' and val is not none else (val if val is not none else '') }}">
+    {% elif ftype == 'datetime' %}
+      <input type="datetime-local" id="f_{{ name }}" name="{{ name }}" value="{{ val or '' }}">
     {% elif ftype in ('image', 'file') %}
       <div class="filebox">
         {% if val %}
@@ -68,11 +70,23 @@
 
 <form method="post" enctype="multipart/form-data" class="form-grid" id="editForm">
   <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <div class="main-col">
   <section class="panel">
     <div class="fields">
-      {% for name, label, ftype, opts in ent.fields if not opts.side %}{{ render_field(name, label, ftype, opts) }}{% endfor %}
+      {% for name, label, ftype, opts in ent.fields if not opts.side %}
+        {% if opts.secao %}
     </div>
   </section>
+  <section class="panel panel-secao" id="secao-{{ name }}">
+    <h2>{{ opts.secao }}</h2>
+    {% if opts.secao_help %}<p class="secao-help">{{ opts.secao_help }}</p>{% endif %}
+    <div class="fields">
+        {% endif %}
+        {{ render_field(name, label, ftype, opts) }}
+      {% endfor %}
+    </div>
+  </section>
+  </div>
 
   <aside class="panel side-card sticky">
     <div class="fields">
