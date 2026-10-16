@@ -113,7 +113,7 @@ tr.dragging{opacity:.4}
 .field label,.field .label{font-weight:600; font-size:14px}
 .field .help{font-size:13px; color:var(--ink-3)}
 .req{color:var(--cyan)}
-input[type=text],input[type=url],input[type=number],input[type=password],input[type=search],textarea,select{
+input[type=text],input[type=url],input[type=number],input[type=password],input[type=search],input[type=datetime-local],textarea,select{
   width:100%; font:inherit; font-size:15px; color:var(--ink); background:var(--bg); border:1px solid var(--line-2);
   border-radius:9px; padding:10px 12px; transition:border-color .15s}
 textarea{resize:vertical; min-height:96px; line-height:1.55}
@@ -158,7 +158,7 @@ input[type=file]::file-selector-button{font:600 13px var(--body); background:var
 .muted{color:var(--ink-2)}
 
 @media (max-width:640px){
-  input[type=text],input[type=url],input[type=number],input[type=password],input[type=search],textarea,select{font-size:16px}
+  input[type=text],input[type=url],input[type=number],input[type=password],input[type=search],input[type=datetime-local],textarea,select{font-size:16px}
   .btn{min-height:44px}
   .btn-sm{min-height:38px}
   .main{padding-top:20px}
@@ -239,3 +239,10 @@ tr.sel td{background:rgba(22,198,224,.06)}
 th.num{text-align:right}
 #historico td.num{text-align:right}
 @media (max-width:760px){ .stats{grid-template-columns:1fr 1fr; gap:10px} .stat{padding:14px} .stat .v{font-size:24px} }
+
+/* Seções extras do formulário (ex.: oferta por tempo limitado) */
+.main-col{display:grid; gap:18px; align-content:start; min-width:0}
+.panel-secao .secao-help{margin:0; padding:14px 20px 0; font-size:13px; color:var(--ink-3); max-width:70ch}
+.panel-secao .fields{padding-top:14px}
+.oferta-lista{margin:4px 0 0; padding-left:18px}
+input[type=datetime-local]{color-scheme:dark; max-width:280px}

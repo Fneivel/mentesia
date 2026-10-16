@@ -630,3 +630,24 @@ section.block.page-body{padding-top:clamp(28px, 4vw, 48px)}
 .bs-quiz i{font-style:normal; font-family:var(--mono); font-size:12px; color:var(--green)}
 @media (max-width:900px){ .bs-packs{grid-template-columns:1fr} .bs-quiz{grid-template-columns:repeat(2, minmax(0, 1fr))} }
 @media (max-width:520px){ .bs-quiz{grid-template-columns:1fr} }
+
+/* Oferta por tempo limitado (contador) */
+.oferta{--amber:#F5A524; display:grid; gap:10px; justify-items:start; padding:16px 18px; border:1px solid rgba(245,165,36,.45);
+  background:linear-gradient(180deg, rgba(245,165,36,.10), rgba(245,165,36,.03)); border-radius:14px; width:100%; max-width:460px}
+.oferta-tag{font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--amber);
+  display:inline-flex; align-items:center; gap:8px}
+.oferta-tag::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--amber); box-shadow:0 0 8px var(--amber)}
+@media (prefers-reduced-motion: no-preference){ .oferta-tag::before{animation:oferta-pulso 1.6s ease-in-out infinite} }
+@keyframes oferta-pulso{50%{opacity:.35}}
+.oferta-tempo{display:flex; gap:8px; font-variant-numeric:tabular-nums}
+.oferta-tempo .u{display:grid; justify-items:center; min-width:58px; padding:8px 6px 6px; background:var(--surface-2); border:1px solid var(--line); border-radius:10px}
+.oferta-tempo b{font-family:var(--mono); font-weight:700; font-size:26px; line-height:1; color:var(--ink)}
+.oferta-tempo i{font-style:normal; font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2); margin-top:4px}
+.oferta-fim{font-size:13px; color:var(--ink-2)}
+.oferta.sem-dias .u-d{display:none}
+.oferta-compacta{padding:10px 12px; gap:6px; margin:6px 0 2px; max-width:none}
+.oferta-compacta .oferta-tempo .u{min-width:0; padding:5px 8px 4px; flex:1}
+.oferta-compacta .oferta-tempo b{font-size:18px}
+.oferta-compacta .oferta-tempo i{font-size:10px}
+.oferta-compacta .oferta-fim{display:none}
+.oferta.encerrada .oferta-tempo{opacity:.5}
