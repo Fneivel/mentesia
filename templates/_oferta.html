@@ -1,0 +1,16 @@
+{# Contador da oferta por tempo limitado. O servidor decide se a oferta vale (data no painel);
+   o JavaScript só faz a contagem e recarrega a página quando o prazo acaba. #}
+{% macro contador(p, compacto=False) -%}
+{% if p.oferta %}
+<div class="oferta{% if compacto %} oferta-compacta{% endif %}" data-oferta-fim="{{ p.oferta_fim_iso }}" data-agora="{{ p.oferta_agora_ms }}" role="timer" aria-live="off">
+  <span class="oferta-tag">{{ p.oferta_chamada }}</span>
+  <div class="oferta-tempo" aria-label="Tempo restante da oferta">
+    <span class="u u-d"><b data-u="d">--</b><i>dias</i></span>
+    <span class="u"><b data-u="h">--</b><i>h</i></span>
+    <span class="u"><b data-u="m">--</b><i>min</i></span>
+    <span class="u"><b data-u="s">--</b><i>s</i></span>
+  </div>
+  <span class="oferta-fim">Termina em {{ p.oferta_fim_txt }} (horário de Brasília)</span>
+</div>
+{% endif %}
+{%- endmacro %}

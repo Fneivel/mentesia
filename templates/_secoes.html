@@ -1,3 +1,4 @@
+{% from "_oferta.html" import contador %}
 {# Blocos reaproveitados pela home e pelas páginas Novidades, Materiais grátis e Loja #}
 
 {% macro ver_todos(endpoint, texto) -%}
@@ -63,6 +64,7 @@
       <h3>{% if pg %}<a class="plink" href="{{ pg }}">{{ p.titulo }}</a>{% else %}{{ p.titulo }}{% endif %}</h3>
       <p>{{ p.descricao }}</p>
       <ul>{% for t in p.itens|lines %}<li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>{{ t }}</span></li>{% endfor %}</ul>
+      {{ contador(p, compacto=True) }}
       {% if p.preco %}
       <div class="price">
         <span class="now">{{ p.preco|brl }}</span>
