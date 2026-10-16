@@ -1,5 +1,7 @@
 {# Bloco de compra reutilizável: preço e botão vêm do cadastro do produto no painel #}
+{% from "_oferta.html" import contador %}
 <div class="lp-buy">
+  {{ contador(p) }}
   {% if p.preco %}
   <div class="lp-price">
     {% if p.preco_antigo %}<span class="old">{{ p.preco_antigo|brl }}</span>{% endif %}
