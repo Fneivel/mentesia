@@ -29,6 +29,39 @@
     else if (/^\/material\//.test(href) || /\/material\/\d+/.test(href)) track("Lead", { content_name: "Material grátis" });
   });
 
+  /* Contador da oferta por tempo limitado.
+     Usa o relógio do servidor (data-agora) para não depender do relógio do aparelho da pessoa.
+     Quando chega a zero, recarrega a página: o servidor passa a mostrar o preço e o link normais. */
+  const ofertas = $$("[data-oferta-fim]");
+  if (ofertas.length) {
+    const pad = n => String(n).padStart(2, "0");
+    const itens = ofertas.map(el => ({
+      el, fim: new Date(el.dataset.ofertaFim).getTime(),
+      desvio: (parseInt(el.dataset.agora, 10) || Date.now()) - Date.now()
+    }));
+    let recarregou = false;
+    const tick = () => {
+      itens.forEach(({ el, fim, desvio }) => {
+        const r = Math.max(0, fim - (Date.now() + desvio));
+        const d = Math.floor(r / 864e5);
+        el.classList.toggle("sem-dias", d === 0);
+        const set = (u, v) => { const b = el.querySelector(`[data-u="${u}"]`); if (b) b.textContent = pad(v); };
+        set("d", d); set("h", Math.floor(r / 36e5) % 24); set("m", Math.floor(r / 6e4) % 60); set("s", Math.floor(r / 1e3) % 60);
+        if (r === 0 && !recarregou) {
+          recarregou = true;
+          el.classList.add("encerrada");
+          // Evita recarregar em sequência se algo estiver fora de sincronia
+          let ultimo = 0; try { ultimo = +sessionStorage.getItem("mi_oferta_reload") || 0; } catch (e) {}
+          if (Date.now() - ultimo > 15000) {
+            try { sessionStorage.setItem("mi_oferta_reload", String(Date.now())); } catch (e) {}
+            setTimeout(() => location.reload(), 1500);
+          }
+        }
+      });
+    };
+    tick(); setInterval(tick, 1000);
+  }
+
   /* Aviso de cookies (LGPD): guarda a escolha e liga/desliga o pixel */
   const bar = $("#cookieBar");
   const getChoice = () => { try { return localStorage.getItem("mi_cookies"); } catch (e) { return null; } };
