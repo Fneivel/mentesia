@@ -35,23 +35,6 @@
     </div>
   </section>
 
-  <!-- NOVIDADES (prévia; a lista completa fica em /novidades) -->
-  {% if posts %}
-  <section class="block" id="novidades">
-    <div class="wrap">
-      <div class="sec-head">
-        <div>
-          <span class="eyebrow">Blog</span>
-          <h2>{{ S.blog_titulo }}</h2>
-          <p>{{ S.blog_texto }}</p>
-        </div>
-        {{ sec.ver_todos('novidades', 'Ver todas as novidades') }}
-      </div>
-      {{ sec.cards_posts(posts[:3]) }}
-    </div>
-  </section>
-  {% endif %}
-
   <!-- MATERIAIS GRATUITOS (prévia; a lista completa fica em /materiais-gratis) -->
   {% if materiais %}
   <section class="block" id="gratis">
@@ -85,6 +68,23 @@
     </div>
   </section>
   {{ sec.como_comprar() }}
+  {% endif %}
+
+  <!-- NOVIDADES (prévia; a lista completa fica em /novidades) -->
+  {% if posts %}
+  <section class="block" id="novidades">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow">Blog</span>
+          <h2>{{ S.blog_titulo }}</h2>
+          <p>{{ S.blog_texto }}</p>
+        </div>
+        {{ sec.ver_todos('novidades', 'Ver todas as novidades') }}
+      </div>
+      {{ sec.cards_posts(posts[:3]) }}
+    </div>
+  </section>
   {% endif %}
 
   {{ sec.newsletter() }}
