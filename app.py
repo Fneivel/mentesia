@@ -16,6 +16,7 @@ import time
 import unicodedata
 import uuid
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from functools import wraps
 from urllib.parse import urlparse
 
@@ -57,6 +58,9 @@ ADMIN_PASSWORD_HASH = _pw_hash or (generate_password_hash(_pw_plain) if _pw_plai
 
 # Pixel da Meta (anúncios do Instagram/Facebook). Deixe META_PIXEL_ID vazio no Render para desligar.
 META_PIXEL_ID = "".join(ch for ch in os.environ.get("META_PIXEL_ID", "1835420714682410") if ch.isdigit())
+
+# Ofertas por tempo limitado: datas digitadas no painel são horário de Brasília
+FUSO = ZoneInfo("America/Sao_Paulo")
 
 IMAGE_EXT = {"png", "jpg", "jpeg", "webp", "gif", "svg"}
 FILE_EXT = IMAGE_EXT | {"pdf", "zip", "xlsx", "docx", "pptx", "csv", "txt"}
@@ -256,6 +260,15 @@ ENTITIES = {
             ("botao", "Texto do botão", "text", {"side": True}),
             ("capa_texto", "Texto da capa", "textarea", {"side": True, "help": "Usado quando não há imagem."}),
             ("imagem", "Imagem de capa", "image", {"side": True}),
+            ("oferta_ativa", "Ativar oferta com contador", "bool", {
+                "secao": "Oferta por tempo limitado",
+                "secao_help": "Mostra preço promocional e contagem regressiva na loja e na página do produto. "
+                              "Quando o prazo acaba, o site volta sozinho para o preço e o link normais. "
+                              "Na Hotmart, crie um cupom com a MESMA data de fim, para o desconto expirar lá também."}),
+            ("oferta_preco", "Preço da oferta (R$)", "money", {"help": "O preço normal acima aparece riscado durante a oferta."}),
+            ("oferta_fim", "Oferta termina em", "datetime", {"help": "Horário de Brasília. Use a mesma data e hora de fim do cupom na Hotmart."}),
+            ("oferta_link", "Link do checkout com o cupom", "url", {"help": "Na Hotmart, copie o link do cupom (checkout já com o desconto aplicado). Se ficar vazio, o botão usa o link normal."}),
+            ("oferta_texto", "Chamada da oferta", "text", {"help": "Ex.: Preço de lançamento · Black Friday · Oferta por tempo limitado. Vazio = “Oferta por tempo limitado”."}),
         ],
     },
     "prompts": {
@@ -325,6 +338,10 @@ def migrate():
     cols = [r[1] for r in c.execute("PRAGMA table_info(produtos)")]
     if "pagina" not in cols:
         c.execute("ALTER TABLE produtos ADD COLUMN pagina TEXT DEFAULT ''")
+    for col, tipo in (("oferta_ativa", "INTEGER DEFAULT 0"), ("oferta_preco", "REAL"), ("oferta_fim", "TEXT DEFAULT ''"),
+                      ("oferta_link", "TEXT DEFAULT ''"), ("oferta_texto", "TEXT DEFAULT ''")):
+        if col not in cols:
+            c.execute(f"ALTER TABLE produtos ADD COLUMN {col} {tipo}")
     mcols = [r[1] for r in c.execute("PRAGMA table_info(materiais)")]
     for col in ("slug", "conteudo", "capa"):
         if col not in mcols:
@@ -442,6 +459,43 @@ def media_url(path):
 app.jinja_env.globals["media_url"] = media_url
 
 
+def agora_br():
+    return datetime.now(FUSO)
+
+
+def ler_data_oferta(texto):
+    """'2026-11-28T23:59' (campo do painel) → datetime em horário de Brasília, ou None."""
+    try:
+        return datetime.strptime((texto or "").strip()[:16], "%Y-%m-%dT%H:%M").replace(tzinfo=FUSO)
+    except ValueError:
+        return None
+
+
+def com_oferta(row):
+    """Produto pronto para o site. Com oferta no prazo, preço e link de compra viram os da oferta,
+    e o preço normal aparece riscado. Fora do prazo, nada muda: o site volta sozinho ao normal."""
+    p = dict(row)
+    p["oferta"] = False
+    fim = ler_data_oferta(p.get("oferta_fim"))
+    if p.get("oferta_ativa") and p.get("oferta_preco") and fim and fim > agora_br():
+        normal = p.get("preco") or p.get("preco_antigo")
+        p.update(
+            oferta=True,
+            preco=p["oferta_preco"],
+            preco_antigo=normal if normal and normal > p["oferta_preco"] else p.get("preco_antigo"),
+            link=p.get("oferta_link") or p.get("link"),
+            oferta_chamada=p.get("oferta_texto") or "Oferta por tempo limitado",
+            oferta_fim_iso=fim.isoformat(),
+            oferta_fim_txt=fim.strftime("%d/%m às %Hh%M"),
+            oferta_agora_ms=int(agora_br().timestamp() * 1000),
+        )
+    return p
+
+
+def produtos_no_ar():
+    return [com_oferta(r) for r in db().execute("SELECT * FROM produtos WHERE ativo=1 ORDER BY ordem, id").fetchall()]
+
+
 @app.context_processor
 def inject():
     return {"S": get_settings() if request.endpoint not in ("static", "uploads") else {},
@@ -536,7 +590,7 @@ def home():
     c = db()
     posts = c.execute("SELECT * FROM posts WHERE ativo=1 ORDER BY destaque DESC, ordem, criado_em DESC").fetchall()
     materiais = c.execute("SELECT * FROM materiais WHERE ativo=1 ORDER BY ordem, id").fetchall()
-    produtos = c.execute("SELECT * FROM produtos WHERE ativo=1 ORDER BY ordem, id").fetchall()
+    produtos = produtos_no_ar()
     prompts = [dict(texto=r["texto"], tag=r["tag"]) for r in
                c.execute("SELECT texto, tag FROM prompts WHERE ativo=1 ORDER BY ordem, id").fetchall()]
     categorias = []
@@ -581,7 +635,7 @@ def material_pagina(slug):
 
 @app.route("/loja")
 def loja():
-    produtos = db().execute("SELECT * FROM produtos WHERE ativo=1 ORDER BY ordem, id").fetchall()
+    produtos = produtos_no_ar()
     return render_template("loja.html", produtos=produtos, faq=parse_faq(get_settings().get("faq")))
 
 
@@ -612,7 +666,7 @@ def produto_pagina(slug):
         abort(404)
     especifico = f"produtos/{secure_filename(slug)}.html"
     tpl = especifico if os.path.exists(os.path.join(BASE_DIR, "templates", especifico)) else "produtos/_padrao.html"
-    return render_template(tpl, p=p)
+    return render_template(tpl, p=com_oferta(p))
 
 
 @app.route("/privacidade")
@@ -711,8 +765,9 @@ def admin_home():
     semana = c.execute("SELECT COUNT(*) FROM inscritos WHERE criado_em >= datetime('now','-7 days','localtime')").fetchone()[0]
     recentes = c.execute("SELECT id, titulo, atualizado_em, ativo FROM posts ORDER BY atualizado_em DESC LIMIT 5").fetchall()
     sem_link = c.execute("SELECT id, titulo FROM produtos WHERE ativo=1 AND (link='' OR link LIKE '%SEU-CODIGO%')").fetchall()
+    ofertas = [p for p in produtos_no_ar() if p["oferta"]]
     return render_template("admin/home.html", contagem=contagem, ativos=ativos, inscritos=inscritos,
-                           semana=semana, recentes=recentes, sem_link=sem_link, entities=ENTITIES)
+                           semana=semana, recentes=recentes, sem_link=sem_link, ofertas=ofertas, entities=ENTITIES)
 
 
 def get_entity(kind):
@@ -795,6 +850,11 @@ def admin_edit(kind, item_id=None):
                     values[name] = to_number(form.get(name), ftype)
                 except ValueError as e:
                     erros.append(f"{label}: {e}")
+            elif ftype == "datetime":
+                bruto = (form.get(name) or "").strip()
+                if bruto and not ler_data_oferta(bruto):
+                    erros.append(f"{label}: data inválida.")
+                values[name] = bruto[:16]
             else:
                 values[name] = (form.get(name) or "").strip()
             if opts.get("required") and not values.get(name):
@@ -809,6 +869,19 @@ def admin_edit(kind, item_id=None):
             values["pagina"] = slugify(values["pagina"])
             if c.execute("SELECT id FROM produtos WHERE pagina=? AND id<>?", (values["pagina"], item_id or 0)).fetchone():
                 erros.append("Já existe outro produto usando esse endereço de página.")
+
+        if kind == "produtos" and values.get("oferta_ativa"):
+            fim = ler_data_oferta(values.get("oferta_fim"))
+            if not values.get("oferta_preco"):
+                erros.append("Oferta: preencha o preço da oferta.")
+            elif values.get("preco") and values["oferta_preco"] >= values["preco"]:
+                erros.append("Oferta: o preço da oferta precisa ser menor que o preço normal.")
+            if not fim:
+                erros.append("Oferta: preencha quando a oferta termina.")
+            elif fim <= agora_br():
+                flash("Atenção: a data de fim da oferta já passou, então o contador não vai aparecer no site.", "erro")
+            if not values.get("oferta_link") and not values.get("link"):
+                erros.append("Oferta: cole o link do checkout com o cupom (ou o link normal da Hotmart).")
 
         if kind == "materiais":
             usados = {r[0] for r in c.execute("SELECT slug FROM materiais WHERE id<>? AND slug<>''", (item_id or 0,))}
