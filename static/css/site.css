@@ -651,3 +651,44 @@ section.block.page-body{padding-top:clamp(28px, 4vw, 48px)}
 .oferta-compacta .oferta-tempo i{font-size:10px}
 .oferta-compacta .oferta-fim{display:none}
 .oferta.encerrada .oferta-tempo{opacity:.5}
+
+/* Página: Databricks em 150 Mapas (vídeo 16:9, anatomia do mapa, lista de módulos, mini projetos) */
+.dbx-video{display:grid; grid-template-columns:minmax(0, 1.7fr) minmax(0, 1fr); gap:clamp(24px, 4vw, 56px); align-items:center}
+.dbx-video-frame{margin:0; background:var(--term-bg); border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:0 30px 80px -30px rgba(22,198,224,.35)}
+.dbx-video-frame video{display:block; width:100%; height:auto; aspect-ratio:16/9; background:#000}
+.dbx-video-steps, .dbx-blocks{list-style:none; margin:0; padding:0; display:grid; gap:14px; counter-reset:dbx}
+.dbx-video-steps li, .dbx-blocks li{counter-increment:dbx; display:grid; grid-template-columns:34px 1fr; column-gap:14px; align-items:start}
+.dbx-video-steps li::before, .dbx-blocks li::before{content:counter(dbx, decimal-leading-zero); grid-row:span 2; width:34px; height:34px; border-radius:10px; display:grid; place-items:center; font-family:var(--mono); font-size:13px; font-weight:700; color:var(--accent-ink); background:var(--grad)}
+.dbx-video-steps b, .dbx-blocks b{font-family:var(--display); font-size:17px; font-weight:700; line-height:1.3}
+.dbx-video-steps span, .dbx-blocks span{color:var(--ink-2); font-size:15px}
+.dbx-anat{display:grid; grid-template-columns:minmax(0, 1.5fr) minmax(0, 1fr); gap:clamp(24px, 4vw, 56px); align-items:start}
+.dbx-blocks{gap:12px}
+.dbx-blocks li:nth-child(8)::before{background:var(--green)}
+.dbx-blocks li:nth-child(9)::before{background:#FF5C6C}
+.dbx-blocks li:nth-child(10)::before{background:#FFC24B}
+.dbx-shot{margin:0}
+.dbx-shot img{display:block; width:100%; height:auto; border-radius:14px; border:1px solid var(--line); box-shadow:0 30px 80px -30px rgba(0,0,0,.8); cursor:zoom-in}
+.dbx-shot figcaption{font-size:13px; color:var(--ink-2); margin-top:10px; text-align:center}
+.dbx-mods{display:grid; gap:10px; max-width:1180px}
+.dbx-mod{background:var(--surface); border:1px solid var(--line); border-radius:14px; overflow:hidden}
+.dbx-mod[open]{border-color:rgba(22,198,224,.45)}
+.dbx-mod summary{cursor:pointer; list-style:none; display:grid; grid-template-columns:150px 1fr auto; align-items:center; gap:4px 18px; padding:16px 52px 16px 18px; position:relative}
+.dbx-mod summary::-webkit-details-marker{display:none}
+.dbx-mod summary::after{content:"+"; position:absolute; right:18px; top:16px; font-family:var(--mono); color:var(--green); font-size:20px; line-height:1}
+.dbx-mod[open] summary::after{content:"–"}
+.dbx-mod-k{font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--cyan)}
+.dbx-mod summary b{font-family:var(--display); font-size:18px; font-weight:700}
+.dbx-mod-n{font-size:14px; color:var(--ink-2); text-align:right}
+.dbx-mod summary:hover{background:var(--surface-2)}
+.dbx-mod ol{list-style:none; margin:0; padding:6px 18px 16px; display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); column-gap:32px; border-top:1px solid var(--line)}
+.dbx-mod li{display:grid; grid-template-columns:42px 1fr; gap:8px; padding:7px 0; border-bottom:1px dashed var(--line); font-size:15px; color:var(--ink-2)}
+
+.dbx-mod li span{font-family:var(--mono); font-size:13px; color:var(--green); padding-top:2px}
+.dbx-proj{list-style:none; margin:0; padding:0; display:grid; gap:8px}
+.dbx-proj li{display:flex; gap:14px; align-items:center; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:12px 16px; font-family:var(--display); font-weight:600; font-size:16px}
+.dbx-proj li span{flex:0 0 auto; font-family:var(--mono); font-size:12px; font-weight:700; padding:4px 8px; border-radius:7px; background:var(--accent-soft); color:var(--cyan)}
+.dbx-lb{position:fixed; inset:0; z-index:200; background:rgba(3,5,8,.92); display:flex; align-items:center; justify-content:center; padding:16px; cursor:zoom-out}
+.dbx-lb[hidden]{display:none}
+.dbx-lb img{max-width:100%; max-height:100%; border-radius:10px}
+@media (max-width:980px){ .dbx-video, .dbx-anat{grid-template-columns:1fr} }
+@media (max-width:700px){ .dbx-mod summary{grid-template-columns:1fr} .dbx-mod-n{text-align:left} .dbx-mod ol{grid-template-columns:1fr} }
