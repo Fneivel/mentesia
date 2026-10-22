@@ -413,6 +413,19 @@ def seed_once():
                    0, None, 12, "Lançamento", "", "Quero a biblioteca", "biblioteca-skills", now(), now()))
         c.execute("INSERT INTO config (chave, valor) VALUES ('seed_biblioteca_skills_v1', '1')")
         c.commit()
+    if not c.execute("SELECT 1 FROM config WHERE chave='seed_databricks_150_v1'").fetchone():
+        # Entra no topo da vitrine como lançamento. Preço e link da Hotmart: preencher no painel
+        # (enquanto o link estiver vazio, o botão aparece como "Em breve").
+        c.execute("UPDATE produtos SET ordem = ordem + 1")
+        c.execute("INSERT INTO produtos (titulo, tipo, capa_texto, imagem, descricao, itens, preco, preco_antigo, parcelas, selo, link, botao, pagina, ativo, ordem, criado_em, atualizado_em)"
+                  " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,1,0,?,?)",
+                  ("Databricks em 150 Mapas", "Guia visual em PDF + HTML", "Databricks\n150 mapas",
+                   "/static/img/produtos/databricks-150-mapas.png",
+                   "Do primeiro notebook ao Lakehouse em produção, com a tela real da plataforma em cada mapa.",
+                   "150 mapas em 11 módulos\n164 exemplos de código e 11 mini projetos\nPDF de 200 páginas + HTML interativo",
+                   0, None, 12, "Lançamento", "", "Quero os 150 mapas", "databricks-150-mapas", now(), now()))
+        c.execute("INSERT INTO config (chave, valor) VALUES ('seed_databricks_150_v1', '1')")
+        c.commit()
 
 
 with app.app_context():
