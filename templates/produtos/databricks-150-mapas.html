@@ -1,0 +1,352 @@
+{% extends "base.html" %}
+{% block title %}Databricks em 150 Mapas · MentesIA{% endblock %}
+{% block description %}Guia visual de Databricks em PDF + HTML interativo: 150 mapas com a tela real da plataforma, passo a passo, código pronto e erro comum. Do primeiro notebook ao Lakehouse em produção, em português.{% endblock %}
+{% block pixel_events %}fbq('track', 'ViewContent', {content_name: 'Databricks em 150 Mapas', content_type: 'product', content_ids: ['databricks-150-mapas']{% if p.preco %}, value: {{ '%.2f'|format(p.preco) }}, currency: 'BRL'{% endif %}});{% endblock %}
+{% block og_image %}{{ url_for('static', filename='img/produtos/databricks-150-mapas.png', _external=True) }}{% endblock %}
+
+{% set IMG = 'img/produtos/databricks-150-mapas/' %}
+{% macro capa(cls='') %}<img class="lp-capa {{ cls }}" src="{{ url_for('static', filename=IMG ~ 'capa.webp') }}" width="489" height="691" alt="Capa do guia Databricks em 150 Mapas, da MentesIA">{% endmacro %}
+
+{% block content %}
+<!-- TOPO -->
+<section class="lp-hero">
+  <div class="wrap lp-hero-grid">
+    <div>
+      <a class="back" href="{{ url_for('loja') }}">← Voltar para a loja</a>
+      <span class="eyebrow">Guia visual em PDF + HTML interativo · Edição 2026</span>
+      <h1>Aprenda Databricks com <mark>150 mapas visuais</mark>, do primeiro notebook ao Lakehouse em produção</h1>
+      <p class="lede">Cada mapa ensina um assunto numa página só: a tela real da plataforma com os pontos numerados, o passo a passo, um exemplo de código pronto para adaptar, o erro mais comum e a dica de quem usa no dia a dia. Em português, do Python e do Spark até Delta Lake, SQL, Workflows e governança.</p>
+      <ul class="lp-pills">
+        <li>Do zero ao avançado</li>
+        <li>PDF + HTML que funciona offline</li>
+        <li>164 exemplos de código</li>
+      </ul>
+      {% include "produtos/_comprar.html" %}
+      <a class="lp-more" href="#video">Ver o HTML funcionando ↓</a>
+    </div>
+    <div class="lp-hero-art">
+      <div class="lp-capa-wrap">
+        {{ capa() }}
+        <span class="lp-capa-tag lp-capa-tag-1">+ HTML interativo</span>
+        <span class="lp-capa-tag lp-capa-tag-2">150 mapas · 11 módulos</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEMAS -->
+<div class="lp-topics" aria-label="Temas do guia">
+  <div class="wrap">
+    <span>Notebooks</span><span>Python</span><span>Apache Spark</span><span>PySpark</span><span>Delta Lake</span><span>Databricks SQL</span><span>Window functions</span><span>Dashboards</span><span>Unity Catalog</span><span>Workflows e Jobs</span><span>Auto Loader</span><span>Streaming</span><span>Governança</span><span>Custos</span>
+  </div>
+</div>
+
+<!-- NÚMEROS -->
+<section class="lp-stats">
+  <div class="wrap">
+    <div><b>150</b><span>mapas</span></div>
+    <div><b>11</b><span>módulos</span></div>
+    <div><b>164</b><span>exemplos de código</span></div>
+    <div><b>11</b><span>mini projetos</span></div>
+    <div><b>200</b><span>páginas em PDF</span></div>
+  </div>
+</section>
+
+<!-- VÍDEO -->
+<section class="block" id="video">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Em 30 segundos</span><h2>Veja o HTML interativo funcionando</h2><p>Gravação real do arquivo que você recebe: navegação pelos módulos, tela ampliada, código copiado com um clique, progresso e busca no material inteiro.</p></div></div>
+    <div class="dbx-video">
+      <figure class="dbx-video-frame">
+        <div class="lp-hub-bar"><i></i><i></i><i></i><span>Databricks em 150 Mapas · HTML interativo</span></div>
+        <video src="{{ url_for('static', filename=IMG ~ 'video.mp4') }}" poster="{{ url_for('static', filename=IMG ~ 'video-poster.webp') }}" width="1920" height="1080" controls muted playsinline preload="none" aria-label="Vídeo de 30 segundos mostrando o HTML interativo do guia Databricks em 150 Mapas"></video>
+      </figure>
+      <ol class="dbx-video-steps">
+        <li><b>Escolha o módulo</b><span>Os 11 módulos com quantos mapas você já estudou em cada um.</span></li>
+        <li><b>Amplie a tela</b><span>Clique no print da plataforma para ver cada detalhe.</span></li>
+        <li><b>Copie o código</b><span>Botão de copiar em todos os exemplos de Python, SQL e YAML.</span></li>
+        <li><b>Marque o progresso</b><span>Cada mapa estudado entra na barra de progresso.</span></li>
+        <li><b>Busque qualquer coisa</b><span>Um comando, uma função ou um erro: a busca varre os 150 mapas.</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- O QUE VOCÊ RECEBE -->
+<section class="block" id="formatos">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">O que você recebe</span><h2>O mesmo conteúdo em dois formatos</h2><p>O PDF é para ler, consultar e imprimir. O HTML transforma os mesmos 150 mapas numa trilha de estudo com busca, progresso e código para copiar.</p></div></div>
+    <div class="lp-cards3">
+      <article class="lp-card">
+        <svg class="lp-ico-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg>
+        <h3>Guia em PDF</h3>
+        <p>200 páginas em A4 paisagem com capa, sumário e os 150 mapas no padrão visual MentesIA. Os mapas mais densos ocupam duas páginas para nada ficar pequeno demais para ler.</p>
+      </article>
+      <article class="lp-card">
+        <svg class="lp-ico-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 9h4M7 12h7"/></svg>
+        <h3>HTML interativo</h3>
+        <p>Um arquivo único que abre no navegador do computador, tablet ou celular, sem instalar nada e sem internet. Busca, progresso salvo, atalhos de teclado e botão de copiar.</p>
+      </article>
+      <article class="lp-card">
+        <svg class="lp-ico-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v16"/><circle cx="14" cy="14" r="2"/></svg>
+        <h3>150 telas da plataforma</h3>
+        <p>Cada mapa traz um print do Databricks com os pontos numerados e a legenda do que cada um faz: Workspace, Catalog, Compute, SQL Editor, Jobs e muito mais.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ANATOMIA DE UM MAPA -->
+<section class="block" id="mapa">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Anatomia de um mapa</span><h2>Os mesmos 10 blocos em todos os 150 mapas</h2><p>Você sempre sabe onde procurar. Do objetivo à dica profissional, cada assunto segue a mesma ordem de aprendizado.</p></div></div>
+    <div class="dbx-anat">
+      <figure class="dbx-shot" data-zoom>
+        <img src="{{ url_for('static', filename=IMG ~ 'pdf-mapa.webp') }}" width="1600" height="1130" alt="Página do PDF: mapa 011, Executando a primeira célula Python" loading="lazy">
+        <figcaption>Página real do PDF: mapa 011. Clique para ampliar.</figcaption>
+      </figure>
+      <ol class="dbx-blocks">
+        <li><b>Objetivo do mapa</b><span>O que você vai conseguir fazer ao final.</span></li>
+        <li><b>Contexto prático</b><span>Onde isso aparece no trabalho real.</span></li>
+        <li><b>Principais benefícios</b><span>Por que vale a pena dominar o recurso.</span></li>
+        <li><b>Tela da plataforma</b><span>Print do Databricks com pontos numerados e legenda.</span></li>
+        <li><b>Principais conceitos</b><span>Os termos e comandos explicados em uma linha.</span></li>
+        <li><b>Passo a passo</b><span>A ordem exata das ações para executar.</span></li>
+        <li><b>Exemplo de uso real</b><span>Código em Python, SQL ou YAML com o resultado esperado.</span></li>
+        <li><b>Resultado esperado</b><span>Como saber que deu certo.</span></li>
+        <li><b>Erro comum</b><span>O deslize mais frequente e como evitar.</span></li>
+        <li><b>Dica profissional</b><span>O atalho de quem já usa em produção.</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- TOUR DO HTML -->
+<section class="block lp-hub-sec" id="html">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Por dentro do HTML interativo</span><h2>Estude no seu ritmo e aplique na hora</h2><p>Telas reais do arquivo que acompanha o PDF. Clique para trocar.</p></div></div>
+    <div class="lp-tour">
+      <div class="lp-tour-tabs" role="tablist" aria-label="Telas do HTML interativo">
+        <button role="tab" aria-selected="true" data-shot="home"><b>Visão geral</b><span>Os 11 módulos e o seu progresso</span></button>
+        <button role="tab" aria-selected="false" data-shot="mapa"><b>Mapa com a tela real</b><span>Objetivo, contexto e o print da plataforma</span></button>
+        <button role="tab" aria-selected="false" data-shot="codigo"><b>Código para copiar</b><span>Conceitos, passo a passo e exemplo pronto</span></button>
+        <button role="tab" aria-selected="false" data-shot="zoom"><b>Tela ampliada</b><span>Clique no print para ver cada detalhe</span></button>
+        <button role="tab" aria-selected="false" data-shot="busca"><b>Busca nos 150 mapas</b><span>Ache qualquer comando em segundos</span></button>
+      </div>
+      <figure class="lp-tour-frame">
+        <div class="lp-hub-bar"><i></i><i></i><i></i><span>Databricks em 150 Mapas</span></div>
+        <img id="tourImg" src="{{ url_for('static', filename=IMG ~ 'hub-home.webp') }}" width="1600" height="1000" alt="Tela do HTML interativo: Visão geral" loading="lazy">
+      </figure>
+    </div>
+    <div class="lp-hub-mobile">
+      <img src="{{ url_for('static', filename=IMG ~ 'hub-celular.webp') }}" width="390" height="844" alt="HTML interativo aberto no celular" loading="lazy">
+      <div>
+        <h3>Funciona também no celular</h3>
+        <p class="lp-p">O HTML se adapta à tela, com o menu de módulos recolhível. O progresso fica salvo no próprio navegador e, depois de baixado, o arquivo funciona sem internet.</p>
+        <ul class="lp-checks"><li>Atalhos: ← e → mudam de mapa, / abre a busca</li><li>Botão de copiar em todos os blocos de código</li><li>Arquivo único: é só abrir, sem instalar nada</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTEÚDO COMPLETO -->
+<section class="block" id="conteudo">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Conteúdo completo</span><h2>11 módulos em ordem de evolução</h2><p>Abra cada módulo para ver a lista de todos os mapas.</p></div></div>
+    <div class="dbx-mods">
+      <details class="dbx-mod" open>
+        <summary><span class="dbx-mod-k">Módulo 1</span><b>Fundamentos do Databricks</b><span class="dbx-mod-n">15 mapas · 001–015</span></summary>
+        <ol><li><span>001</span>O que é Databricks</li><li><span>002</span>O que é Data Lakehouse</li><li><span>003</span>Databricks e engenharia de dados</li><li><span>004</span>Visão geral da arquitetura Databricks</li><li><span>005</span>Interface principal do Databricks Workspace</li><li><span>006</span>Navegando pelo menu lateral</li><li><span>007</span>Criando e organizando um Workspace</li><li><span>008</span>Pastas e organização de projetos</li><li><span>009</span>Criando o primeiro notebook</li><li><span>010</span>Linguagens suportadas nos notebooks</li><li><span>011</span>Executando a primeira célula Python</li><li><span>012</span>Executando a primeira consulta SQL</li><li><span>013</span>Visualizando resultados em tabelas</li><li><span>014</span>Introdução aos recursos de computação</li><li><span>015</span>Mini projeto: primeiro notebook de análise de dados</li></ol>
+      </details>
+      <details class="dbx-mod">
+        <summary><span class="dbx-mod-k">Módulo 2</span><b>Python e notebooks</b><span class="dbx-mod-n">15 mapas · 016–030</span></summary>
+        <ol><li><span>016</span>Fundamentos de Python no Databricks</li><li><span>017</span>Variáveis e tipos de dados</li><li><span>018</span>Listas e dicionários</li><li><span>019</span>Condições com IF e ELSE</li><li><span>020</span>Estruturas FOR e WHILE</li><li><span>021</span>Criando funções Python</li><li><span>022</span>Importando bibliotecas</li><li><span>023</span>Organização de células no notebook</li><li><span>024</span>Magic commands em notebooks</li><li><span>025</span>Parâmetros com widgets</li><li><span>026</span>Executando SQL dentro de notebooks</li><li><span>027</span>Compartilhando notebooks</li><li><span>028</span>Versionamento e integração GIT</li><li><span>029</span>Tratamento de erros em Python</li><li><span>030</span>Mini projeto: preparação de dados com Python</li></ol>
+      </details>
+      <details class="dbx-mod">
+        <summary><span class="dbx-mod-k">Módulo 3</span><b>Apache Spark e PySpark</b><span class="dbx-mod-n">20 mapas · 031–050</span></summary>
+        <ol><li><span>031</span>O que é Apache Spark</li><li><span>032</span>Processamento distribuído</li><li><span>033</span>Driver e executors</li><li><span>034</span>SparkSession</li><li><span>035</span>Criando um DataFrame</li><li><span>036</span>Lendo arquivos CSV com PySpark</li><li><span>037</span>Lendo arquivos JSON com PySpark</li><li><span>038</span>Visualizando DataFrame</li><li><span>039</span>Schema e tipos de dados</li><li><span>040</span>Selecionando colunas com select()</li><li><span>041</span>Filtrando linhas com filter() e where()</li><li><span>042</span>Renomeando colunas com withColumnRenamed()</li><li><span>043</span>Criando colunas com withColumn()</li><li><span>044</span>Ordenando dados com orderBy() e sort()</li><li><span>045</span>Tratando valores nulos</li><li><span>046</span>Removendo duplicados</li><li><span>047</span>Agregações com groupBy() e agg()</li><li><span>048</span>Expressões e funções nativas</li><li><span>049</span>Trabalhando com datas e timestamps</li><li><span>050</span>Introdução a joins em DataFrames</li></ol>
+      </details>
+      <details class="dbx-mod">
+        <summary><span class="dbx-mod-k">Módulo 4</span><b>Delta Lake</b><span class="dbx-mod-n">20 mapas · 051–070</span></summary>
+        <ol><li><span>051</span>O que é Delta Lake</li><li><span>052</span>Estrutura de tabelas Delta</li><li><span>053</span>Criando tabelas Delta</li><li><span>054</span>Lendo dados de tabelas Delta</li><li><span>055</span>Escrevendo dados em Delta</li><li><span>056</span>APPEND e OVERWRITE</li><li><span>057</span>Atualizando dados com MERGE</li><li><span>058</span>Time travel em tabelas Delta</li><li><span>059</span>Otimização com OPTIMIZE e ZORDER</li><li><span>060</span>VACUUM e manutenção de tabelas Delta</li><li><span>061</span>Schema enforcement no Delta Lake</li><li><span>062</span>Schema evolution no Delta Lake</li><li><span>063</span>Particionamento em tabelas Delta</li><li><span>064</span>DELETE em tabelas Delta</li><li><span>065</span>UPDATE em tabelas Delta</li><li><span>066</span>RESTORE no Delta Lake</li><li><span>067</span>Change data feed (CDF)</li><li><span>068</span>Metadados e auditoria no Delta</li><li><span>069</span>Boas práticas no Delta Lake</li><li><span>070</span>Mini projeto com Delta Lake</li></ol>
+      </details>
+      <details class="dbx-mod">
+        <summary><span class="dbx-mod-k">Módulo 5</span><b>Databricks SQL</b><span class="dbx-mod-n">10 mapas · 071–080</span></summary>
+        <ol><li><span>071</span>Introdução ao Databricks SQL</li><li><span>072</span>Consultas básicas com SELECT</li><li><span>073</span>Filtrando dados com WHERE</li><li><span>074</span>Ordenando e limitando resultados</li><li><span>075</span>Agrupando dados com GROUP BY e HAVING</li><li><span>076</span>Joins no Databricks SQL</li><li><span>077</span>Funções de agregação e expressões</li><li><span>078</span>Visualizações e dashboards no Databricks SQL</li><li><span>079</span>SQL warehouses e performance</li><li><span>080</span>Mini projeto com Databricks SQL</li></ol>
+      </details>
+      <details class="dbx-mod">
+        <summary><span class="dbx-mod-k">Módulo 6</span><b>SQL avançado</b><span class="dbx-mod-n">10 mapas · 081–090</span></summary>
+        <ol><li><span>081</span>CTEs no Databricks SQL</li><li><span>082</span>Subqueries no Databricks SQL</li><li><span>083</span>Window functions no Databricks SQL</li><li><span>084</span>CASE WHEN e COALESCE no Databricks SQL</li><li><span>085</span>Funções de data e hora</li><li><span>086</span>Funções de texto e string</li><li><span>087</span>Views e temp views</li><li><span>088</span>PIVOT e UNPIVOT</li><li><span>089</span>Otimização de consultas SQL</li><li><span>090</span>Mini projeto com SQL avançado</li></ol>
+      </details>
+      <details class="dbx-mod">
+        <summary><span class="dbx-mod-k">Módulo 7</span><b>SQL analítico</b><span class="dbx-mod-n">10 mapas · 091–100</span></summary>
+        <ol><li><span>091</span>KPIs e métricas no Databricks SQL</li><li><span>092</span>Análise de coorte no Databricks SQL</li><li><span>093</span>Funil de conversão no Databricks SQL</li><li><span>094</span>Análise RFM no Databricks SQL</li><li><span>095</span>Retenção e churn no Databricks SQL</li><li><span>096</span>Comparativos temporais no Databricks SQL</li><li><span>097</span>Dashboards executivos no Databricks SQL</li><li><span>098</span>Filtros e parâmetros em dashboards</li><li><span>099</span>Alertas baseados em métricas</li><li><span>100</span>Mini projeto de SQL analítico</li></ol>
+      </details>
+      <details class="dbx-mod">
+        <summary><span class="dbx-mod-k">Módulo 8</span><b>Objetos e organização</b><span class="dbx-mod-n">10 mapas · 101–110</span></summary>
+        <ol><li><span>101</span>Introdução a views no Databricks SQL</li><li><span>102</span>Criando views reutilizáveis</li><li><span>103</span>Temp views e global temp views</li><li><span>104</span>Materialized views no Databricks SQL</li><li><span>105</span>Catálogos e schemas no Unity Catalog</li><li><span>106</span>Criando e gerenciando tabelas</li><li><span>107</span>Permissões em tabelas e views</li><li><span>108</span>Metadados e descrição de objetos</li><li><span>109</span>Padronização e nomenclatura de objetos</li><li><span>110</span>Mini projeto de organização analítica</li></ol>
+      </details>
+      <details class="dbx-mod">
+        <summary><span class="dbx-mod-k">Módulo 9</span><b>Workflows e Jobs</b><span class="dbx-mod-n">20 mapas · 111–130</span></summary>
+        <ol><li><span>111</span>Introdução ao Databricks Workflows</li><li><span>112</span>Criando seu primeiro job</li><li><span>113</span>Tarefas e dependências no job</li><li><span>114</span>Agendamentos e schedules</li><li><span>115</span>Parâmetros e execução manual</li><li><span>116</span>Tipos de tarefa no workflow</li><li><span>117</span>Monitoramento de execuções</li><li><span>118</span>Tratamento de falhas e retries</li><li><span>119</span>Alertas e notificações</li><li><span>120</span>Mini projeto de orquestração</li><li><span>121</span>Criação de jobs no Databricks</li><li><span>122</span>Lakeflow Connect no Databricks</li><li><span>123</span>Auto Loader no Databricks</li><li><span>124</span>Schema evolution em pipelines</li><li><span>125</span>Checkpoints e estado no Streaming</li><li><span>126</span>Structured Streaming no Databricks</li><li><span>127</span>Triggers e modos de execução</li><li><span>128</span>Deduplicação em pipelines incrementais</li><li><span>129</span>Monitoramento de pipelines</li><li><span>130</span>Mini projeto de pipeline incremental</li></ol>
+      </details>
+      <details class="dbx-mod">
+        <summary><span class="dbx-mod-k">Módulo 10</span><b>Operação e governança</b><span class="dbx-mod-n">10 mapas · 131–140</span></summary>
+        <ol><li><span>131</span>Boas práticas para jobs no Databricks</li><li><span>132</span>Clusters para execução de jobs</li><li><span>133</span>Bibliotecas e dependências em jobs</li><li><span>134</span>Permissões e segurança nos Workflows</li><li><span>135</span>Alertas e notificações em jobs</li><li><span>136</span>Reprocessamento e backfill no Databricks</li><li><span>137</span>Orquestração multietapas no Databricks</li><li><span>138</span>Custos e otimização de Workflows</li><li><span>139</span>Troubleshooting de falhas em jobs</li><li><span>140</span>Mini projeto de operação de jobs</li></ol>
+      </details>
+      <details class="dbx-mod">
+        <summary><span class="dbx-mod-k">Módulo 11</span><b>Delta Lake e Lakehouse</b><span class="dbx-mod-n">10 mapas · 141–150</span></summary>
+        <ol><li><span>141</span>Introdução ao Delta Lake no Databricks</li><li><span>142</span>Criação de tabelas Delta no Databricks</li><li><span>143</span>Inserção e consulta de dados em tabelas Delta</li><li><span>144</span>MERGE no Delta Lake</li><li><span>145</span>UPDATE e DELETE em tabelas Delta</li><li><span>146</span>Time travel e versionamento no Delta Lake</li><li><span>147</span>Schema enforcement e schema evolution</li><li><span>148</span>Otimização com OPTIMIZE e Z-ORDER</li><li><span>149</span>VACUUM e manutenção de tabelas Delta</li><li><span>150</span>Mini projeto de pipeline com Delta Lake</li></ol>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- MINI PROJETOS -->
+<section class="block" id="projetos">
+  <div class="wrap lp-split">
+    <div>
+      <span class="eyebrow">Teoria que vira prática</span>
+      <h2>11 mini projetos para fechar cada módulo</h2>
+      <p class="lp-p">Cada módulo termina com um mini projeto que junta tudo o que você viu num fluxo completo, do jeito que aparece numa empresa: dados de vendas, camadas bronze, silver e gold, consultas, dashboards e jobs agendados.</p>
+      <ul class="lp-checks"><li>Cenário de negócio realista em todos os projetos</li><li>Código completo, com o resultado esperado</li><li>O erro mais comum e como corrigir</li></ul>
+    </div>
+    <ol class="dbx-proj">
+      <li><span>015</span>Primeiro notebook de análise de dados</li>
+      <li><span>030</span>Preparação de dados com Python</li>
+      <li><span>070</span>Pipeline completo com Delta Lake</li>
+      <li><span>080</span>Da consulta ao dashboard no Databricks SQL</li>
+      <li><span>090</span>Análise com SQL avançado</li>
+      <li><span>100</span>Do KPI ao dashboard executivo</li>
+      <li><span>110</span>Organização analítica: catálogo, schema e views</li>
+      <li><span>120</span>Orquestração de ingestão, transformação e carga</li>
+      <li><span>130</span>Pipeline incremental orquestrado</li>
+      <li><span>140</span>Operação de jobs com alertas e governança</li>
+      <li><span>150</span>Pipeline bronze, silver e gold com Delta Lake</li>
+    </ol>
+  </div>
+</section>
+
+<!-- PARA QUEM É -->
+<section class="block" id="para-quem">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Para quem é</span><h2>Feito para quem precisa usar o Databricks de verdade</h2></div></div>
+    <div class="lp-cards3">
+      <article class="lp-card"><span class="lp-ico">01 · Começando</span><h3>Quem está chegando na plataforma</h3><p>Analistas e estudantes que precisam entender Workspace, notebooks, clusters e SQL sem se perder na documentação em inglês.</p></article>
+      <article class="lp-card"><span class="lp-ico">02 · Evoluindo</span><h3>Quem quer virar engenheiro de dados</h3><p>PySpark, Delta Lake, MERGE, time travel, otimização e pipelines incrementais, com o código que você leva para o trabalho.</p></article>
+      <article class="lp-card"><span class="lp-ico">03 · Operando</span><h3>Quem já roda pipelines em produção</h3><p>Workflows, retries, alertas, permissões, custos, backfill e troubleshooting, como material de consulta rápida para o time.</p></article>
+    </div>
+    <p class="lp-note"><strong>Não é para você se</strong> procura um curso em vídeo ou uma preparação específica para certificação. É um guia visual de consulta e prática, para estudar e ter sempre aberto ao lado da plataforma.</p>
+  </div>
+</section>
+
+<!-- AMOSTRA DO PDF -->
+<section class="block" id="pdf">
+  <div class="wrap lp-split">
+    <figure class="dbx-shot" data-zoom>
+      <img src="{{ url_for('static', filename=IMG ~ 'pdf-sumario.webp') }}" width="1600" height="1130" alt="Sumário do PDF Databricks em 150 Mapas" loading="lazy">
+      <figcaption>Sumário do PDF. Clique para ampliar.</figcaption>
+    </figure>
+    <div>
+      <span class="eyebrow">O PDF</span>
+      <h2>Para ler, consultar e imprimir</h2>
+      <p class="lp-p">Capa, sumário com os 150 títulos agrupados por módulo e um mapa por página, com numeração e barra de progresso no rodapé. Fundo escuro com contraste alto e código colorido por linguagem.</p>
+      <ul class="lp-checks"><li>A4 paisagem, 200 páginas</li><li>Texto selecionável e pesquisável</li><li>Abre em qualquer leitor de PDF</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- COMPRA -->
+<section class="block" id="comprar">
+  <div class="wrap">
+    <div class="lp-offer">
+      <div class="lp-offer-art">{{ capa('lp-capa-sm') }}</div>
+      <div>
+        <span class="eyebrow">Acesso imediato · Entrega pela Hotmart</span>
+        <h2>Databricks em 150 Mapas: PDF + HTML interativo</h2>
+        <ul class="lp-checks">
+          <li>150 mapas em 11 módulos, com a tela real da plataforma em cada um</li>
+          <li>164 exemplos de código em Python, SQL e YAML</li>
+          <li>11 mini projetos com cenário de negócio</li>
+          <li>PDF de 200 páginas + HTML com busca, progresso e botão de copiar</li>
+        </ul>
+        {% include "produtos/_comprar.html" %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="block" id="faq-produto">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Dúvidas</span><h2>Perguntas antes da compra</h2></div></div>
+    <div class="faq">
+      <details><summary>É um curso em vídeo?</summary><p>Não. É um guia visual em PDF acompanhado de um HTML interativo, que abre no navegador.</p></details>
+      <details><summary>Preciso instalar algum programa?</summary><p>Não. O PDF abre em qualquer leitor e o HTML abre no navegador do computador, tablet ou celular. É um arquivo único e, depois de baixado, funciona sem internet.</p></details>
+      <details><summary>Serve para quem nunca usou o Databricks?</summary><p>Sim. O módulo 1 começa explicando o que é a plataforma e como navegar no Workspace, e os módulos seguintes avançam aos poucos até pipelines, governança e custos.</p></details>
+      <details><summary>Preciso saber programar?</summary><p>Ajuda, mas não é obrigatório. O módulo 2 apresenta o Python do básico e os módulos de SQL partem do SELECT. Todo código vem explicado e com o resultado esperado.</p></details>
+      <details><summary>Preciso de uma conta paga do Databricks?</summary><p>Não para estudar. Boa parte dos exemplos pode ser praticada numa conta gratuita da plataforma. Recursos como Workflows em produção, Unity Catalog e SQL Warehouses dependem do plano contratado pela sua empresa.</p></details>
+      <details><summary>Como recebo o material?</summary><p>Pela Hotmart, logo após a confirmação do pagamento. O acesso chega no e-mail usado na compra e fica disponível na sua conta Hotmart.</p></details>
+      <details><summary>Tem garantia?</summary><p>Sim. Garantia de 7 dias pela Hotmart: se não for o que você esperava, peça o reembolso direto na plataforma.</p></details>
+      <details><summary>Ficou com outra dúvida?</summary><p>Escreva para <a href="mailto:suportementesia@gmail.com">suportementesia@gmail.com</a>.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CHAMADA FINAL -->
+<section class="block">
+  <div class="wrap">
+    <div class="lp-final">
+      <h2>Pronto para dominar o Databricks?</h2>
+      <p>Um mapa por dia e, em cinco meses, você passou pela plataforma inteira.</p>
+      <a class="btn btn-primary lp-cta" href="#comprar">Quero os 150 mapas</a>
+    </div>
+    <p class="lp-legal">Material independente, produzido pela MentesIA, sem vínculo com a Databricks, Inc. Databricks, Delta Lake e Apache Spark são marcas de seus respectivos donos.</p>
+  </div>
+</section>
+
+<!-- Ampliar imagens -->
+<div class="dbx-lb" id="dbxLb" hidden><img alt=""></div>
+
+<!-- Barra fixa de compra no celular -->
+{% if p.link %}
+<div class="lp-sticky" id="lpSticky">
+  <div><b>Databricks em 150 Mapas</b>{% if p.preco %}<span>{{ p.preco|brl }}</span>{% endif %}</div>
+  <a class="btn btn-primary" href="{{ p.link }}" data-value="{{ '%.2f'|format(p.preco or 0) }}" data-produto="{{ p.pagina or p.id }}" target="_blank" rel="noopener">{{ p.botao or 'Comprar' }}</a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* Tour do HTML: troca a tela ao clicar */
+(function () {
+  const img = document.getElementById("tourImg"), base = "{{ url_for('static', filename=IMG) }}";
+  const tabs = document.querySelectorAll(".lp-tour-tabs [role=tab]");
+  tabs.forEach(t => {
+    const pre = new Image(); pre.src = base + "hub-" + t.dataset.shot + ".webp";
+    t.addEventListener("click", () => {
+      tabs.forEach(x => x.setAttribute("aria-selected", x === t));
+      img.src = base + "hub-" + t.dataset.shot + ".webp";
+      img.alt = "Tela do HTML interativo: " + t.querySelector("b").textContent;
+    });
+  });
+})();
+/* Ampliar as páginas do PDF */
+(function () {
+  const lb = document.getElementById("dbxLb"), big = lb.querySelector("img");
+  document.querySelectorAll("[data-zoom] img").forEach(im => im.addEventListener("click", () => { big.src = im.src; big.alt = im.alt; lb.hidden = false; }));
+  lb.addEventListener("click", () => { lb.hidden = true; });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") lb.hidden = true; });
+})();
+/* Barra fixa no celular: aparece depois do topo e some na seção de compra */
+(function () {
+  const bar = document.getElementById("lpSticky"); if (!bar) return;
+  const hero = document.querySelector(".lp-hero"), offer = document.getElementById("comprar");
+  let heroOut = false, offerIn = false;
+  const upd = () => bar.classList.toggle("show", heroOut && !offerIn);
+  new IntersectionObserver(([e]) => { heroOut = !e.isIntersecting; upd(); }).observe(hero);
+  new IntersectionObserver(([e]) => { offerIn = e.isIntersecting; upd(); }).observe(offer);
+})();
+</script>
+{% endblock %}
