@@ -5,14 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#07090D">
 <meta name="color-scheme" content="dark">
-<title>{% block title %}MentesIA — Inteligência artificial sem mistério{% endblock %}</title>
+<title>{% block title %}Mentes.IA — Inteligência artificial sem mistério{% endblock %}</title>
 <meta name="description" content="{% block description %}{{ S.seo_descricao }}{% endblock %}">
-<meta property="og:site_name" content="MentesIA">
+<meta property="og:site_name" content="Mentes.IA">
 <meta property="og:title" content="{{ self.title() }}">
 <meta property="og:description" content="{{ self.description() }}">
 <meta property="og:image" content="{% block og_image %}{{ url_for('static', filename='img/mentesia-icone.png', _external=True) }}{% endblock %}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{{ url_for('static', filename='img/mentesia-icone.svg') }}" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -25,12 +27,16 @@ n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
 n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
-try{if(localStorage.getItem('mi_cookies')==='nao')fbq('consent','revoke');}catch(e){}
+// LGPD: nada é enviado à Meta antes do "Aceitar". Sem escolha (ou com "Recusar"), o pixel fica em espera.
+var miOk=false;try{miOk=localStorage.getItem('mi_cookies')==='sim';}catch(e){}
+if(!miOk)fbq('consent','revoke');
 fbq('init', '{{ pixel_id }}');
+window.miPixelEventos=function(){
 fbq('track', 'PageView');
 {% block pixel_events %}{% endblock %}
+};
+if(miOk)window.miPixelEventos();
 </script>
-<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id={{ pixel_id }}&ev=PageView&noscript=1"></noscript>
 {% endif %}
 </head>
 <body>
@@ -38,9 +44,9 @@ fbq('track', 'PageView');
 {% set link_news = '#newsletter' if aqui in ('home', 'novidades', 'materiais', 'material_pagina', 'loja') else url_for('home') ~ '#newsletter' %}
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="{{ url_for('home') }}" aria-label="MentesIA, início">
+    <a class="logo" href="{{ url_for('home') }}" aria-label="Mentes.IA, início">
       <img src="{{ url_for('static', filename='img/mentesia-icone.svg') }}" width="34" height="34" alt="">
-      <span>Mentes<b>IA</b></span>
+      <span>Mentes<b>.IA</b></span>
     </a>
     <nav class="nav" id="mainNav" aria-label="Principal">
       <a href="{{ url_for('novidades') }}"{% if aqui in ('novidades', 'post') %} class="is-active" aria-current="page"{% endif %}>Novidades</a>
@@ -65,7 +71,7 @@ fbq('track', 'PageView');
     <div style="display:grid; gap:10px; max-width:360px">
       <a class="logo" href="{{ url_for('home') }}">
         <img src="{{ url_for('static', filename='img/mentesia-icone.svg') }}" width="34" height="34" alt="">
-        <span>Mentes<b>IA</b></span>
+        <span>Mentes<b>.IA</b></span>
       </a>
       <p style="font-size:14px; color:var(--ink-2)">{{ S.rodape_texto }}</p>
     </div>
@@ -80,20 +86,39 @@ fbq('track', 'PageView');
       </div>
       {% endif %}
     </div>
-    <p class="legal">© {{ ano }} MentesIA · <a href="https://www.mentesia.com.br">www.mentesia.com.br</a></p>
+    <p class="legal">© {{ ano }} Mentes.IA · <a href="https://www.mentesia.com.br">www.mentesia.com.br</a></p>
   </div>
 </footer>
 
 <div class="toast" id="toast" role="status"></div>
 {% if pixel_id %}
-<div class="cookiebar" id="cookieBar" role="dialog" aria-live="polite" aria-label="Aviso de cookies" hidden>
-  <p>Usamos cookies do Pixel da Meta para medir visitas e melhorar nossos anúncios. Veja a <a href="{{ url_for('privacidade') }}">política de privacidade</a>.</p>
+<div class="cookiebar" id="cookieBar" role="region" aria-label="Aviso de cookies" hidden>
+  <p><span class="ck-long">Usamos cookies do Pixel da Meta para medir visitas e melhorar nossos anúncios. </span><span class="ck-short">Usamos cookies para medir visitas. </span><a href="{{ url_for('privacidade') }}">Saiba mais</a></p>
   <div class="cookiebar-btns">
-    <button type="button" class="btn btn-ghost btn-sm" data-cookie="nao">Recusar</button>
+    <button type="button" class="ck-no" data-cookie="nao">Recusar</button>
     <button type="button" class="btn btn-primary btn-sm" data-cookie="sim">Aceitar</button>
   </div>
 </div>
 {% endif %}
+{# Confirmação do download direto dos materiais grátis #}
+<div class="dl-sheet" id="dlSheet" role="dialog" aria-modal="false" aria-labelledby="dlTitle" hidden>
+  <div class="dl-card">
+    <button class="dl-x" type="button" data-dl-close aria-label="Fechar">×</button>
+    <span class="dl-ok" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span>
+    <h2 id="dlTitle">Download iniciado</h2>
+    <p class="dl-nome" id="dlNome"></p>
+    <p>O arquivo foi salvo no seu aparelho. Para abrir depois:</p>
+    <ul>
+      <li><b>Android:</b> app <i>Arquivos</i> (ou <i>Meus arquivos</i>) › <i>Downloads</i></li>
+      <li><b>iPhone:</b> app <i>Arquivos</i> › <i>Downloads</i>, ou toque no ícone <i>⬇</i> do Safari</li>
+      <li><b>Computador:</b> pasta <i>Downloads</i></li>
+    </ul>
+    <div class="dl-btns">
+      <a class="btn btn-ghost" id="dlAgain" href="#">Não começou? Baixar de novo</a>
+      <a class="btn btn-primary" href="{{ link_news }}" data-dl-close>Receber os próximos materiais</a>
+    </div>
+  </div>
+</div>
 {% block scripts %}{% endblock %}
 <script src="{{ url_for('static', filename='js/site.js') }}"></script>
 </body>

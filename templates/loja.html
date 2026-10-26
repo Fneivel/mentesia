@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% import "_secoes.html" as sec with context %}
-{% block title %}Loja: cursos e produtos de IA · MentesIA{% endblock %}
+{% block title %}Loja: cursos e produtos de IA · Mentes.IA{% endblock %}
 {% block description %}{{ S.loja_texto }}{% endblock %}
 {% block content %}
   {{ sec.cabecalho('Loja', S.loja_titulo, S.loja_texto) }}
   <section class="block page-body" id="loja">
     <div class="wrap">
+      {{ sec.filtro_objetivos(filtros, para, 'loja') }}
       {% if produtos %}
         {{ sec.cards_produtos(produtos) }}
       {% else %}

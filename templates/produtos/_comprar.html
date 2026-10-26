@@ -1,14 +1,10 @@
 {# Bloco de compra reutilizável: preço e botão vêm do cadastro do produto no painel #}
 {% from "_oferta.html" import contador %}
+{% import "_secoes.html" as sec with context %}
 <div class="lp-buy">
   {{ contador(p) }}
-  {% if p.preco %}
-  <div class="lp-price">
-    {% if p.preco_antigo %}<span class="old">{{ p.preco_antigo|brl }}</span>{% endif %}
-    <span class="now">{{ p.preco|brl }}</span>
-    {% if p.parcelas and p.parcelas > 1 %}<span class="inst">ou em até {{ p.parcelas }}x no cartão</span>{% endif %}
-  </div>
-  {% endif %}
+  {{ sec.preco(p, 'lp-price') }}
+  {{ sec.compat(p) }}
   {% if p.link %}
   <a class="btn btn-primary lp-cta" href="{{ p.link }}" data-value="{{ '%.2f'|format(p.preco or 0) }}" data-produto="{{ p.pagina or p.id }}" target="_blank" rel="noopener">{{ p.botao or 'Comprar na Hotmart' }}</a>
   <p class="lp-safe">

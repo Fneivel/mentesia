@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %}MentesIA Social Hub · Calendário editorial para Windows · MentesIA{% endblock %}
+{% block title %}Mentes.IA Social Hub · Calendário editorial para Windows · Mentes.IA{% endblock %}
 {% block description %}Planeje, organize e acompanhe as postagens de todas as suas marcas em um calendário editorial que roda no seu Windows, sem internet e sem mensalidade de plataforma.{% endblock %}
 {% block og_image %}{{ url_for('static', filename='img/produtos/social-hub.png', _external=True) }}{% endblock %}
 
-{% block pixel_events %}fbq('track', 'ViewContent', {content_name: 'MentesIA Social Hub', content_type: 'product', content_ids: ['social-hub']{% if p.preco %}, value: {{ '%.2f'|format(p.preco) }}, currency: 'BRL'{% endif %}});{% endblock %}
+{% block pixel_events %}fbq('track', 'ViewContent', {content_name: 'Mentes.IA Social Hub', content_type: 'product', content_ids: ['social-hub']{% if p.preco %}, value: {{ '%.2f'|format(p.preco) }}, currency: 'BRL'{% endif %}});{% endblock %}
 
 {% set IMG = 'img/produtos/social-hub/' %}
 
@@ -15,7 +15,7 @@
       <a class="back" href="{{ url_for('loja') }}">← Voltar para a loja</a>
       <span class="eyebrow">Programa para Windows · Funciona sem internet</span>
       <h1>Seu conteúdo organizado. <mark>Sua rotina mais simples.</mark></h1>
-      <p class="lede">O MentesIA Social Hub é um calendário editorial que roda no seu computador. Planeje as postagens de todas as suas marcas, acompanhe cada uma do rascunho ao publicado e tenha tudo num só lugar, sem planilha espalhada e sem print perdido.</p>
+      <p class="lede">O Mentes.IA Social Hub é um calendário editorial que roda no seu computador. Planeje as postagens de todas as suas marcas, acompanhe cada uma do rascunho ao publicado e tenha tudo num só lugar, sem planilha espalhada e sem print perdido.</p>
       <ul class="lp-pills">
         <li>Windows 10 e 11</li>
         <li>Python incluído no instalador</li>
@@ -27,8 +27,8 @@
     <div class="lp-hero-art">
       <div class="sh-hero-shot">
         <figure class="lp-tour-frame">
-          <div class="lp-hub-bar"><i></i><i></i><i></i><span>MentesIA Social Hub</span></div>
-          <img src="{{ url_for('static', filename=IMG ~ 'tela-calendario.webp') }}" width="1440" height="880" alt="Calendário editorial do MentesIA Social Hub com postagens de exemplo em vários dias do mês">
+          <div class="lp-hub-bar"><i></i><i></i><i></i><span>Mentes.IA Social Hub</span></div>
+          <img src="{{ url_for('static', filename=IMG ~ 'tela-calendario.webp') }}" width="1440" height="880" alt="Calendário editorial do Mentes.IA Social Hub com postagens de exemplo em vários dias do mês">
         </figure>
         <span class="lp-capa-tag lp-capa-tag-1">Instale e use offline</span>
         <span class="lp-capa-tag lp-capa-tag-2">8 redes sociais</span>
@@ -59,7 +59,7 @@
 <section class="block" id="video">
   <div class="wrap">
     <div class="sh-video">
-      <video src="{{ url_for('static', filename=IMG ~ 'tutorial.mp4') }}" poster="{{ url_for('static', filename=IMG ~ 'tutorial-poster.webp') }}" width="720" height="1280" controls muted playsinline preload="none" aria-label="Vídeo tutorial do MentesIA Social Hub"></video>
+      <video src="{{ url_for('static', filename=IMG ~ 'tutorial.mp4') }}" poster="{{ url_for('static', filename=IMG ~ 'tutorial-poster.webp') }}" width="720" height="1280" controls muted playsinline preload="none" aria-label="Vídeo tutorial do Mentes.IA Social Hub"></video>
       <div>
         <span class="eyebrow">Em menos de um minuto</span>
         <h2>Veja como é usar no dia a dia</h2>
@@ -78,9 +78,9 @@
 <!-- TOUR -->
 <section class="block lp-hub-sec" id="telas">
   <div class="wrap">
-    <div class="sec-head"><div><span class="eyebrow">Por dentro do programa</span><h2>Cada tela resolve uma parte da rotina</h2><p>Estas são telas reais do MentesIA Social Hub. Clique para trocar.</p></div></div>
+    <div class="sec-head"><div><span class="eyebrow">Por dentro do programa</span><h2>Cada tela resolve uma parte da rotina</h2><p>Estas são telas reais do Mentes.IA Social Hub. Clique para trocar.</p></div></div>
     <div class="lp-tour">
-      <div class="lp-tour-tabs" role="tablist" aria-label="Telas do MentesIA Social Hub">
+      <div class="lp-tour-tabs" role="tablist" aria-label="Telas do Mentes.IA Social Hub">
         <button role="tab" aria-selected="true" data-shot="dashboard"><b>Dashboard</b><span>Números e próximas publicações</span></button>
         <button role="tab" aria-selected="false" data-shot="calendario"><b>Calendário editorial</b><span>O mês inteiro com rede e status</span></button>
         <button role="tab" aria-selected="false" data-shot="postagem"><b>Nova postagem</b><span>Marca, rede, formato, legenda e link</span></button>
@@ -90,8 +90,8 @@
         <button role="tab" aria-selected="false" data-shot="escuro"><b>Tema escuro</b><span>Para quem trabalha até tarde</span></button>
       </div>
       <figure class="lp-tour-frame">
-        <div class="lp-hub-bar"><i></i><i></i><i></i><span>MentesIA Social Hub</span></div>
-        <img id="tourImg" src="{{ url_for('static', filename=IMG ~ 'tela-dashboard.webp') }}" width="1440" height="880" alt="Tela do MentesIA Social Hub: Dashboard" loading="lazy">
+        <div class="lp-hub-bar"><i></i><i></i><i></i><span>Mentes.IA Social Hub</span></div>
+        <img id="tourImg" src="{{ url_for('static', filename=IMG ~ 'tela-dashboard.webp') }}" width="1440" height="880" alt="Tela do Mentes.IA Social Hub: Dashboard" loading="lazy">
       </figure>
     </div>
   </div>
@@ -136,7 +136,7 @@
         <ul><li>Ideias espalhadas em vários arquivos</li><li>Difícil ver o mês de uma vez</li><li>Ninguém sabe o que já foi publicado</li><li>Marcas e clientes misturados</li></ul>
       </div>
       <div class="lp-vs-col lp-vs-on">
-        <h3>MentesIA Social Hub</h3>
+        <h3>Mentes.IA Social Hub</h3>
         <ul class="lp-checks"><li>Calendário com todas as postagens</li><li>Status de cada conteúdo à vista</li><li>Marcas separadas, cada uma com seus perfis</li><li>Busca, filtro e exportação em um clique</li></ul>
       </div>
     </div>
@@ -160,7 +160,7 @@
 <section class="block" id="comprar">
   <div class="wrap">
     <div class="lp-offer">
-      <div class="lp-offer-art"><img class="sh-offer-img" src="{{ url_for('static', filename='img/produtos/social-hub.png') }}" width="1200" height="750" alt="MentesIA Social Hub" loading="lazy"></div>
+      <div class="lp-offer-art"><img class="sh-offer-img" src="{{ url_for('static', filename='img/produtos/social-hub.webp') }}" width="1200" height="750" alt="Mentes.IA Social Hub" loading="lazy"></div>
       <div>
         <span class="eyebrow">Acesso imediato · Entrega pela Hotmart</span>
         <h2>O que você recebe</h2>
@@ -201,14 +201,14 @@
       <p>Um calendário, todas as marcas e cada etapa à vista, direto no seu Windows.</p>
       <a class="btn btn-primary lp-cta" href="#comprar">Quero o Social Hub</a>
     </div>
-    <p class="lp-legal">Programa independente, produzido pela MentesIA, sem vínculo com as redes sociais citadas. Instagram, Facebook, Threads, LinkedIn, TikTok, YouTube, Pinterest, X e Windows são marcas de seus respectivos donos. As marcas e perfis mostrados nas telas são exemplos fictícios.</p>
+    <p class="lp-legal">Programa independente, produzido pela Mentes.IA, sem vínculo com as redes sociais citadas. Instagram, Facebook, Threads, LinkedIn, TikTok, YouTube, Pinterest, X e Windows são marcas de seus respectivos donos. As marcas e perfis mostrados nas telas são exemplos fictícios.</p>
   </div>
 </section>
 
 <!-- Barra fixa de compra no celular -->
 {% if p.link %}
 <div class="lp-sticky" id="lpSticky">
-  <div><b>MentesIA Social Hub</b>{% if p.preco %}<span>{{ p.preco|brl }}</span>{% endif %}</div>
+  <div><b>Mentes.IA Social Hub</b>{% if p.preco %}<span>{{ p.preco|brl }}</span>{% endif %}</div>
   <a class="btn btn-primary" href="{{ p.link }}" data-value="{{ '%.2f'|format(p.preco or 0) }}" data-produto="{{ p.pagina or p.id }}" target="_blank" rel="noopener">{{ p.botao or 'Comprar' }}</a>
 </div>
 {% endif %}
@@ -225,7 +225,7 @@
     t.addEventListener("click", () => {
       tabs.forEach(x => x.setAttribute("aria-selected", x === t));
       img.src = base + "tela-" + t.dataset.shot + ".webp";
-      img.alt = "Tela do MentesIA Social Hub: " + t.querySelector("b").textContent;
+      img.alt = "Tela do Mentes.IA Social Hub: " + t.querySelector("b").textContent;
     });
   });
 })();

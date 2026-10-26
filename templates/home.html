@@ -35,6 +35,20 @@
     </div>
   </section>
 
+  <!-- CAMINHOS POR OBJETIVO -->
+  <section class="block block-paths" id="caminhos">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow">Por onde começar</span>
+          <h2>{{ S.caminhos_titulo }}</h2>
+          <p>{{ S.caminhos_texto }}</p>
+        </div>
+      </div>
+      {{ sec.caminhos() }}
+    </div>
+  </section>
+
   <!-- MATERIAIS GRATUITOS (prévia; a lista completa fica em /materiais-gratis) -->
   {% if materiais %}
   <section class="block" id="gratis">

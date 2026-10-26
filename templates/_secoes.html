@@ -29,14 +29,52 @@
 {% endif %}
 {%- endmacro %}
 
+{# Texto do botão do material: download direto quando há arquivo, acesso quando é link externo #}
+{% macro rotulo_material(m) -%}
+{%- if m.botao -%}{{ m.botao }}
+{%- elif m.arquivo -%}{% set r = m.formato|rotulo_formato %}{{ 'Baixar ' ~ r|upper if r|upper in ('PDF', 'ZIP', 'XLSX', 'CSV', 'DOCX', 'PPTX') else 'Baixar agora' }}
+{%- else -%}Acessar grátis{%- endif -%}
+{%- endmacro %}
+
+{% macro botao_material(m, classe='btn btn-primary') -%}
+{% if m.arquivo or m.link %}
+<a class="{{ classe }}" href="{{ url_for('material', mid=m.id) }}"
+   {% if m.arquivo %}data-download data-nome="{{ m.titulo }}"{% else %}target="_blank" rel="noopener"{% endif %}>
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{% if m.arquivo %}<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>{% else %}<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>{% endif %}</svg>
+  {{ rotulo_material(m) }}
+</a>
+{% else %}
+<span class="btn btn-ghost is-disabled" aria-disabled="true">Em breve</span>
+{% endif %}
+{%- endmacro %}
+
+{# Preço com hierarquia explícita: "De R$ 79,90 por R$ 19,90 · à vista ou em até 6x" #}
+{% macro preco(p, classe='price') -%}
+{% if p.preco %}
+<div class="{{ classe }}">
+  {% if p.preco_antigo and p.preco_antigo > p.preco %}<span class="de">De <s>{{ p.preco_antigo|brl }}</s> por</span>{% endif %}
+  <span class="now">{{ p.preco|brl }}</span>
+  <span class="inst">à vista{% if p|parcela %} {{ p|parcela }}{% endif %}</span>
+</div>
+{% endif %}
+{%- endmacro %}
+
+{% macro compat(p) -%}
+{% if p.compatibilidade %}
+<p class="compat"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><span>{{ p.compatibilidade }}</span></p>
+{% endif %}
+{%- endmacro %}
+
 {% macro cards_materiais(materiais) -%}
 <div class="free">
   {% for m in materiais %}
   <article class="freebie">
     {% set mp = url_for('material_pagina', slug=m.slug) if m.slug else '' %}
-    {# Miniatura: só aparece no celular (formato "link na bio", card compacto) #}
+    {# Miniatura: só aparece no celular (card compacto). Nunca recorta a capa larga:
+       usa a miniatura quadrada do painel ou um selo da marca com o formato. #}
     {% if mp %}<a class="mthumb" href="{{ mp }}" tabindex="-1" aria-hidden="true">{% else %}<span class="mthumb" aria-hidden="true">{% endif %}
-      {% if m.capa %}<img src="{{ media_url(m.capa) }}" alt="" loading="lazy">{% else %}<img class="mthumb-logo" src="{{ url_for('static', filename='img/mentesia-icone.svg') }}" alt="">{% endif %}
+      {% if m.miniatura %}<img src="{{ media_url(m.miniatura) }}" alt="" loading="lazy">
+      {% else %}<span class="mtile"><img src="{{ url_for('static', filename='img/mentesia-icone.svg') }}" alt=""><b>{{ m.formato|rotulo_formato }}</b></span>{% endif %}
     {% if mp %}</a>{% else %}</span>{% endif %}
     <div class="mtxt">
       <div class="mtags"><span class="mfree">Grátis</span>{% if m.formato %}<span class="fmt">{{ m.formato }}</span>{% endif %}</div>
@@ -44,15 +82,22 @@
       <p>{{ m.descricao }}</p>
     </div>
     <ul>{% for t in m.itens|lines %}<li>{{ t }}</li>{% endfor %}</ul>
-    {% if m.arquivo or m.link %}
-    <a class="btn btn-ghost" href="{{ url_for('material', mid=m.id) }}" {% if not m.arquivo %}target="_blank" rel="noopener"{% endif %}>{{ m.botao or 'Quero o material grátis' }}</a>
-    {% else %}
-    <span class="btn btn-ghost is-disabled" aria-disabled="true">Em breve</span>
-    {% endif %}
-    {% if mp %}<a class="freebie-more" href="{{ mp }}">Ver detalhes <span aria-hidden="true">→</span></a>{% endif %}
+    <div class="mactions">
+      {% if mp %}<a class="btn btn-ghost mdet" href="{{ mp }}">Ver detalhes</a>{% endif %}
+      {{ botao_material(m) }}
+    </div>
   </article>
   {% endfor %}
 </div>
+{%- endmacro %}
+
+{% macro filtro_objetivos(filtros, para, endpoint) -%}
+{% if filtros %}
+<nav class="chips filter-bar" aria-label="Filtrar por objetivo">
+  <a class="chip" href="{{ url_for(endpoint) }}#loja" {% if not para %}aria-current="true"{% endif %}>Todos</a>
+  {% for o in filtros %}<a class="chip" href="{{ url_for(endpoint, para=o.slug) }}#loja" {% if para == o.slug %}aria-current="true"{% endif %} title="{{ o.titulo }}">{{ o.curto }}</a>{% endfor %}
+</nav>
+{% endif %}
 {%- endmacro %}
 
 {% macro cards_produtos(produtos) -%}
@@ -61,9 +106,11 @@
   <article class="product{% if p.selo %} best{% endif %}">
     {% set pg = url_for('produto_pagina', slug=p.pagina) if p.pagina else '' %}
     {% if pg %}<a class="cover cover-link" href="{{ pg }}" aria-label="Ver detalhes de {{ p.titulo }}">{% else %}<div class="cover">{% endif %}
-      {% if p.imagem %}<img class="cover-img" src="{{ media_url(p.imagem) }}" alt="">{% set mini = miniatura_produto(p) %}{% if mini %}<img class="cover-mini" src="{{ mini }}" alt="" loading="lazy">{% endif %}{% else %}<canvas data-seed="{{ loop.index + 2 }}"></canvas>{% endif %}
+      {% if p.imagem %}<img class="cover-img" src="{{ media_url(p.imagem) }}" alt="" loading="lazy">{% else %}<canvas data-seed="{{ loop.index + 2 }}"></canvas>{% endif %}
+      {% if p.miniatura %}<img class="cover-mini" src="{{ media_url(p.miniatura) }}" alt="" loading="lazy">{% endif %}
       {% if p.selo %}<span class="badge">{{ p.selo }}</span>{% endif %}
       {% if not p.imagem %}<span class="ctitle">{{ p.capa_texto|default(p.titulo, true)|replace('\n', '<br>'|safe) }}</span>{% endif %}
+      {% if p.imagem and not p.miniatura %}<span class="ctitle ctitle-mini">{{ p.capa_texto|default(p.titulo, true)|replace('\n', '<br>'|safe) }}</span>{% endif %}
     {% if pg %}</a>{% else %}</div>{% endif %}
     <div class="pbody">
       <div class="mtxt">
@@ -73,13 +120,8 @@
       </div>
       <ul>{% for t in p.itens|lines %}<li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>{{ t }}</span></li>{% endfor %}</ul>
       {{ contador(p, compacto=True) }}
-      {% if p.preco %}
-      <div class="price">
-        <span class="now">{{ p.preco|brl }}</span>
-        {% if p.preco_antigo %}<span class="old">{{ p.preco_antigo|brl }}</span>{% endif %}
-        {% if p.parcelas and p.parcelas > 1 %}<span class="inst">ou até {{ p.parcelas }}x no cartão</span>{% endif %}
-      </div>
-      {% endif %}
+      {{ preco(p) }}
+      {{ compat(p) }}
       {% if pg %}
       <a class="btn btn-primary" href="{{ pg }}">Ver detalhes</a>
       {% elif p.link %}
@@ -95,6 +137,28 @@
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
   {{ S.loja_seguranca }}
 </p>
+{%- endmacro %}
+
+{# Bloco "O que você quer fazer?" (home) #}
+{% macro caminhos(atual='') -%}
+<div class="paths" role="list">
+  {% for o in OBJETIVOS %}
+  <a class="path{% if o.slug == atual %} is-current{% endif %}" role="listitem" href="{{ url_for('caminho', slug=o.slug) }}"{% if o.slug == atual %} aria-current="page"{% endif %}>
+    <span class="path-ico" aria-hidden="true">{{ icone_caminho(o.slug) }}</span>
+    <span class="path-txt"><strong>{{ o.titulo }}</strong><small>{{ o.texto }}</small></span>
+    <span class="path-go" aria-hidden="true">→</span>
+  </a>
+  {% endfor %}
+</div>
+{%- endmacro %}
+
+{% macro icone_caminho(slug) -%}
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+{%- if slug == 'comecar' %}<path d="M5 19c4-1 6-4 7-8 1 4 3 7 7 8"/><circle cx="12" cy="6" r="2.5"/>
+{%- elif slug == 'produtividade' %}<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>
+{%- elif slug == 'conteudo' %}<rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>
+{%- else %}<path d="M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/>{% endif -%}
+</svg>
 {%- endmacro %}
 
 {% macro como_comprar() -%}

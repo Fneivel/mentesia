@@ -24,6 +24,13 @@
     {% elif ftype in ('int', 'money') %}
       <input type="text" inputmode="decimal" id="f_{{ name }}" name="{{ name }}"
              value="{{ ('%.2f'|format(val)).replace('.', ',') if ftype == 'money' and val is not none else (val if val is not none else '') }}">
+    {% elif ftype == 'objetivos' %}
+      {% set marcados = (val or '').split(',') %}
+      <div class="checks-list" id="f_{{ name }}">
+        {% for o in OBJETIVOS %}
+        <label class="check"><input type="checkbox" name="{{ name }}" value="{{ o.slug }}" {% if o.slug in marcados %}checked{% endif %}> {{ o.titulo }}</label>
+        {% endfor %}
+      </div>
     {% elif ftype == 'datetime' %}
       <input type="datetime-local" id="f_{{ name }}" name="{{ name }}" value="{{ val or '' }}">
     {% elif ftype in ('image', 'file') %}

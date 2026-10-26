@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% import "_secoes.html" as sec with context %}
+{% block title %}{{ obj.titulo }} com IA · Mentes.IA{% endblock %}
+{% block description %}{{ obj.texto }} Materiais grátis, artigos e produtos selecionados para esse objetivo.{% endblock %}
+{% block content %}
+  {{ sec.cabecalho(obj.titulo, obj.titulo, obj.texto) }}
+
+  <section class="block page-body path-switch">
+    <div class="wrap">
+      <span class="eyebrow">Outros caminhos</span>
+      {{ sec.caminhos(obj.slug) }}
+    </div>
+  </section>
+
+  {% if materiais %}
+  <section class="block" id="gratis">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">Grátis</span><h2>Comece por aqui</h2><p>Materiais gratuitos para dar o primeiro passo neste caminho.</p></div>
+        {{ sec.ver_todos('materiais', 'Todos os materiais') }}
+      </div>
+      {{ sec.cards_materiais(materiais) }}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if posts %}
+  <section class="block" id="novidades">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">Leitura</span><h2>Artigos para este objetivo</h2></div>
+        {{ sec.ver_todos('novidades', 'Todas as novidades') }}
+      </div>
+      <div class="posts posts-3">
+        {% for p in posts[:6] %}
+        <a class="post" href="{{ url_for('post', slug=p.slug) }}">
+          <div class="meta"><span class="cat">{{ p.categoria }}</span><span>· {{ p.tempo }} min de leitura</span></div>
+          <h3>{{ p.titulo }}</h3>
+          <p>{{ p.resumo }}</p>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if produtos %}
+  <section class="block" id="loja">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">Para aprofundar</span><h2>Para ir mais longe</h2><p>Guias e cursos completos sobre este tema, com compra segura pela Hotmart.</p></div>
+        {{ sec.ver_todos('loja', 'Ver a loja') }}
+      </div>
+      {{ sec.cards_produtos(produtos) }}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if not materiais and not posts and not produtos %}
+  <section class="block"><div class="wrap">{{ sec.vazio('Os conteúdos deste caminho estão a caminho. Assine a newsletter para ser avisado.') }}</div></section>
+  {% endif %}
+
+  {{ sec.newsletter() }}
+{% endblock %}

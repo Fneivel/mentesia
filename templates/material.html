@@ -1,20 +1,11 @@
 {% extends "base.html" %}
 {% import "_secoes.html" as sec with context %}
-{% block title %}{{ m.titulo }} · Material grátis · MentesIA{% endblock %}
+{% block title %}{{ m.titulo }} · Material grátis · Mentes.IA{% endblock %}
 {% block description %}{{ m.descricao }}{% endblock %}
 {% block og_image %}{% if m.capa %}{{ m.capa if m.capa.startswith('http') else (request.url_root.rstrip('/') ~ media_url(m.capa)) }}{% else %}{{ url_for('static', filename='img/mentesia-icone.png', _external=True) }}{% endif %}{% endblock %}
 {% block pixel_events %}fbq('track', 'ViewContent', {content_name: {{ m.titulo|tojson }}, content_type: 'material_gratis'});{% endblock %}
 
-{% macro botao(m, grande=false) -%}
-{% if m.arquivo or m.link %}
-<a class="btn btn-primary{% if grande %} btn-lg{% endif %}" href="{{ url_for('material', mid=m.id) }}" {% if not m.arquivo %}target="_blank" rel="noopener"{% endif %}>
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
-  {{ m.botao or 'Quero o material grátis' }}
-</a>
-{% else %}
-<span class="btn btn-ghost is-disabled{% if grande %} btn-lg{% endif %}" aria-disabled="true">Em breve</span>
-{% endif %}
-{%- endmacro %}
+{% macro botao(m, grande=false) -%}{{ sec.botao_material(m, 'btn btn-primary' ~ (' btn-lg' if grande else '')) }}{%- endmacro %}
 
 {% block content %}
 <section class="lp-hero mat-hero">
@@ -35,7 +26,7 @@
           Compartilhar
         </button>
       </div>
-      <p class="mat-note">Sem custo e sem cartão. {% if m.arquivo %}O download começa na hora.{% else %}Você recebe o acesso direto no link.{% endif %}</p>
+      <p class="mat-note">Sem cadastro e sem cartão. {% if m.arquivo %}Ao tocar no botão, o arquivo é salvo no seu aparelho, na pasta Downloads.{% else %}O botão abre o material numa nova aba.{% endif %}</p>
     </div>
 
     <div class="lp-hero-art">
@@ -46,7 +37,7 @@
         <canvas data-seed="{{ m.id + 7 }}"></canvas>
         <span class="mat-doc-fmt">{{ m.formato or 'Material grátis' }}</span>
         <span class="mat-doc-title">{{ m.titulo }}</span>
-        <span class="mat-doc-brand">Mentes<b>IA</b></span>
+        <span class="mat-doc-brand">Mentes<b>.IA</b></span>
       </div>
       {% endif %}
     </div>

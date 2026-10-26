@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% block title %}Biblioteca de Skills para Claude · MentesIA{% endblock %}
+{% block title %}Biblioteca de Skills para Claude · Mentes.IA{% endblock %}
 {% block description %}36 skills em português para o Claude, organizadas por perfil: escritório, pequeno negócio e conteúdo. Com seletor de kit, instalador, ZIPs para o app, teste guiado e manual em PDF.{% endblock %}
 {% block pixel_events %}fbq('track', 'ViewContent', {content_name: 'Biblioteca de Skills para Claude', content_type: 'product', content_ids: ['biblioteca-skills']{% if p.preco %}, value: {{ '%.2f'|format(p.preco) }}, currency: 'BRL'{% endif %}});{% endblock %}
 {% block og_image %}{{ url_for('static', filename='img/produtos/biblioteca-skills.png', _external=True) }}{% endblock %}
 
 {% set IMG = 'img/produtos/biblioteca-skills/' %}
-{% macro capa(cls='') %}<img class="lp-capa {{ cls }}" src="{{ url_for('static', filename=IMG ~ 'capa.webp') }}" width="489" height="691" alt="Capa do manual da Biblioteca de Skills MentesIA para Claude">{% endmacro %}
+{% macro capa(cls='') %}<img class="lp-capa {{ cls }}" src="{{ url_for('static', filename=IMG ~ 'capa.webp') }}" width="489" height="691" alt="Capa do manual da Biblioteca de Skills Mentes.IA para Claude">{% endmacro %}
 
 {% block content %}
 <!-- TOPO -->
@@ -115,7 +115,7 @@
         <button role="tab" aria-selected="false" data-shot="teste"><b>Teste guiado</b><span>Prove que cada skill entrou</span></button>
       </div>
       <figure class="lp-tour-frame">
-        <div class="lp-hub-bar"><i></i><i></i><i></i><span>Biblioteca de Skills MentesIA</span></div>
+        <div class="lp-hub-bar"><i></i><i></i><i></i><span>Biblioteca de Skills Mentes.IA</span></div>
         <img id="tourImg" src="{{ url_for('static', filename=IMG ~ 'tela-perfil.webp') }}" width="1600" height="1000" alt="Tela do laboratório: Seletor de perfil" loading="lazy">
       </figure>
     </div>
@@ -150,7 +150,7 @@
       <div class="lp-offer-art">{{ capa('lp-capa-sm') }}</div>
       <div>
         <span class="eyebrow">Acesso imediato · Entrega pela Hotmart</span>
-        <h2>Biblioteca de Skills MentesIA</h2>
+        <h2>Biblioteca de Skills Mentes.IA</h2>
         <ul class="lp-checks">
           <li>36 skills em português, em 4 pacotes por perfil</li>
           <li>Laboratório interativo: seletor de kit, instalador e teste guiado</li>
@@ -189,7 +189,7 @@
       <p>Duas perguntas, um kit sob medida e skills que entram sozinhas quando você precisa.</p>
       <a class="btn btn-primary lp-cta" href="#comprar">Quero a biblioteca</a>
     </div>
-    <p class="lp-legal">Material independente, produzido pela MentesIA, sem vínculo com a Anthropic. Claude, Claude Code e Cowork são marcas da Anthropic PBC. As skills apoiam o seu trabalho, mas não substituem orientação profissional jurídica, contábil ou financeira.</p>
+    <p class="lp-legal">Material independente, produzido pela Mentes.IA, sem vínculo com a Anthropic. Claude, Claude Code e Cowork são marcas da Anthropic PBC. As skills apoiam o seu trabalho, mas não substituem orientação profissional jurídica, contábil ou financeira.</p>
   </div>
 </section>
 

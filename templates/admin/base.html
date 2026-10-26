@@ -21,7 +21,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>{% block title %}Painel{% endblock %} · MentesIA</title>
+<title>{% block title %}Painel{% endblock %} · Mentes.IA</title>
 <link rel="icon" href="{{ url_for('static', filename='img/mentesia-icone.svg') }}" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,13 +33,13 @@
 {% set kind_now = request.view_args.get('kind') if request.view_args else None %}
 <div class="mobile-bar">
   <button type="button" id="menuBtn" aria-controls="side" aria-expanded="false">Menu</button>
-  <strong>Painel MentesIA</strong>
+  <strong>Painel Mentes.IA</strong>
 </div>
 <div class="shell">
   <aside class="side" id="side">
     <a class="brand" href="{{ url_for('admin_home') }}">
       <img src="{{ url_for('static', filename='img/mentesia-icone.svg') }}" width="28" height="28" alt="">
-      <span>Mentes<b>IA</b></span><small>Painel</small>
+      <span>Mentes<b>.IA</b></span><small>Painel</small>
     </a>
     <a class="item {% if here == 'admin_home' %}on{% endif %}" href="{{ url_for('admin_home') }}">{{ icon('home') }}Visão geral</a>
     <a class="item {% if here == 'admin_acessos' %}on{% endif %}" href="{{ url_for('admin_acessos') }}">{{ icon('acessos') }}Acessos</a>

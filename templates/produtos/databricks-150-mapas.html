@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% block title %}Databricks em 150 Mapas · MentesIA{% endblock %}
+{% block title %}Databricks em 150 Mapas · Mentes.IA{% endblock %}
 {% block description %}Guia visual de Databricks em PDF + HTML interativo: 150 mapas com a tela real da plataforma, passo a passo, código pronto e erro comum. Do primeiro notebook ao Lakehouse em produção, em português.{% endblock %}
 {% block pixel_events %}fbq('track', 'ViewContent', {content_name: 'Databricks em 150 Mapas', content_type: 'product', content_ids: ['databricks-150-mapas']{% if p.preco %}, value: {{ '%.2f'|format(p.preco) }}, currency: 'BRL'{% endif %}});{% endblock %}
 {% block og_image %}{{ url_for('static', filename='img/produtos/databricks-150-mapas.png', _external=True) }}{% endblock %}
 
 {% set IMG = 'img/produtos/databricks-150-mapas/' %}
-{% macro capa(cls='') %}<img class="lp-capa {{ cls }}" src="{{ url_for('static', filename=IMG ~ 'capa.webp') }}" width="489" height="691" alt="Capa do guia Databricks em 150 Mapas, da MentesIA">{% endmacro %}
+{% macro capa(cls='') %}<img class="lp-capa {{ cls }}" src="{{ url_for('static', filename=IMG ~ 'capa.webp') }}" width="489" height="691" alt="Capa do guia Databricks em 150 Mapas, da Mentes.IA">{% endmacro %}
 
 {% block content %}
 <!-- TOPO -->
@@ -80,7 +80,7 @@
       <article class="lp-card">
         <svg class="lp-ico-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg>
         <h3>Guia em PDF</h3>
-        <p>200 páginas em A4 paisagem com capa, sumário e os 150 mapas no padrão visual MentesIA. Os mapas mais densos ocupam duas páginas para nada ficar pequeno demais para ler.</p>
+        <p>200 páginas em A4 paisagem com capa, sumário e os 150 mapas no padrão visual Mentes.IA. Os mapas mais densos ocupam duas páginas para nada ficar pequeno demais para ler.</p>
       </article>
       <article class="lp-card">
         <svg class="lp-ico-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 9h4M7 12h7"/></svg>
@@ -301,7 +301,7 @@
       <p>Um mapa por dia e, em cinco meses, você passou pela plataforma inteira.</p>
       <a class="btn btn-primary lp-cta" href="#comprar">Quero os 150 mapas</a>
     </div>
-    <p class="lp-legal">Material independente, produzido pela MentesIA, sem vínculo com a Databricks, Inc. Databricks, Delta Lake e Apache Spark são marcas de seus respectivos donos.</p>
+    <p class="lp-legal">Material independente, produzido pela Mentes.IA, sem vínculo com a Databricks, Inc. Databricks, Delta Lake e Apache Spark são marcas de seus respectivos donos.</p>
   </div>
 </section>
 
