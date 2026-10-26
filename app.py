@@ -472,6 +472,20 @@ def media_url(path):
 app.jinja_env.globals["media_url"] = media_url
 
 
+def miniatura_produto(p):
+    """Imagem da miniatura do card no celular: usa a capa em pé do produto
+    (static/img/produtos/<pagina>/capa.webp) quando existe; senão o card usa a imagem de capa normal."""
+    pagina = (p["pagina"] or "").strip()
+    if pagina and "/" not in pagina and ".." not in pagina:
+        rel = f"img/produtos/{pagina}/capa.webp"
+        if os.path.isfile(os.path.join(app.static_folder, rel)):
+            return url_for("static", filename=rel)
+    return ""
+
+
+app.jinja_env.globals["miniatura_produto"] = miniatura_produto
+
+
 def agora_br():
     return datetime.now(FUSO)
 
