@@ -34,9 +34,15 @@
   {% for m in materiais %}
   <article class="freebie">
     {% set mp = url_for('material_pagina', slug=m.slug) if m.slug else '' %}
-    {% if m.formato %}<span class="fmt">{{ m.formato }}</span>{% endif %}
-    <h3>{% if mp %}<a class="plink" href="{{ mp }}">{{ m.titulo }}</a>{% else %}{{ m.titulo }}{% endif %}</h3>
-    <p>{{ m.descricao }}</p>
+    {# Miniatura: só aparece no celular (formato "link na bio", card compacto) #}
+    {% if mp %}<a class="mthumb" href="{{ mp }}" tabindex="-1" aria-hidden="true">{% else %}<span class="mthumb" aria-hidden="true">{% endif %}
+      {% if m.capa %}<img src="{{ media_url(m.capa) }}" alt="" loading="lazy">{% else %}<img class="mthumb-logo" src="{{ url_for('static', filename='img/mentesia-icone.svg') }}" alt="">{% endif %}
+    {% if mp %}</a>{% else %}</span>{% endif %}
+    <div class="mtxt">
+      <div class="mtags"><span class="mfree">Grátis</span>{% if m.formato %}<span class="fmt">{{ m.formato }}</span>{% endif %}</div>
+      <h3>{% if mp %}<a class="plink" href="{{ mp }}">{{ m.titulo }}</a>{% else %}{{ m.titulo }}{% endif %}</h3>
+      <p>{{ m.descricao }}</p>
+    </div>
     <ul>{% for t in m.itens|lines %}<li>{{ t }}</li>{% endfor %}</ul>
     {% if m.arquivo or m.link %}
     <a class="btn btn-ghost" href="{{ url_for('material', mid=m.id) }}" {% if not m.arquivo %}target="_blank" rel="noopener"{% endif %}>{{ m.botao or 'Quero o material grátis' }}</a>
@@ -55,14 +61,16 @@
   <article class="product{% if p.selo %} best{% endif %}">
     {% set pg = url_for('produto_pagina', slug=p.pagina) if p.pagina else '' %}
     {% if pg %}<a class="cover cover-link" href="{{ pg }}" aria-label="Ver detalhes de {{ p.titulo }}">{% else %}<div class="cover">{% endif %}
-      {% if p.imagem %}<img class="cover-img" src="{{ media_url(p.imagem) }}" alt="">{% else %}<canvas data-seed="{{ loop.index + 2 }}"></canvas>{% endif %}
+      {% if p.imagem %}<img class="cover-img" src="{{ media_url(p.imagem) }}" alt="">{% set mini = miniatura_produto(p) %}{% if mini %}<img class="cover-mini" src="{{ mini }}" alt="" loading="lazy">{% endif %}{% else %}<canvas data-seed="{{ loop.index + 2 }}"></canvas>{% endif %}
       {% if p.selo %}<span class="badge">{{ p.selo }}</span>{% endif %}
       {% if not p.imagem %}<span class="ctitle">{{ p.capa_texto|default(p.titulo, true)|replace('\n', '<br>'|safe) }}</span>{% endif %}
     {% if pg %}</a>{% else %}</div>{% endif %}
     <div class="pbody">
-      <span class="ptype">{{ p.tipo }}</span>
-      <h3>{% if pg %}<a class="plink" href="{{ pg }}">{{ p.titulo }}</a>{% else %}{{ p.titulo }}{% endif %}</h3>
-      <p>{{ p.descricao }}</p>
+      <div class="mtxt">
+        <div class="mtags"><span class="ptype">{{ p.tipo }}</span>{% if p.selo %}<span class="mselo">{{ p.selo }}</span>{% endif %}</div>
+        <h3>{% if pg %}<a class="plink" href="{{ pg }}">{{ p.titulo }}</a>{% else %}{{ p.titulo }}{% endif %}</h3>
+        <p>{{ p.descricao }}</p>
+      </div>
       <ul>{% for t in p.itens|lines %}<li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>{{ t }}</span></li>{% endfor %}</ul>
       {{ contador(p, compacto=True) }}
       {% if p.preco %}
