@@ -167,7 +167,7 @@ SETTINGS = [
         ("hero_botao1", "Botão principal", "text", "Baixar material grátis"),
         ("hero_botao2", "Botão secundário", "text", "Ler as novidades"),
         ("hero_selos", "Selos abaixo dos botões (um por linha)", "lines",
-         "Conteúdo em português\nMateriais 100% gratuitos\nCompra segura via Hotmart"),
+         "Conteúdo em português\nMateriais 100% gratuitos\nCompra segura"),
     ]),
     ("Seção de novidades", [
         ("blog_titulo", "Título", "text", "Novidades e guias"),
@@ -233,9 +233,10 @@ def parse_faq(text):
 ENTITIES = {
     "artigos": {
         "table": "posts", "label": "Artigos", "singular": "artigo", "title_field": "titulo",
-        "cols": [("categoria", "Categoria"), ("tempo", "Leitura (min)")],
+        "cols": [("objetivos", "Classificação"), ("categoria", "Categoria"), ("tempo", "Leitura (min)")],
         "fields": [
             ("titulo", "Título", "text", {"required": True}),
+            ("objetivos", "Classificação", "objetivos", {"required": True, "help": "Obrigatório. Marque um ou mais caminhos: é o que faz este conteúdo aparecer em “O que você quer fazer com IA?” na home."}),
             ("resumo", "Resumo (aparece no card)", "textarea", {}),
             ("conteudo", "Texto do artigo", "markdown", {"help": "Use **negrito**, ## Subtítulo, - listas e [link](https://...)."}),
             ("categoria", "Categoria", "text", {"side": True, "datalist": "categorias", "help": "Vira filtro na home."}),
@@ -243,14 +244,14 @@ ENTITIES = {
             ("slug", "Endereço da página", "slug", {"side": True, "help": "Gerado a partir do título se ficar vazio."}),
             ("capa", "Imagem de capa", "image", {"side": True}),
             ("destaque", "Destacar na home (card grande)", "bool", {"side": True}),
-            ("objetivos", "Caminhos (objetivos)", "objetivos", {"side": True, "help": "Em quais caminhos da home este artigo aparece."}),
         ],
     },
     "materiais": {
         "table": "materiais", "label": "Materiais grátis", "singular": "material", "title_field": "titulo",
-        "cols": [("formato", "Formato")],
+        "cols": [("objetivos", "Classificação"), ("formato", "Formato")],
         "fields": [
             ("titulo", "Título", "text", {"required": True}),
+            ("objetivos", "Classificação", "objetivos", {"required": True, "help": "Obrigatório. Marque um ou mais caminhos: é o que faz este conteúdo aparecer em “O que você quer fazer com IA?” na home."}),
             ("descricao", "Descrição", "textarea", {}),
             ("itens", "Tópicos (um por linha)", "lines", {}),
             ("link", "Link de acesso", "url", {"help": "Ex.: produto gratuito na Hotmart. Se enviar um arquivo abaixo, o botão baixa o arquivo."}),
@@ -261,21 +262,20 @@ ENTITIES = {
             ("slug", "Endereço da página", "slug", {"side": True, "help": "Fica mentesia.com.br/materiais-gratis/endereco. Gerado a partir do título se ficar vazio. Evite mudar depois de divulgar o link."}),
             ("capa", "Imagem de capa", "image", {"side": True, "help": "Aparece na página e na prévia do link no WhatsApp e redes. Ideal: 1200×630."}),
             ("miniatura", "Miniatura do card no celular", "image", {"side": True, "help": "Quadrada, 400×400, com título curto e letras grandes. Sem ela, o card mostra o ícone da marca com o formato."}),
-            ("objetivos", "Caminhos (objetivos)", "objetivos", {"side": True, "help": "Em quais caminhos da home este material aparece."}),
         ],
     },
     "produtos": {
         "table": "produtos", "label": "Produtos (Hotmart)", "singular": "produto", "title_field": "titulo",
-        "cols": [("tipo", "Tipo"), ("preco", "Preço")],
+        "cols": [("objetivos", "Classificação"), ("tipo", "Tipo"), ("preco", "Preço")],
         "fields": [
             ("titulo", "Nome do produto", "text", {"required": True}),
+            ("objetivos", "Classificação", "objetivos", {"required": True, "help": "Obrigatório. Marque um ou mais caminhos: é o que faz este conteúdo aparecer em “O que você quer fazer com IA?” na home e nos filtros da loja."}),
             ("descricao", "Descrição", "textarea", {}),
             ("itens", "Benefícios (um por linha)", "lines", {}),
             ("link", "Link de checkout da Hotmart", "url", {"help": "Ex.: https://pay.hotmart.com/XXXXXXXX. Enquanto estiver vazio, o botão de compra aparece como “Em breve”."}),
             ("pagina", "Página de vendas no site", "text", {"side": True, "help": "Ex.: guia-copilot. Se preenchido, o card da loja leva para mentesia.com.br/produtos/guia-copilot. Deixe vazio para o botão ir direto à Hotmart."}),
             ("tipo", "Tipo", "text", {"side": True, "help": "Ex.: Curso em vídeo"}),
             ("compatibilidade", "Compatibilidade / requisito", "text", {"side": True, "help": "Aparece junto do preço e do botão. Ex.: Somente Windows 10 e 11. Deixe vazio se funciona em qualquer aparelho."}),
-            ("objetivos", "Caminhos (objetivos)", "objetivos", {"side": True, "help": "Em quais caminhos da home e filtros da loja este produto aparece."}),
             ("preco", "Preço (R$)", "money", {"side": True}),
             ("preco_antigo", "Preço antigo riscado (R$)", "money", {"side": True, "help": "Deixe vazio para não mostrar."}),
             ("parcelas", "Parcelas no cartão", "int", {"side": True}),
@@ -537,6 +537,18 @@ def ajustes_usabilidade_v1():
     c.commit()
 
 
+def ajustes_v2():
+    """Selo da home: "Compra segura via Hotmart" -> "Compra segura" (só se o texto ainda for o antigo)."""
+    c = db()
+    if c.execute("SELECT 1 FROM config WHERE chave='ajuste_v2'").fetchone():
+        return
+    r = c.execute("SELECT valor FROM config WHERE chave='hero_selos'").fetchone()
+    if r and "Compra segura via Hotmart" in (r["valor"] or ""):
+        c.execute("UPDATE config SET valor=? WHERE chave='hero_selos'", (r["valor"].replace("Compra segura via Hotmart", "Compra segura"),))
+    c.execute("INSERT INTO config (chave, valor) VALUES ('ajuste_v2', '1')")
+    c.commit()
+
+
 with app.app_context():
     db().executescript(SCHEMA)
     db().executescript(acessos.SCHEMA)
@@ -546,6 +558,7 @@ with app.app_context():
     seed_once()
     migrate()  # dá endereço também aos materiais de exemplo criados agora
     ajustes_usabilidade_v1()
+    ajustes_v2()
 
 
 # =====================================================================
@@ -1052,7 +1065,8 @@ def admin_edit(kind, item_id=None):
             else:
                 values[name] = (form.get(name) or "").strip()
             if opts.get("required") and not values.get(name):
-                erros.append(f"Preencha o campo “{label}”.")
+                erros.append("Classificação: marque pelo menos um caminho." if ftype == "objetivos"
+                             else f"Preencha o campo “{label}”.")
         values["ativo"] = 1 if form.get("ativo") else 0
         try:
             values["ordem"] = int(form.get("ordem") or 0)
