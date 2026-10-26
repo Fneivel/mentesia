@@ -1,4 +1,4 @@
-/* MentesIA — painel administrativo */
+/* Mentes.IA — painel administrativo */
 :root{
   color-scheme:dark;
   --bg:#07090D; --panel:#0E1218; --panel-2:#151A22; --line:#27303D; --line-2:#344050;
@@ -246,3 +246,4 @@ th.num{text-align:right}
 .panel-secao .fields{padding-top:14px}
 .oferta-lista{margin:4px 0 0; padding-left:18px}
 input[type=datetime-local]{color-scheme:dark; max-width:280px}
+.checks-list{display:grid; gap:6px}

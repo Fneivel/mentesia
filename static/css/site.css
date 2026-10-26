@@ -1,4 +1,4 @@
-/* Identidade MentesIA: fundo escuro, degradê azul → ciano → verde do logo */
+/* Identidade Mentes.IA: fundo escuro, degradê azul → ciano → verde do logo */
   :root{
     color-scheme:dark;
     --bg:#07090D;
@@ -522,7 +522,20 @@ footer .legal a:hover{color:var(--cyan); text-decoration:underline}
 .cookiebar p{font-size:14px; color:var(--ink-2); line-height:1.5; margin:0}
 .cookiebar a{color:var(--cyan)}
 .cookiebar-btns{display:flex; gap:10px; flex-shrink:0}
-@media (max-width:640px){ .cookiebar{flex-direction:column; align-items:stretch} .cookiebar-btns > *{flex:1} }
+.cookiebar .ck-short{display:none}
+.ck-no{background:none; border:0; color:var(--ink-2); font:inherit; font-size:14px; font-weight:500; text-decoration:underline; text-underline-offset:3px; cursor:pointer; padding:8px 6px}
+.ck-no:hover{color:var(--ink)}
+/* Celular: uma linha baixa colada no rodapé, sem cobrir os cards */
+@media (max-width:640px){
+  .cookiebar{left:0; right:0; bottom:0; transform:none; width:auto; border-radius:14px 14px 0 0; border-width:1px 0 0;
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom, 0px)); gap:10px}
+  .cookiebar .ck-long{display:none}
+  .cookiebar .ck-short{display:inline}
+  .cookiebar p{font-size:13px; line-height:1.35; flex:1; min-width:0}
+  .cookiebar-btns{gap:4px; align-items:center}
+  .cookiebar-btns .btn{min-height:40px; padding:0 16px}
+  .ck-no{font-size:13px; padding:10px 6px}
+}
 
 /* ---------- Páginas de seção (Novidades, Materiais grátis, Loja) ---------- */
 .nav a.is-active{color:var(--ink); background:var(--surface-2); box-shadow:inset 0 -2px 0 var(--green)}
@@ -593,7 +606,7 @@ section.block.page-body{padding-top:clamp(28px, 4vw, 48px)}
 }
 @media (max-width:640px){ .mat-cta{flex-direction:column; align-items:stretch} .mat-again .btn{width:100%} }
 
-/* ===== Página do MentesIA Social Hub ===== */
+/* ===== Página do Mentes.IA Social Hub ===== */
 .sh-hero-shot{position:relative; width:min(620px, 100%)}
 .sh-hero-shot::before{content:""; position:absolute; inset:6% -8% 0 -8%; background:radial-gradient(closest-side, rgba(22,198,224,.30), rgba(47,107,255,.12) 60%, transparent); filter:blur(24px); z-index:-1}
 .sh-hero-shot .lp-capa-tag-1{left:-5%; top:auto; bottom:-14px}
@@ -698,7 +711,7 @@ section.block.page-body{padding-top:clamp(28px, 4vw, 48px)}
    No celular, materiais grátis e produtos viram uma linha: miniatura + título + resumo,
    com o botão largo embaixo. A lista de tópicos fica na página de detalhes. */
 .mtxt,.mtags{display:contents}
-.mthumb,.mfree,.mselo,.cover-mini{display:none}
+.mthumb,.mfree,.mselo,.cover-mini,.ctitle-mini{display:none}
 
 @media (max-width:640px){
   .free,.shop{gap:14px}
@@ -712,11 +725,17 @@ section.block.page-body{padding-top:clamp(28px, 4vw, 48px)}
   .mthumb,.product .cover{display:block; grid-column:1; grid-row:1; width:84px; height:84px; aspect-ratio:auto; padding:0;
     border-radius:14px; overflow:hidden; position:relative; background:var(--surface-2); box-shadow:inset 0 0 0 1px var(--line)}
   .mthumb img{display:block; width:100%; height:100%; object-fit:cover}
-  .mthumb .mthumb-logo{object-fit:contain; padding:16px; background:radial-gradient(circle at 30% 20%, rgba(22,198,224,.22), transparent 70%)}
-  /* Miniatura: capa em pé do produto; se não houver, a imagem larga recortada pelo lado esquerdo (título/logo) */
-  .product .cover .cover-img{object-position:8% 50%}
-  .product .cover .cover-mini{display:block; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 0}
-  .product .cover .badge,.product .cover .ctitle{display:none}
+  /* Sem miniatura quadrada: selo da marca com o formato (a capa larga nunca é espremida) */
+  .mtile{display:grid; place-items:center; align-content:center; gap:4px; width:100%; height:100%;
+    background:radial-gradient(circle at 30% 15%, rgba(22,198,224,.25), transparent 65%), var(--surface-2)}
+  .mtile img{width:38px; height:38px}
+  .mtile b{font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--green); max-width:76px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  /* Produto: miniatura quadrada do painel; sem ela, o texto curto da capa sobre o fundo da marca */
+  .product .cover .cover-mini{display:block; position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+  .product .cover:not(:has(.cover-mini)) .cover-img{display:none}
+  .product .cover .badge,.product .cover:has(.cover-mini) .ctitle{display:none}
+  .product .cover .ctitle{display:flex; position:absolute; inset:0; align-items:flex-end; padding:9px;
+    font-size:15px; line-height:1.05; background:linear-gradient(180deg, transparent 20%, rgba(7,9,13,.85))}
 
   /* Texto ao lado da miniatura */
   .mtxt{display:flex; flex-direction:column; gap:5px; grid-column:2; grid-row:1; min-width:0}
@@ -732,16 +751,101 @@ section.block.page-body{padding-top:clamp(28px, 4vw, 48px)}
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
 
   /* O que fica para a página de detalhes */
-  .freebie ul,.pbody ul,.freebie-more{display:none}
+  .freebie ul,.pbody ul{display:none}
 
   /* Linha de preço e contador ocupam a largura toda */
   .product .oferta,.product .price{grid-column:1 / -1; margin:0}
   .product .price{gap:8px; align-items:baseline}
   .product .price .now{font-size:24px}
-  .product .price .inst{width:auto; font-size:13px}
+  .product .price .inst{width:100%; font-size:13px}
 
   /* Botão largo em pílula, como nos links da bio */
-  .freebie > .btn,.product .pbody > .btn{grid-column:1 / -1; width:100%; margin:0; min-height:50px; border-radius:999px; font-size:15px}
-  .freebie > .btn:not(.is-disabled){background:var(--grad); color:var(--accent-ink); box-shadow:none}
-  .freebie > .btn:not(.is-disabled)::after,.product .pbody > .btn:not(.is-disabled)::after{content:"→"; font-weight:700}
+  .freebie .mactions{grid-column:1 / -1}
+  .freebie .mactions .btn,.product .pbody > .btn{min-height:50px; border-radius:999px; font-size:15px}
+  .product .pbody > .btn{grid-column:1 / -1; width:100%; margin:0}
+  .product .pbody > .btn:not(.is-disabled)::after{content:"→"; font-weight:700}
+  .product .compat{grid-column:1 / -1}
 }
+
+
+/* ---------- Ajustes da análise de usabilidade (out/2026) ---------- */
+/* Materiais: "Ver detalhes" visível ao lado do download */
+.freebie-more{display:none}
+.mactions{display:flex; gap:10px; margin-top:6px}
+.mactions .btn{margin:0}
+.mactions > *{flex:1; white-space:nowrap}
+.mtile b{text-decoration:none}
+.mthumb{text-decoration:none}
+.freebie .btn{margin-top:0}
+@media (max-width:640px){ .mactions{gap:8px} .mactions .btn{padding-inline:14px} }
+
+/* Preço: De R$ X por R$ Y · à vista ou em até Nx */
+.price{flex-wrap:wrap; column-gap:8px}
+.price .de,.lp-price .de{width:100%; font-size:14px; color:var(--ink-2)}
+.price .de s,.lp-price .de s{text-decoration-thickness:1.5px}
+.price .inst,.lp-price .inst{width:100%}
+
+/* Compatibilidade junto do preço e do botão */
+.compat{display:flex; align-items:flex-start; gap:8px; margin:0; font-size:14px; line-height:1.4; color:#FFD76A;
+  background:rgba(255,196,0,.08); border:1px solid rgba(255,196,0,.28); border-radius:10px; padding:8px 11px}
+.compat svg{flex:none; margin-top:2px; margin-right:2px}
+.lp-buy .compat{max-width:460px}
+
+/* Caminhos por objetivo */
+.block-paths{border-top:0; padding-top:0}
+.paths{display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:14px}
+.path{display:grid; grid-template-columns:auto 1fr auto; align-items:start; gap:14px; padding:20px; border-radius:16px; text-decoration:none;
+  background:var(--surface); border:1px solid var(--line); transition:border-color .15s, transform .15s}
+.path:hover{border-color:var(--cyan); transform:translateY(-2px)}
+.path.is-current{border-color:transparent; background:linear-gradient(var(--surface), var(--surface)) padding-box, var(--grad) border-box}
+.path-ico{display:grid; place-items:center; width:44px; height:44px; border-radius:12px; color:var(--green); background:var(--accent-soft)}
+.path-txt{display:grid; gap:6px}
+.path-txt strong{font-family:var(--display); font-size:18px; line-height:1.2; letter-spacing:-0.015em}
+.path-txt small{font-size:14px; color:var(--ink-2); line-height:1.45}
+.path-go{color:var(--green); font-weight:700; transition:transform .15s}
+.path:hover .path-go{transform:translateX(3px)}
+.path-switch .paths{margin-top:14px}
+@media (max-width:1100px){ .paths{grid-template-columns:repeat(2, minmax(0, 1fr))} }
+@media (max-width:640px){
+  .paths{grid-template-columns:1fr; gap:10px}
+  .path{padding:14px; align-items:center; border-radius:18px}
+  .path-txt small{font-size:13px}
+  .path-switch .paths{grid-template-columns:1fr 1fr}
+  .path-switch .path-txt small,.path-switch .path-go{display:none}
+  .path-switch .path{grid-template-columns:auto 1fr; gap:10px; padding:12px}
+  .path-switch .path-ico{width:34px; height:34px}
+  .path-switch .path-txt strong{font-size:14px}
+}
+
+/* Filtro por objetivo na loja (links) */
+a.chip{display:inline-flex; align-items:center; text-decoration:none}
+a.chip[aria-current="true"]{background:var(--ink); border-color:var(--ink); color:var(--bg)}
+/* Tags e filtros quebram linha no celular: nenhum nome fica cortado na borda da tela */
+@media (max-width:640px){
+  .chips{flex-wrap:wrap; overflow:visible; margin-inline:0; padding-inline:0; width:auto}
+  .chip{min-height:38px; padding:0 14px; font-size:14px}
+}
+
+/* Confirmação do download */
+.dl-sheet{position:fixed; inset:0; z-index:60; display:grid; place-items:end center; padding:16px; background:rgba(3,5,8,.55);
+  opacity:0; transition:opacity .2s}
+.dl-sheet.show{opacity:1}
+.dl-sheet[hidden]{display:none}
+.dl-card{position:relative; width:min(480px, 100%); background:var(--surface); border:1px solid var(--line); border-radius:20px;
+  padding:24px 22px 20px; display:grid; gap:10px; box-shadow:0 30px 80px -20px rgba(0,0,0,.8); transform:translateY(16px); transition:transform .2s}
+.dl-sheet.show .dl-card{transform:none}
+.dl-ok{display:grid; place-items:center; width:42px; height:42px; border-radius:50%; background:var(--green); color:var(--accent-ink)}
+.dl-card h2{font-size:22px}
+.dl-nome{font-weight:600; color:var(--ink)}
+.dl-card p{color:var(--ink-2); font-size:15px}
+.dl-card ul{margin:0; padding:0; list-style:none; display:grid; gap:6px; font-size:14px; color:var(--ink-2)}
+.dl-card li::before{content:"→ "; color:var(--green); font-weight:600}
+.dl-card b{color:var(--ink)}
+.dl-card i{font-style:normal; color:var(--ink)}
+.dl-btns{display:grid; gap:8px; margin-top:6px}
+.dl-btns .btn{width:100%}
+.dl-x{position:absolute; top:10px; right:10px; width:40px; height:40px; border:0; border-radius:10px; background:transparent; color:var(--ink-2); font-size:26px; line-height:1; cursor:pointer}
+.dl-x:hover{background:var(--surface-2); color:var(--ink)}
+@media (min-width:641px){ .dl-sheet{place-items:center} }
+@media (max-width:640px){ .dl-sheet{padding:0} .dl-card{border-radius:20px 20px 0 0; border-width:1px 0 0; padding-bottom:calc(20px + env(safe-area-inset-bottom, 0px))} }
+.lp-safe:not(:has(svg)){display:block}

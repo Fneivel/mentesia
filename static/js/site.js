@@ -1,4 +1,4 @@
-/* MentesIA — interações do site público */
+/* Mentes.IA — interações do site público */
 (function () {
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -22,12 +22,39 @@
       if (a.dataset.produto) ev.content_ids = [a.dataset.produto];
       track("InitiateCheckout", ev);
       try {
-        const nome = a.closest(".product")?.querySelector("h3")?.textContent.trim() || document.title.replace(/ · MentesIA$/, "");
+        const nome = a.closest(".product")?.querySelector("h3")?.textContent.trim() || document.title.replace(/ · Mentes.IA$/, "");
         navigator.sendBeacon?.("/api/clique", new Blob([JSON.stringify({ produto: nome, url: href })], { type: "application/json" }));
       } catch (err) {}
     }
-    else if (/^\/material\//.test(href) || /\/material\/\d+/.test(href)) track("Lead", { content_name: "Material grátis" });
+    else if (/^\/material\//.test(href) || /\/material\/\d+/.test(href)) {
+      track("Lead", { content_name: a.dataset.nome || "Material grátis" });
+      // Download direto: o navegador baixa o arquivo e a página mostra onde encontrá-lo
+      if (a.hasAttribute("data-download")) setTimeout(() => abrirDownload(a), 350);
+    }
   });
+
+  /* Confirmação do download direto */
+  const sheet = $("#dlSheet");
+  let ultimoFoco = null;
+  function abrirDownload(a) {
+    if (!sheet) { toast("Download iniciado. Veja a pasta Downloads."); return; }
+    ultimoFoco = a;
+    $("#dlNome", sheet).textContent = a.dataset.nome || "";
+    $("#dlAgain", sheet).setAttribute("href", a.getAttribute("href"));
+    sheet.hidden = false;
+    requestAnimationFrame(() => sheet.classList.add("show"));
+    $(".dl-x", sheet).focus({ preventScroll: true });
+  }
+  function fecharDownload() {
+    if (!sheet || sheet.hidden) return;
+    sheet.classList.remove("show");
+    setTimeout(() => { sheet.hidden = true; }, 200);
+    ultimoFoco?.focus({ preventScroll: true });
+  }
+  sheet?.addEventListener("click", e => {
+    if (e.target === sheet || e.target.closest("[data-dl-close]")) fecharDownload();
+  });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") fecharDownload(); });
 
   /* Contador da oferta por tempo limitado.
      Usa o relógio do servidor (data-agora) para não depender do relógio do aparelho da pessoa.
@@ -70,7 +97,13 @@
     const b = e.target.closest("[data-cookie]"); if (!b) return;
     const v = b.dataset.cookie;
     try { localStorage.setItem("mi_cookies", v); } catch (err) {}
-    try { window.fbq && fbq("consent", v === "sim" ? "grant" : "revoke"); } catch (err) {}
+    try {
+      if (window.fbq) {
+        fbq("consent", v === "sim" ? "grant" : "revoke");
+        // Primeira visita: a visita da página só é contada depois do "Aceitar"
+        if (v === "sim" && window.miPixelEventos) { window.miPixelEventos(); window.miPixelEventos = null; }
+      }
+    } catch (err) {}
     bar.hidden = true;
   });
   $$("[data-cookie-reset]").forEach(a => a.addEventListener("click", e => {
