@@ -247,3 +247,17 @@ th.num{text-align:right}
 .oferta-lista{margin:4px 0 0; padding-left:18px}
 input[type=datetime-local]{color-scheme:dark; max-width:280px}
 .checks-list{display:grid; gap:6px}
+
+/* Classificação (caminhos) no formulário e na lista */
+.cls-grid{display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px}
+.cls-opt{display:flex; gap:12px; align-items:flex-start; padding:12px 14px; border:1px solid var(--line); border-radius:12px; background:var(--panel-2); cursor:pointer; transition:border-color .15s}
+.cls-opt:hover{border-color:var(--line-2)}
+.cls-opt:has(input:checked){border-color:var(--green); background:rgba(31,227,142,.07)}
+.cls-opt input{width:18px; height:18px; margin-top:2px; flex:none; accent-color:var(--green)}
+.cls-opt span{display:grid; gap:3px}
+.cls-opt strong{font-size:14px; color:var(--ink)}
+.cls-opt small{font-size:12.5px; color:var(--ink-3); line-height:1.4}
+@media (max-width:700px){ .cls-grid{grid-template-columns:1fr} }
+.cls{display:flex; flex-wrap:wrap; gap:4px}
+.pill.cls-pill{background:rgba(22,198,224,.12); color:var(--cyan); cursor:default}
+.pill.cls-falta{background:rgba(255,92,108,.14); color:var(--danger); cursor:default}
