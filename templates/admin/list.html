@@ -41,7 +41,11 @@
             {% elif kind == 'materiais' %}<div class="sub">/materiais-gratis/{{ r.slug }} · {{ 'arquivo enviado' if r.arquivo else (r.link or 'sem link ou arquivo') }}</div>{% endif %}
           </td>
           {% for c, label in ent.cols %}
+            {% if c == 'objetivos' %}
+            <td><div class="cls">{% for o in OBJETIVOS if o.slug in r[c]|objs %}<span class="pill cls-pill">{{ o.curto }}</span>{% else %}<span class="pill cls-falta">Sem classificação</span>{% endfor %}</div></td>
+            {% else %}
             <td class="num">{% if c == 'preco' %}{{ r[c]|brl }}{% else %}{{ r[c] if r[c] is not none }}{% endif %}</td>
+            {% endif %}
           {% endfor %}
           <td>
             <form method="post" action="{{ url_for('admin_toggle', kind=kind, item_id=r.id) }}">

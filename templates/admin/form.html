@@ -26,9 +26,12 @@
              value="{{ ('%.2f'|format(val)).replace('.', ',') if ftype == 'money' and val is not none else (val if val is not none else '') }}">
     {% elif ftype == 'objetivos' %}
       {% set marcados = (val or '').split(',') %}
-      <div class="checks-list" id="f_{{ name }}">
+      <div class="cls-grid" id="f_{{ name }}" role="group" aria-label="{{ label }}">
         {% for o in OBJETIVOS %}
-        <label class="check"><input type="checkbox" name="{{ name }}" value="{{ o.slug }}" {% if o.slug in marcados %}checked{% endif %}> {{ o.titulo }}</label>
+        <label class="cls-opt">
+          <input type="checkbox" name="{{ name }}" value="{{ o.slug }}" {% if o.slug in marcados %}checked{% endif %}>
+          <span><strong>{{ o.titulo }}</strong><small>{{ o.texto }}</small></span>
+        </label>
         {% endfor %}
       </div>
     {% elif ftype == 'datetime' %}
