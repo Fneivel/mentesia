@@ -1,4 +1,4 @@
-# MentesIA — site + painel administrativo
+# Mentes.IA — site + painel administrativo
 
 Site www.mentesia.com.br com painel em **/admin** para editar tudo sem mexer em código:
 

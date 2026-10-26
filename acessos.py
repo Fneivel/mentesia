@@ -1,4 +1,4 @@
-"""Acompanhamento de acessos do MentesIA (sem serviços de terceiros).
+"""Acompanhamento de acessos do Mentes.IA (sem serviços de terceiros).
 
 O que é guardado por acesso: data/hora, página, origem (Instagram, Facebook, TikTok…),
 campanha, tipo de aparelho, navegador e localização aproximada (cidade/estado/país).
@@ -242,7 +242,7 @@ class Geo:
                 url = f"https://download.db-ip.com/free/dbip-city-lite-{mes}.mmdb.gz"
                 tmp = self.arquivo + ".baixando"
                 try:
-                    req = urllib.request.Request(url, headers={"User-Agent": "MentesIA/1.0"})
+                    req = urllib.request.Request(url, headers={"User-Agent": "Mentes.IA/1.0"})
                     with urllib.request.urlopen(req, timeout=120) as r, open(tmp + ".gz", "wb") as f:
                         shutil.copyfileobj(r, f)
                     with gzip.open(tmp + ".gz", "rb") as g, open(tmp, "wb") as f:
